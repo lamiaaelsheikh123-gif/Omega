@@ -224,11 +224,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: relative;
 }
 
+/* ✅ 3/5 = 60% */
 .progress-fill {
   position: absolute;
   top: 0; left: 0;
   height: 100%;
-  width: 57.14%;
+  width: 60%;
   background: var(--g-brand);
   border-radius: var(--r-pill);
   box-shadow: 0 0 10px rgba(14, 148, 135, 0.3);
@@ -1092,7 +1093,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="progress-text" id="progressText">Step 4 of 7</div>
+          <div class="progress-text" id="progressText">Step 3 of 5</div>
         </div>
 
         <!-- READY -->
@@ -1326,7 +1327,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 ============================================ */
 const I18N = {
   en: {
-    progress: 'Step 4 of 7',
+    progress: 'Step 3 of 5',
     readyTitle: 'Problem Solving',
     readyDesc: 'Solve 4 puzzles. If you get it wrong, we\'ll help you <b>think it through</b>.',
     metaQ: '4 puzzles',
@@ -1355,7 +1356,7 @@ const I18N = {
     nextLabel: 'Next Challenge'
   },
   ar: {
-    progress: 'الخطوة 4 من 7',
+    progress: 'الخطوة 3 من 5',
     readyTitle: 'حل المشكلات',
     readyDesc: 'حل 4 ألغاز. لو أخطأت، سنساعدك <b>على التفكير</b>.',
     metaQ: '4 ألغاز',
