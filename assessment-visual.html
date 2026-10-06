@@ -225,11 +225,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: relative;
 }
 
+/* ✅ 4/5 = 80% */
 .progress-fill {
   position: absolute;
   top: 0; left: 0;
   height: 100%;
-  width: 71.42%;
+  width: 80%;
   background: var(--g-brand);
   border-radius: var(--r-pill);
   box-shadow: 0 0 10px rgba(14, 148, 135, 0.3);
@@ -918,7 +919,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="progress-text" id="progressText">Step 5 of 7</div>
+          <div class="progress-text" id="progressText">Step 4 of 5</div>
         </div>
 
         <!-- READY -->
@@ -1082,7 +1083,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 ============================================ */
 const I18N = {
   en: {
-    progress: 'Step 5 of 7',
+    progress: 'Step 4 of 5',
     readyTitle: 'Visual Challenge',
     readyDesc: 'Look at the target, then pick the option that <b>matches it</b>. Some are rotated or mirrored.',
     metaQ: '3 puzzles',
@@ -1110,7 +1111,7 @@ const I18N = {
     nextLabel: 'Next Challenge'
   },
   ar: {
-    progress: 'الخطوة 5 من 7',
+    progress: 'الخطوة 4 من 5',
     readyTitle: 'التحدي البصري',
     readyDesc: 'انظر إلى الشكل الهدف، ثم اختر الخيار الذي <b>يطابقه بشكل صحيح</b>.',
     metaQ: '3 ألغاز',
@@ -1599,14 +1600,14 @@ function goToPhase(id) {
 }
 
 /* ============================================
-   NEXT → LANGUAGE
+   NEXT → REASONING
 ============================================ */
 document.getElementById('nextBtn').addEventListener('click', () => {
   const btn = document.getElementById('nextBtn');
   btn.style.transform = 'scale(0.96)';
   setTimeout(() => { btn.style.transform = ''; }, 150);
   setTimeout(() => {
-    window.location.href = 'assessment-language.html';
+    window.location.href = 'assessment-reasoning.html';
   }, 250);
 });
 
