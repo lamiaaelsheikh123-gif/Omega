@@ -242,11 +242,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: relative;
 }
 
+/* ✅ 1/5 = 20% */
 .progress-fill {
   position: absolute;
   top: 0; left: 0;
   height: 100%;
-  width: 14.28%;
+  width: 20%;
   background: var(--g-brand);
   border-radius: var(--r-pill);
   box-shadow: 0 0 10px rgba(14, 148, 135, 0.3);
@@ -916,7 +917,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="progress-text" id="progressText">Step 1 of 7</div>
+          <div class="progress-text" id="progressText">Step 1 of 5</div>
         </div>
 
         <!-- ============ PHASE 1: READY ============ -->
@@ -1085,7 +1086,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 ============================================ */
 const I18N = {
   en: {
-    progress: 'Step 1 of 7',
+    progress: 'Step 1 of 5',
     readyTitle: 'Memory Challenge',
     readyDesc: "You'll play 2 rounds. First round has 4 objects, second has 6. Remember them!",
     metaTime: '5 sec each',
@@ -1113,7 +1114,7 @@ const I18N = {
     nextLabel: 'Next Challenge'
   },
   ar: {
-    progress: 'الخطوة 1 من 7',
+    progress: 'الخطوة 1 من 5',
     readyTitle: 'تحدي الذاكرة',
     readyDesc: 'ستلعب جولتين. الأولى 4 عناصر، والثانية 6 عناصر. تذكّرها جيدًا!',
     metaTime: '5 ثوانٍ لكل جولة',
