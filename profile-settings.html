@@ -6,14 +6,13 @@
 <meta name="theme-color" content="#F8FAFC" />
 <title>Omega — Settings</title>
 
-<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================
-   DESIGN TOKENS — Omega Design System
+   DESIGN TOKENS — Omega
 ============================================ */
 :root {
   --c-primary:       #0E9487;
@@ -34,9 +33,11 @@
 
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
   --g-text:  linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
+  --g-child: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #0E9487 100%);
   --g-danger: linear-gradient(135deg, #EF4444, #F87171);
 
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
 
   --f-en: 'Poppins', system-ui, sans-serif;
@@ -44,33 +45,32 @@
 
   --phone-w: 375px;
   --phone-h: 812px;
+
+  /* Font scaling */
+  --fs-base: 14px;
 }
+
+html[data-font-size="small"]  { --fs-base: 12.5px; }
+html[data-font-size="medium"] { --fs-base: 14px; }
+html[data-font-size="large"]  { --fs-base: 16px; }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   height: 100%;
   font-family: var(--f-en);
+  font-size: var(--fs-base);
   -webkit-font-smoothing: antialiased;
   background: #E2E8F0;
   overflow: hidden;
+  transition: font-size 0.25s ease;
 }
 
 html[lang="ar"] body { font-family: var(--f-ar); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 input { font-family: inherit; }
 
-/* ============ FONT SIZE VARIANTS ============ */
-html[data-font-size="small"]  body { font-size: 13px; }
-html[data-font-size="medium"] body { font-size: 14px; }
-html[data-font-size="large"]  body { font-size: 16px; }
-
-html[data-font-size="small"]  .setting-label { font-size: 12px; }
-html[data-font-size="large"]  .setting-label { font-size: 14.5px; }
-
-html[data-font-size="small"]  .setting-value { font-size: 10.5px; }
-html[data-font-size="large"]  .setting-value { font-size: 13px; }
-
+/* ============ PHONE FRAME ============ */
 .stage {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
@@ -110,17 +110,19 @@ html[data-font-size="large"]  .setting-value { font-size: 13px; }
   .phone::before { display: none; }
 }
 
+/* ============ SCREEN ============ */
 .screen {
   position: absolute;
   inset: 0;
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
   background: var(--c-bg);
   overflow: hidden;
 }
 
 .screen::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   background:
     radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
@@ -129,7 +131,7 @@ html[data-font-size="large"]  .setting-value { font-size: 13px; }
   z-index: 0;
 }
 
-/* TOP BAR */
+/* ============ TOP BAR ============ */
 .topbar {
   position: relative;
   z-index: 10;
@@ -157,17 +159,15 @@ html[dir="rtl"] .back-btn:hover { transform: translateX(2px); }
 html[dir="rtl"] .back-btn svg { transform: scaleX(-1); }
 
 .page-title-mini {
-  font-size: 13.5px;
+  font-size: 0.95em;
   font-weight: 700;
   color: var(--c-navy);
   letter-spacing: 0.2px;
-  opacity: 0;
-  animation: fadeUp 0.4s ease 0.1s forwards;
 }
 
-html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
+html[lang="ar"] .page-title-mini { font-family: var(--f-ar); }
 
-/* CONTENT */
+/* ============ CONTENT ============ */
 .content {
   position: relative;
   z-index: 5;
@@ -183,26 +183,21 @@ html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; 
 
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-/* ============================================
-   ✅ PROFILE HEADER — إصلاح الـ Avatar المضغوط
-============================================ */
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px 18px;
+/* ============ ADMIN HEADER CARD ============ */
+.admin-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 16px;
   background: #fff;
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-xl);
   position: relative;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(14px);
-  animation: fadeUp 0.5s ease 0.15s forwards;
-  min-height: 104px;
+  opacity: 0; transform: translateY(14px);
+  animation: fadeUp 0.5s ease 0.1s forwards;
+  min-height: 96px;
 }
 
-.profile-header::before {
+.admin-header::before {
   content: '';
   position: absolute;
   top: 0; left: 0;
@@ -210,111 +205,81 @@ html[lang="ar"] .page-title-mini { font-family: var(--f-ar); font-size: 14.5px; 
   background: var(--g-brand);
 }
 
-.avatar {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;     /* ✅ يمنع الضغط */
-  min-height: 64px;    /* ✅ */
-  aspect-ratio: 1 / 1; /* ✅ دايرة دائمًا */
+.admin-avatar {
+  width: 62px; height: 62px;
+  min-width: 62px;
   border-radius: 50%;
   background: var(--g-brand);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   color: #fff;
-  font-size: 26px;
+  font-size: 1.7em;
   font-weight: 800;
-  letter-spacing: -1px;
   flex-shrink: 0;
   box-shadow: 0 8px 20px rgba(14, 148, 135, 0.3);
   position: relative;
   text-transform: uppercase;
-  padding: 0;
-  line-height: 1;
-}
-
-.avatar::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid rgba(14, 148, 135, 0.2);
-}
-
-.profile-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
   overflow: hidden;
 }
 
-.profile-name {
-  font-size: 19px;
+.admin-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.admin-info {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 3px;
+  min-width: 0;
+}
+
+.admin-name {
+  font-size: 1.2em;
   font-weight: 800;
   color: var(--c-navy);
   letter-spacing: -0.3px;
-  line-height: 1.2;
+  line-height: 1.15;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-html[lang="ar"] .profile-name { font-family: var(--f-ar); font-size: 18px; letter-spacing: 0; }
+html[lang="ar"] .admin-name { font-family: var(--f-ar); letter-spacing: 0; }
 
-.profile-meta {
-  font-size: 12px;
+.admin-email {
+  font-size: 0.82em;
   color: var(--c-slate);
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-html[lang="ar"] .profile-meta { font-family: var(--f-ar); font-size: 13px; }
+html[lang="ar"] .admin-email { font-family: var(--f-ar); }
 
-.profile-meta-divider {
-  width: 3px; height: 3px;
-  border-radius: 50%;
-  background: var(--c-border);
-  flex-shrink: 0;
-}
-
-/* SECTIONS */
+/* ============ SECTIONS ============ */
 .section {
   opacity: 0; transform: translateY(14px);
   animation: fadeUp 0.5s ease forwards;
 }
 
-.section:nth-child(2) { animation-delay: 0.2s; }
-.section:nth-child(3) { animation-delay: 0.25s; }
-.section:nth-child(4) { animation-delay: 0.3s; }
-.section:nth-child(5) { animation-delay: 0.35s; }
-.section:nth-child(6) { animation-delay: 0.4s; }
-.section:nth-child(7) { animation-delay: 0.45s; }
-.section:nth-child(8) { animation-delay: 0.5s; }
+.section.s1 { animation-delay: 0.15s; }
+.section.s2 { animation-delay: 0.25s; }
+.section.s3 { animation-delay: 0.35s; }
+.section.s4 { animation-delay: 0.45s; }
 
 .section-title {
-  font-size: 12px;
+  font-size: 0.82em;
   font-weight: 700;
   color: var(--c-slate);
   letter-spacing: 0.6px;
   text-transform: uppercase;
   padding-inline-start: 6px;
   margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex; align-items: center; gap: 8px;
 }
 
 html[lang="ar"] .section-title {
   font-family: var(--f-ar);
   text-transform: none;
   letter-spacing: 0;
-  font-size: 13px;
+  font-size: 0.92em;
 }
 
 .section-title::before {
@@ -324,7 +289,9 @@ html[lang="ar"] .section-title {
   border-radius: var(--r-pill);
 }
 
-/* CARD GROUP */
+.section.s2 .section-title::before { background: var(--g-child); }
+
+/* ============ CARD GROUP ============ */
 .card-group {
   background: #fff;
   border: 1.5px solid var(--c-border);
@@ -339,9 +306,7 @@ html[lang="ar"] .section-title {
   position: relative;
 }
 
-.setting-row + .setting-row {
-  border-top: 1px solid var(--c-border);
-}
+.setting-row + .setting-row { border-top: 1px solid var(--c-border); }
 
 .setting-row.clickable { cursor: pointer; }
 .setting-row.clickable:hover { background: rgba(14, 148, 135, 0.03); }
@@ -349,8 +314,7 @@ html[lang="ar"] .section-title {
 
 .setting-icon {
   width: 34px; height: 34px;
-  min-width: 34px;    /* ✅ */
-  min-height: 34px;   /* ✅ */
+  min-width: 34px;
   border-radius: 10px;
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
@@ -359,17 +323,17 @@ html[lang="ar"] .section-title {
 }
 
 .setting-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
-.setting-icon.user::before       { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
-.setting-icon.globe::before      { background: linear-gradient(135deg, #3B82F6, #8B5CF6); }
-.setting-icon.bell::before       { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
-.setting-icon.calendar::before   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); }
-.setting-icon.clock::before      { background: linear-gradient(135deg, #2EC4B6, #0E9487); }
-.setting-icon.timer::before      { background: linear-gradient(135deg, #EC4899, #8B5CF6); }
-.setting-icon.refresh::before    { background: linear-gradient(135deg, #3B82F6, #2EC4B6); }
-.setting-icon.trash::before      { background: var(--g-danger); }
-.setting-icon.logout::before     { background: linear-gradient(135deg, #EF4444, #F87171); }
-.setting-icon.voice::before      { background: linear-gradient(135deg, #8B5CF6, #EC4899); }
-.setting-icon.font::before       { background: linear-gradient(135deg, #3B82F6, #2EC4B6); }
+.setting-icon.user::before     { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
+.setting-icon.email::before    { background: linear-gradient(135deg, #3B82F6, #8B5CF6); }
+.setting-icon.cake::before     { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+.setting-icon.globe::before    { background: linear-gradient(135deg, #3B82F6, #2EC4B6); }
+.setting-icon.voice::before    { background: linear-gradient(135deg, #8B5CF6, #EC4899); }
+.setting-icon.font::before     { background: linear-gradient(135deg, #0E9487, #3B82F6); }
+.setting-icon.bell::before     { background: linear-gradient(135deg, #F59E0B, #EF4444); }
+.setting-icon.trash::before    { background: var(--g-danger); }
+.setting-icon.logout::before   { background: linear-gradient(135deg, #EF4444, #F87171); }
+.setting-icon.add::before      { background: var(--g-child); }
+.setting-icon.edit::before     { background: linear-gradient(135deg, #3B82F6, #0E9487); }
 
 .setting-icon svg {
   width: 16px; height: 16px;
@@ -385,49 +349,155 @@ html[lang="ar"] .section-title {
 }
 
 .setting-label {
-  font-size: 13px;
+  font-size: 0.92em;
   font-weight: 700;
   color: var(--c-navy);
   letter-spacing: 0.1px;
   line-height: 1.2;
 }
 
-html[lang="ar"] .setting-label { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
+html[lang="ar"] .setting-label { font-family: var(--f-ar); letter-spacing: 0; }
 
 .setting-value {
-  font-size: 11.5px;
+  font-size: 0.82em;
   color: var(--c-slate);
   font-weight: 500;
-  letter-spacing: 0.1px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-html[lang="ar"] .setting-value { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
+html[lang="ar"] .setting-value { font-family: var(--f-ar); }
 
-.setting-value.primary {
-  color: var(--c-primary);
-  font-weight: 700;
-}
+.setting-value.primary { color: var(--c-primary); font-weight: 700; }
 
-/* Arrow */
 .setting-arrow {
   width: 16px; height: 16px;
-  stroke: var(--c-slate);
-  stroke-width: 2.4;
-  fill: none;
-  flex-shrink: 0;
-  opacity: 0.6;
+  stroke: var(--c-slate); stroke-width: 2.4; fill: none;
+  flex-shrink: 0; opacity: 0.6;
 }
 
 html[dir="rtl"] .setting-arrow { transform: scaleX(-1); }
 
-/* TOGGLE SWITCH */
+/* ============ PERSON ROW ============ */
+.person-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  transition: background 0.2s ease;
+}
+
+.person-row + .person-row { border-top: 1px solid var(--c-border); }
+
+.person-avatar {
+  width: 44px; height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: var(--g-child);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 1.15em;
+  font-weight: 800;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.28);
+}
+
+.person-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.person-info {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 0;
+}
+
+.person-name {
+  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[lang="ar"] .person-name { font-family: var(--f-ar); letter-spacing: 0; }
+
+.person-meta {
+  font-size: 0.78em;
+  color: var(--c-slate);
+  font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+}
+
+html[lang="ar"] .person-meta { font-family: var(--f-ar); }
+
+.person-meta-divider {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--c-border);
+}
+
+.person-actions {
+  display: flex; gap: 6px;
+  flex-shrink: 0;
+}
+
+.person-action-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(14, 148, 135, 0.08);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.person-action-btn:hover { transform: scale(1.05); }
+.person-action-btn:active { transform: scale(0.94); }
+
+.person-action-btn.edit { background: rgba(14, 148, 135, 0.08); }
+.person-action-btn.edit:hover { background: rgba(14, 148, 135, 0.15); }
+.person-action-btn.edit svg { stroke: var(--c-primary); }
+
+.person-action-btn.delete { background: rgba(239, 68, 68, 0.08); }
+.person-action-btn.delete:hover { background: rgba(239, 68, 68, 0.15); }
+.person-action-btn.delete svg { stroke: var(--c-error); }
+
+.person-action-btn svg {
+  width: 15px; height: 15px;
+  stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Add person button (inside group) */
+.add-person-row {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px;
+  border-top: 1px solid var(--c-border);
+  background: rgba(139, 92, 246, 0.03);
+  font-size: 0.88em;
+  font-weight: 700;
+  color: var(--c-purple);
+  transition: all 0.2s ease;
+  width: 100%;
+  cursor: pointer;
+}
+
+.add-person-row:hover { background: rgba(139, 92, 246, 0.08); }
+.add-person-row:active { transform: scale(0.99); }
+
+.add-person-row svg {
+  width: 16px; height: 16px;
+  stroke: currentColor; stroke-width: 2.5; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+html[lang="ar"] .add-person-row { font-family: var(--f-ar); }
+
+/* ============ TOGGLE SWITCH ============ */
 .toggle {
   position: relative;
   width: 44px; height: 26px;
-  min-width: 44px;   /* ✅ */
+  min-width: 44px;
   border-radius: var(--r-pill);
   background: rgba(14, 148, 135, 0.15);
   transition: background 0.3s ease;
@@ -440,8 +510,7 @@ html[dir="rtl"] .setting-arrow { transform: scaleX(-1); }
   position: absolute;
   top: 3px;
   left: 3px;
-  width: 20px;
-  height: 20px;
+  width: 20px; height: 20px;
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
@@ -452,10 +521,10 @@ html[dir="rtl"] .setting-arrow { transform: scaleX(-1); }
 .toggle.on::after { transform: translateX(18px); }
 html[dir="rtl"] .toggle.on::after { transform: translateX(-18px); }
 
-/* LANGUAGE PILLS */
+/* ============ LANG PILLS ============ */
 .lang-pills {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   background: rgba(14, 148, 135, 0.08);
   border-radius: var(--r-pill);
   padding: 3px;
@@ -464,7 +533,7 @@ html[dir="rtl"] .toggle.on::after { transform: translateX(-18px); }
 
 .lang-pill {
   padding: 5px 12px;
-  font-size: 11px;
+  font-size: 0.78em;
   font-weight: 700;
   color: var(--c-slate);
   border-radius: var(--r-pill);
@@ -485,7 +554,7 @@ html[dir="rtl"] .toggle.on::after { transform: translateX(-18px); }
 /* Font size pills */
 .font-pills {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   background: rgba(14, 148, 135, 0.08);
   border-radius: var(--r-pill);
   padding: 3px;
@@ -503,9 +572,9 @@ html[dir="rtl"] .toggle.on::after { transform: translateX(-18px); }
   line-height: 1;
 }
 
-.font-pill[data-size="small"]  { font-size: 10px; }
-.font-pill[data-size="medium"] { font-size: 13px; }
-.font-pill[data-size="large"]  { font-size: 16px; }
+.font-pill[data-size="small"]  { font-size: 0.72em; }
+.font-pill[data-size="medium"] { font-size: 0.92em; }
+.font-pill[data-size="large"]  { font-size: 1.12em; }
 
 .font-pill.active {
   background: #fff;
@@ -515,32 +584,26 @@ html[dir="rtl"] .toggle.on::after { transform: translateX(-18px); }
 
 .font-pill:hover:not(.active) { color: var(--c-primary); }
 
-/* Days chips */
-.days-chips {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  max-width: 180px;
-}
-
-.day-chip-mini {
-  padding: 3px 7px;
-  background: rgba(14, 148, 135, 0.1);
-  color: var(--c-primary);
-  font-size: 9.5px;
-  font-weight: 700;
-  border-radius: var(--r-pill);
-  letter-spacing: 0.2px;
-}
-
-html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
-
-/* DANGER ZONE */
-.danger-zone .setting-row { background: rgba(239, 68, 68, 0.03); }
+/* ============ DANGER ZONE ============ */
+.danger-zone .setting-row { background: rgba(239, 68, 68, 0.02); }
 .danger-zone .setting-label { color: var(--c-error); }
 
-/* MODAL */
+/* ============ EMPTY STATE ============ */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.empty-state-icon { font-size: 1.8em; opacity: 0.6; }
+.empty-state-text {
+  font-size: 0.82em;
+  color: var(--c-slate);
+  line-height: 1.4;
+}
+html[lang="ar"] .empty-state-text { font-family: var(--f-ar); }
+
+/* ============ MODAL ============ */
 .modal-overlay {
   position: absolute;
   inset: 0;
@@ -548,11 +611,10 @@ html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   display: none;
-  align-items: center;
-  justify-content: center;
+  align-items: center; justify-content: center;
   z-index: 200;
   padding: 30px;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.25s ease;
 }
 
 .modal-overlay.show { display: flex; }
@@ -562,30 +624,31 @@ html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
   background: #fff;
   border-radius: var(--r-xl);
   padding: 24px 22px 20px;
-  max-width: 300px;
+  max-width: 320px;
   width: 100%;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   flex-direction: column;
   gap: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes modalPop {
   0%   { transform: scale(0.85); opacity: 0; }
-  60%  { transform: scale(1.05); opacity: 1; }
+  60%  { transform: scale(1.03); opacity: 1; }
   100% { transform: scale(1); }
 }
 
 .modal-icon {
   width: 56px; height: 56px;
   border-radius: 50%;
-  background: var(--g-danger);
   display: inline-flex; align-items: center; justify-content: center;
   margin: 0 auto;
-  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
+  flex-shrink: 0;
 }
+
+.modal-icon.danger { background: var(--g-danger); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35); }
+.modal-icon.brand  { background: var(--g-brand); box-shadow: 0 8px 20px rgba(14, 148, 135, 0.35); }
 
 .modal-icon svg {
   width: 26px; height: 26px;
@@ -594,60 +657,94 @@ html[lang="ar"] .day-chip-mini { font-family: var(--f-ar); font-size: 10.5px; }
 }
 
 .modal-title {
-  font-size: 18px;
+  font-size: 1.15em;
   font-weight: 800;
   color: var(--c-navy);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
+  text-align: center;
+  line-height: 1.25;
 }
 
-html[lang="ar"] .modal-title { font-family: var(--f-ar); font-size: 17px; letter-spacing: 0; }
+html[lang="ar"] .modal-title { font-family: var(--f-ar); letter-spacing: 0; }
 
 .modal-text {
-  font-size: 12.5px;
+  font-size: 0.85em;
   color: var(--c-slate);
   line-height: 1.55;
   font-weight: 500;
+  text-align: center;
 }
 
-html[lang="ar"] .modal-text { font-family: var(--f-ar); font-size: 13.5px; }
+html[lang="ar"] .modal-text { font-family: var(--f-ar); }
+
+.modal-input-wrap {
+  display: flex; align-items: center;
+  background: #F8FAFC;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.modal-input-wrap:focus-within {
+  border-color: var(--c-primary);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(14, 148, 135, 0.12);
+}
+
+.modal-input {
+  flex: 1;
+  padding: 13px 14px;
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--c-navy);
+  border: none; outline: none;
+  background: transparent;
+  letter-spacing: 0.1px;
+}
+
+.modal-input::placeholder { color: #B0B8C1; font-weight: 400; }
+html[lang="ar"] .modal-input { font-family: var(--f-ar); }
 
 .modal-actions {
-  display: flex;
-  gap: 8px;
+  display: flex; gap: 8px;
   margin-top: 4px;
 }
 
 .modal-btn {
   flex: 1;
   padding: 12px;
-  font-size: 13px;
+  font-size: 0.9em;
   font-weight: 700;
   border-radius: var(--r-md);
   transition: all 0.2s ease;
   letter-spacing: 0.2px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
 }
 
 .modal-btn.cancel {
   background: rgba(14, 148, 135, 0.08);
   color: var(--c-navy);
 }
-
 .modal-btn.cancel:hover { background: rgba(14, 148, 135, 0.15); }
 
 .modal-btn.confirm {
-  background: var(--g-danger);
+  background: var(--g-brand);
   color: #fff;
+  box-shadow: 0 6px 16px rgba(14, 148, 135, 0.35);
+}
+.modal-btn.confirm:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(14, 148, 135, 0.45); }
+
+.modal-btn.confirm.danger {
+  background: var(--g-danger);
   box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
 }
+.modal-btn.confirm.danger:hover { box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45); }
 
-.modal-btn.confirm:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
-}
+.modal-btn:active { transform: scale(0.97); }
+html[lang="ar"] .modal-btn { font-family: var(--f-ar); }
 
-html[lang="ar"] .modal-btn { font-family: var(--f-ar); font-size: 14px; }
-
-/* TOAST */
+/* ============ TOAST ============ */
 .toast {
   position: absolute;
   bottom: 100px;
@@ -657,7 +754,7 @@ html[lang="ar"] .modal-btn { font-family: var(--f-ar); font-size: 14px; }
   color: #fff;
   padding: 12px 20px;
   border-radius: var(--r-pill);
-  font-size: 12.5px;
+  font-size: 0.88em;
   font-weight: 600;
   letter-spacing: 0.2px;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
@@ -666,15 +763,21 @@ html[lang="ar"] .modal-btn { font-family: var(--f-ar); font-size: 14px; }
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
   white-space: nowrap;
+  display: flex; align-items: center; gap: 8px;
 }
 
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.toast svg {
+  width: 14px; height: 14px;
+  stroke: var(--c-success); stroke-width: 3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
 }
 
-html[lang="ar"] .toast { font-family: var(--f-ar); font-size: 13.5px; }
+html[lang="ar"] .toast { font-family: var(--f-ar); }
 
+/* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -699,322 +802,22 @@ html[lang="ar"] .toast { font-family: var(--f-ar); font-size: 13.5px; }
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
         </button>
-        <div class="page-title-mini" id="pageTitleMini">Settings</div>
+        <div class="page-title-mini" id="pageTitle">Settings</div>
       </div>
 
       <!-- Content -->
-      <div class="content">
+      <div class="content" id="mainContent"></div>
 
-        <!-- Profile Header -->
-        <div class="profile-header">
-          <div class="avatar" id="avatar">U</div>
-          <div class="profile-info">
-            <div class="profile-name" id="profileName">User</div>
-            <div class="profile-meta" id="profileMeta">
-              <span id="metaAge">24 years</span>
-              <div class="profile-meta-divider"></div>
-              <span id="metaAccount">Adult</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Profile Section -->
-        <div class="section">
-          <div class="section-title" id="titleProfile">Profile</div>
-          <div class="card-group">
-            <div class="setting-row clickable" id="editNameRow">
-              <div class="setting-icon user">
-                <svg viewBox="0 0 24 24">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelName">Name</div>
-                <div class="setting-value" id="valueName">User</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-
-            <div class="setting-row clickable" id="editAgeRow">
-              <div class="setting-icon user">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelAge">Age</div>
-                <div class="setting-value" id="valueAge">24</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Language Section -->
-        <div class="section">
-          <div class="section-title" id="titleLanguage">Language</div>
-          <div class="card-group">
-            <div class="setting-row">
-              <div class="setting-icon globe">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="2" y1="12" x2="22" y2="12"></line>
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelLanguage">App Language</div>
-                <div class="setting-value" id="valueLanguage">English</div>
-              </div>
-              <div class="lang-pills">
-                <button class="lang-pill active" data-lang="en" id="langEn">EN</button>
-                <button class="lang-pill" data-lang="ar" id="langAr">ع</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Voice & Accessibility Section -->
-        <div class="section">
-          <div class="section-title" id="titleAccessibility">Voice &amp; Accessibility</div>
-          <div class="card-group">
-
-            <div class="setting-row">
-              <div class="setting-icon voice">
-                <svg viewBox="0 0 24 24">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                  <line x1="12" y1="19" x2="12" y2="23"></line>
-                  <line x1="8" y1="23" x2="16" y2="23"></line>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelVoiceMode">Voice Mode</div>
-                <div class="setting-value" id="valueVoiceMode">Read Personal Memory aloud</div>
-              </div>
-              <div class="toggle" data-toggle="voice" id="toggleVoice"></div>
-            </div>
-
-            <div class="setting-row">
-              <div class="setting-icon font">
-                <svg viewBox="0 0 24 24">
-                  <polyline points="4 7 4 4 20 4 20 7"></polyline>
-                  <line x1="9" y1="20" x2="15" y2="20"></line>
-                  <line x1="12" y1="4" x2="12" y2="20"></line>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelFontSize">Font Size</div>
-                <div class="setting-value" id="valueFontSize">Adjust text size</div>
-              </div>
-              <div class="font-pills">
-                <button class="font-pill" data-size="small" id="sizeSmall">A</button>
-                <button class="font-pill active" data-size="medium" id="sizeMedium">A</button>
-                <button class="font-pill" data-size="large" id="sizeLarge">A</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Notifications Section -->
-        <div class="section">
-          <div class="section-title" id="titleNotifications">Notifications</div>
-          <div class="card-group">
-            <div class="setting-row">
-              <div class="setting-icon bell">
-                <svg viewBox="0 0 24 24">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelDailyReminder">Daily Reminder</div>
-                <div class="setting-value" id="valueDailyReminder">Get notified to train</div>
-              </div>
-              <div class="toggle on" data-toggle="daily" id="toggleDaily"></div>
-            </div>
-
-            <div class="setting-row">
-              <div class="setting-icon bell">
-                <svg viewBox="0 0 24 24">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelWeeklyReport">Weekly Report</div>
-                <div class="setting-value" id="valueWeeklyReport">Summary every week</div>
-              </div>
-              <div class="toggle on" data-toggle="weekly" id="toggleWeekly"></div>
-            </div>
-
-            <div class="setting-row">
-              <div class="setting-icon bell">
-                <svg viewBox="0 0 24 24">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelStreakAlert">Streak Alerts</div>
-                <div class="setting-value" id="valueStreakAlert">Keep your streak alive</div>
-              </div>
-              <div class="toggle" data-toggle="streak" id="toggleStreak"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Training Preferences -->
-        <div class="section">
-          <div class="section-title" id="titleTraining">Training Preferences</div>
-          <div class="card-group">
-            <div class="setting-row clickable" id="editDaysRow">
-              <div class="setting-icon calendar">
-                <svg viewBox="0 0 24 24">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelDays">Training Days</div>
-                <div class="setting-value" id="valueDays">Not set</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-
-            <div class="setting-row clickable" id="editTimeRow">
-              <div class="setting-icon clock">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelPreferredTime">Preferred Time</div>
-                <div class="setting-value" id="valuePreferredTime">Not set</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-
-            <div class="setting-row clickable" id="editDurationRow">
-              <div class="setting-icon timer">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelDuration">Daily Duration</div>
-                <div class="setting-value" id="valueDuration">Not set</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Actions -->
-        <div class="section">
-          <div class="section-title" id="titleActions">Actions</div>
-          <div class="card-group">
-            <div class="setting-row clickable" id="retakeAssessmentRow">
-              <div class="setting-icon refresh">
-                <svg viewBox="0 0 24 24">
-                  <path d="M23 4v6h-6"></path>
-                  <path d="M1 20v-6h6"></path>
-                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
-                  <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelRetake">Re-take Assessment</div>
-                <div class="setting-value" id="valueRetake">Get a fresh cognitive profile</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-
-            <div class="setting-row clickable" id="resetProgressRow">
-              <div class="setting-icon trash">
-                <svg viewBox="0 0 24 24">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>
-                  <path d="M10 11v6"></path>
-                  <path d="M14 11v6"></path>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelReset">Reset Progress</div>
-                <div class="setting-value" id="valueReset">Start fresh (keeps account)</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Danger Zone -->
-        <div class="section danger-zone">
-          <div class="section-title" id="titleAccount">Account</div>
-          <div class="card-group">
-            <div class="setting-row clickable" id="logoutRow">
-              <div class="setting-icon logout">
-                <svg viewBox="0 0 24 24">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                  <polyline points="16 17 21 12 16 7"></polyline>
-                  <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelLogout">Log Out</div>
-                <div class="setting-value" id="valueLogout">Sign out of your account</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-
-            <div class="setting-row clickable" id="deleteAccountRow">
-              <div class="setting-icon trash">
-                <svg viewBox="0 0 24 24">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>
-                  <path d="M10 11v6"></path>
-                  <path d="M14 11v6"></path>
-                </svg>
-              </div>
-              <div class="setting-body">
-                <div class="setting-label" id="labelDelete">Delete Account</div>
-                <div class="setting-value" id="valueDelete">Permanently remove all data</div>
-              </div>
-              <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Confirmation Modal -->
+      <!-- Modal -->
       <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-          <div class="modal-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-              <line x1="12" y1="9" x2="12" y2="13"></line>
-              <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-          </div>
-          <div class="modal-title" id="modalTitle">Are you sure?</div>
-          <div class="modal-text" id="modalText">This action cannot be undone.</div>
-          <div class="modal-actions">
-            <button class="modal-btn cancel" id="modalCancel">Cancel</button>
-            <button class="modal-btn confirm" id="modalConfirm">Confirm</button>
-          </div>
-        </div>
+        <div class="modal" id="modalBox"></div>
       </div>
 
       <!-- Toast -->
-      <div class="toast" id="toast">Saved successfully</div>
+      <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span id="toastText">Saved</span>
+      </div>
 
     </div>
   </div>
@@ -1026,180 +829,192 @@ html[lang="ar"] .toast { font-family: var(--f-ar); font-size: 13.5px; }
 ============================================ */
 const I18N = {
   en: {
-    pageTitleMini: 'Settings',
-    titleProfile: 'Profile',
-    titleLanguage: 'Language',
-    titleAccessibility: 'Voice & Accessibility',
-    titleNotifications: 'Notifications',
-    titleTraining: 'Training Preferences',
-    titleActions: 'Actions',
-    titleAccount: 'Account',
+    pageTitle: 'Settings',
 
+    // Section titles
+    sectionAdmin: 'Admin Profile',
+    sectionPeople: 'People I Care For',
+    sectionApp: 'App Settings',
+    sectionAccount: 'Account',
+
+    // Admin rows
     labelName: 'Name',
+    labelEmail: 'Email',
     labelAge: 'Age',
-    labelLanguage: 'App Language',
-    labelVoiceMode: 'Voice Mode',
-    labelFontSize: 'Font Size',
-    labelDailyReminder: 'Daily Reminder',
-    labelWeeklyReport: 'Weekly Report',
-    labelStreakAlert: 'Streak Alerts',
-    labelDays: 'Training Days',
-    labelPreferredTime: 'Preferred Time',
-    labelDuration: 'Daily Duration',
-    labelRetake: 'Re-take Assessment',
-    labelReset: 'Reset Progress',
-    labelLogout: 'Log Out',
-    labelDelete: 'Delete Account',
-
-    valueVoiceMode: 'Read Personal Memory aloud',
-    valueFontSize: 'Adjust text size',
-    valueDailyReminder: 'Get notified to train',
-    valueWeeklyReport: 'Summary every week',
-    valueStreakAlert: 'Keep your streak alive',
-    valueRetake: 'Get a fresh cognitive profile',
-    valueReset: 'Start fresh (keeps account)',
-    valueLogout: 'Sign out of your account',
-    valueDelete: 'Permanently remove all data',
-
-    langEnglish: 'English',
-    langArabic: 'Arabic',
-
-    years: 'years',
-    accountAdult: 'Adult',
-    accountChild: 'Child',
-
     notSet: 'Not set',
-    minPerDay: 'min / day',
+    years: 'years',
 
-    timeMorning: 'Morning',
-    timeAfternoon: 'Afternoon',
-    timeEvening: 'Evening',
+    // People section
+    noPeople: 'No people added yet',
+    noPeopleHint: 'Add someone you care for to get started.',
+    addPersonBtn: 'Add Another Person',
 
-    dayNames: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    // App rows
+    labelLanguage: 'App Language',
+    labelVoice: 'Voice Mode',
+    labelVoiceValue: 'Read Personal Memory aloud',
+    labelFont: 'Font Size',
+    labelFontValue: 'Adjust text size',
+    labelNotif: 'Notifications',
+    labelNotifValue: 'Daily reminders and reports',
 
-    logoutTitle: 'Log out?',
-    logoutText: 'You can sign back in anytime.',
-    logoutConfirm: 'Log Out',
+    // Account
+    labelLogout: 'Log Out',
+    labelLogoutValue: 'Sign out of your account',
+    labelDelete: 'Delete Account',
+    labelDeleteValue: 'Permanently remove all data',
 
-    resetTitle: 'Reset progress?',
-    resetText: 'All your training data will be cleared. Your account stays active.',
-    resetConfirm: 'Reset',
-
-    deleteTitle: 'Delete account?',
-    deleteText: 'This will permanently delete your account and all data. This cannot be undone.',
-    deleteConfirm: 'Delete',
-
-    retakeTitle: 'Re-take assessment?',
-    retakeText: 'You will go through the cognitive assessment again and get a new profile.',
-    retakeConfirm: 'Start',
-
+    // Modals
+    editNameTitle: 'Edit Name',
+    editNameText: 'Enter your new name.',
+    editEmailTitle: 'Edit Email',
+    editEmailText: 'Enter your new email.',
+    editAgeTitle: 'Edit Age',
+    editAgeText: 'Enter your age (6-120).',
+    save: 'Save',
     cancel: 'Cancel',
-    saved: 'Saved successfully',
-    languageChanged: 'Language changed'
+
+    confirmDeletePersonTitle: 'Delete this person?',
+    confirmDeletePersonText: 'All their data, memory bank, and training plan will be permanently removed.',
+    confirmDeletePersonConfirm: 'Delete',
+
+    confirmLogoutTitle: 'Log out?',
+    confirmLogoutText: 'You can sign back in anytime.',
+    confirmLogoutConfirm: 'Log Out',
+
+    confirmDeleteAccountTitle: 'Delete account?',
+    confirmDeleteAccountText: 'This will permanently delete your account and all data. This cannot be undone.',
+    confirmDeleteAccountConfirm: 'Delete',
+
+    // Toast
+    saved: 'Saved',
+    languageChanged: 'Language changed',
+    personDeleted: 'Person deleted',
+    invalidEmail: 'Invalid email',
+    invalidAge: 'Age must be 6-120'
   },
   ar: {
-    pageTitleMini: 'الإعدادات',
-    titleProfile: 'الملف الشخصي',
-    titleLanguage: 'اللغة',
-    titleAccessibility: 'الصوت وإمكانية الوصول',
-    titleNotifications: 'الإشعارات',
-    titleTraining: 'تفضيلات التدريب',
-    titleActions: 'إجراءات',
-    titleAccount: 'الحساب',
+    pageTitle: 'الإعدادات',
+
+    sectionAdmin: 'بيانات المسؤول',
+    sectionPeople: 'الأشخاص الذين أعتني بهم',
+    sectionApp: 'إعدادات التطبيق',
+    sectionAccount: 'الحساب',
 
     labelName: 'الاسم',
+    labelEmail: 'البريد الإلكتروني',
     labelAge: 'العمر',
-    labelLanguage: 'لغة التطبيق',
-    labelVoiceMode: 'وضع الصوت',
-    labelFontSize: 'حجم الخط',
-    labelDailyReminder: 'تنبيه يومي',
-    labelWeeklyReport: 'تقرير أسبوعي',
-    labelStreakAlert: 'تنبيه السلسلة',
-    labelDays: 'أيام التدريب',
-    labelPreferredTime: 'الوقت المفضل',
-    labelDuration: 'المدة اليومية',
-    labelRetake: 'إعادة التقييم',
-    labelReset: 'إعادة تعيين التقدم',
-    labelLogout: 'تسجيل الخروج',
-    labelDelete: 'حذف الحساب',
-
-    valueVoiceMode: 'قراءة الذاكرة الشخصية بصوت',
-    valueFontSize: 'ضبط حجم النص',
-    valueDailyReminder: 'تذكير للتدريب',
-    valueWeeklyReport: 'ملخص كل أسبوع',
-    valueStreakAlert: 'حافظ على سلسلتك',
-    valueRetake: 'احصل على ملف ذهني جديد',
-    valueReset: 'ابدأ من جديد (يبقي الحساب)',
-    valueLogout: 'تسجيل الخروج من حسابك',
-    valueDelete: 'حذف كل البيانات نهائيًا',
-
-    langEnglish: 'الإنجليزية',
-    langArabic: 'العربية',
-
-    years: 'سنة',
-    accountAdult: 'بالغ',
-    accountChild: 'طفل',
-
     notSet: 'غير محدد',
-    minPerDay: 'دقيقة / يوم',
+    years: 'سنة',
 
-    timeMorning: 'صباحًا',
-    timeAfternoon: 'بعد الظهر',
-    timeEvening: 'مساءً',
+    noPeople: 'لم تتم إضافة أشخاص بعد',
+    noPeopleHint: 'أضف شخصًا تعتني به للبدء.',
+    addPersonBtn: 'إضافة شخص آخر',
 
-    dayNames: ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'],
+    labelLanguage: 'لغة التطبيق',
+    labelVoice: 'وضع الصوت',
+    labelVoiceValue: 'قراءة الذاكرة الشخصية بصوت',
+    labelFont: 'حجم الخط',
+    labelFontValue: 'ضبط حجم النص',
+    labelNotif: 'الإشعارات',
+    labelNotifValue: 'تذكيرات وتقارير يومية',
 
-    logoutTitle: 'تسجيل الخروج؟',
-    logoutText: 'يمكنك الدخول مرة أخرى في أي وقت.',
-    logoutConfirm: 'خروج',
+    labelLogout: 'تسجيل الخروج',
+    labelLogoutValue: 'تسجيل الخروج من حسابك',
+    labelDelete: 'حذف الحساب',
+    labelDeleteValue: 'حذف كل البيانات نهائيًا',
 
-    resetTitle: 'إعادة تعيين التقدم؟',
-    resetText: 'سيتم حذف كل بيانات التدريب. حسابك سيبقى مفعّلًا.',
-    resetConfirm: 'إعادة',
-
-    deleteTitle: 'حذف الحساب؟',
-    deleteText: 'سيتم حذف حسابك وكل بياناتك نهائيًا. لا يمكن التراجع.',
-    deleteConfirm: 'حذف',
-
-    retakeTitle: 'إعادة التقييم؟',
-    retakeText: 'ستمر بالتقييم الذهني مرة أخرى وستحصل على ملف جديد.',
-    retakeConfirm: 'ابدأ',
-
+    editNameTitle: 'تعديل الاسم',
+    editNameText: 'أدخل اسمك الجديد.',
+    editEmailTitle: 'تعديل البريد',
+    editEmailText: 'أدخل بريدك الإلكتروني الجديد.',
+    editAgeTitle: 'تعديل العمر',
+    editAgeText: 'أدخل عمرك (6-120).',
+    save: 'حفظ',
     cancel: 'إلغاء',
+
+    confirmDeletePersonTitle: 'حذف هذا الشخص؟',
+    confirmDeletePersonText: 'سيتم حذف كل بياناتهم وبنك ذكرياتهم وخطة تدريبهم نهائيًا.',
+    confirmDeletePersonConfirm: 'حذف',
+
+    confirmLogoutTitle: 'تسجيل الخروج؟',
+    confirmLogoutText: 'يمكنك الدخول مرة أخرى في أي وقت.',
+    confirmLogoutConfirm: 'خروج',
+
+    confirmDeleteAccountTitle: 'حذف الحساب؟',
+    confirmDeleteAccountText: 'سيتم حذف حسابك وكل بياناتك نهائيًا. لا يمكن التراجع.',
+    confirmDeleteAccountConfirm: 'حذف',
+
     saved: 'تم الحفظ',
-    languageChanged: 'تم تغيير اللغة'
+    languageChanged: 'تم تغيير اللغة',
+    personDeleted: 'تم حذف الشخص',
+    invalidEmail: 'بريد إلكتروني غير صحيح',
+    invalidAge: 'العمر يجب أن يكون بين 6 و 120'
   }
 };
 
 /* ============================================
-   STATE
+   HELPERS
+============================================ */
+function getPersons() {
+  try {
+    const arr = JSON.parse(localStorage.getItem('omega_care_persons') || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) { return []; }
+}
+
+function savePersons(persons) {
+  localStorage.setItem('omega_care_persons', JSON.stringify(persons));
+}
+
+function getNotifications() {
+  try {
+    return JSON.parse(localStorage.getItem('omega_notifications') || '{"daily":true,"weekly":true,"streak":false}');
+  } catch (e) {
+    return { daily: true, weekly: true, streak: false };
+  }
+}
+
+/* ============================================
+   LANGUAGE
 ============================================ */
 const STORAGE_KEY = 'omega_lang';
 let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
 const htmlEl = document.documentElement;
 
 /* ============================================
-   LOAD USER DATA
+   STATE
 ============================================ */
-function loadUserData() {
-  let notifications;
-  try {
-    notifications = JSON.parse(localStorage.getItem('omega_notifications') || '{"daily":true,"weekly":true,"streak":false}');
-  } catch (e) {
-    notifications = { daily: true, weekly: true, streak: false };
+const state = {
+  accountType: 'myself',
+  admin: {
+    name: '',
+    email: '',
+    age: null
+  },
+  persons: [],
+  settings: {
+    voiceMode: false,
+    fontSize: 'medium',
+    notifications: { daily: true, weekly: true, streak: false }
   }
+};
 
-  return {
-    name: localStorage.getItem('omega_user_name') || 'User',
-    age: parseInt(localStorage.getItem('omega_age') || '24'),
-    accountType: localStorage.getItem('omega_account_type') || 'myself',
-    days: JSON.parse(localStorage.getItem('omega_days') || '[]'),
-    time: localStorage.getItem('omega_time') || '',
-    duration: parseInt(localStorage.getItem('omega_duration') || '0'),
-    notifications,
-    voiceMode: localStorage.getItem('omega_voice_mode') === 'true',
-    fontSize: localStorage.getItem('omega_font_size') || 'medium'
-  };
+/* ============================================
+   LOAD DATA
+============================================ */
+function loadData() {
+  state.accountType = localStorage.getItem('omega_account_type') || 'myself';
+  state.admin.name = localStorage.getItem('omega_user_name') || 'User';
+  state.admin.email = localStorage.getItem('omega_user_email') || '';
+  const ageStr = localStorage.getItem('omega_age') || localStorage.getItem('omega_user_age');
+  state.admin.age = ageStr ? parseInt(ageStr) : null;
+
+  state.persons = getPersons();
+
+  state.settings.voiceMode = localStorage.getItem('omega_voice_mode') === 'true';
+  state.settings.fontSize = localStorage.getItem('omega_font_size') || 'medium';
+  state.settings.notifications = getNotifications();
 }
 
 /* ============================================
@@ -1211,107 +1026,7 @@ function applyFontSize(size) {
 }
 
 /* ============================================
-   RENDER
-============================================ */
-function renderAll() {
-  const t = I18N[currentLang];
-  const user = loadUserData();
-
-  document.getElementById('pageTitleMini').textContent = t.pageTitleMini;
-
-  document.getElementById('avatar').textContent = user.name.charAt(0).toUpperCase();
-
-  document.getElementById('profileName').textContent = user.name;
-  document.getElementById('metaAge').textContent = user.age + ' ' + t.years;
-  document.getElementById('metaAccount').textContent =
-    user.accountType === 'child' ? t.accountChild : t.accountAdult;
-
-  document.getElementById('titleProfile').textContent = t.titleProfile;
-  document.getElementById('titleLanguage').textContent = t.titleLanguage;
-  document.getElementById('titleAccessibility').textContent = t.titleAccessibility;
-  document.getElementById('titleNotifications').textContent = t.titleNotifications;
-  document.getElementById('titleTraining').textContent = t.titleTraining;
-  document.getElementById('titleActions').textContent = t.titleActions;
-  document.getElementById('titleAccount').textContent = t.titleAccount;
-
-  document.getElementById('labelName').textContent = t.labelName;
-  document.getElementById('valueName').textContent = user.name;
-  document.getElementById('labelAge').textContent = t.labelAge;
-  document.getElementById('valueAge').textContent = user.age;
-
-  document.getElementById('labelLanguage').textContent = t.labelLanguage;
-  document.getElementById('valueLanguage').textContent =
-    currentLang === 'en' ? t.langEnglish : t.langArabic;
-  document.getElementById('langEn').classList.toggle('active', currentLang === 'en');
-  document.getElementById('langAr').classList.toggle('active', currentLang === 'ar');
-
-  // Voice & Accessibility
-  document.getElementById('labelVoiceMode').textContent = t.labelVoiceMode;
-  document.getElementById('valueVoiceMode').textContent = t.valueVoiceMode;
-  document.getElementById('labelFontSize').textContent = t.labelFontSize;
-  document.getElementById('valueFontSize').textContent = t.valueFontSize;
-
-  document.getElementById('toggleVoice').classList.toggle('on', user.voiceMode);
-
-  document.querySelectorAll('.font-pill').forEach(pill => {
-    pill.classList.toggle('active', pill.dataset.size === user.fontSize);
-  });
-
-  // Notifications
-  document.getElementById('labelDailyReminder').textContent = t.labelDailyReminder;
-  document.getElementById('valueDailyReminder').textContent = t.valueDailyReminder;
-  document.getElementById('labelWeeklyReport').textContent = t.labelWeeklyReport;
-  document.getElementById('valueWeeklyReport').textContent = t.valueWeeklyReport;
-  document.getElementById('labelStreakAlert').textContent = t.labelStreakAlert;
-  document.getElementById('valueStreakAlert').textContent = t.valueStreakAlert;
-
-  document.getElementById('toggleDaily').classList.toggle('on', user.notifications.daily);
-  document.getElementById('toggleWeekly').classList.toggle('on', user.notifications.weekly);
-  document.getElementById('toggleStreak').classList.toggle('on', user.notifications.streak);
-
-  // Training
-  document.getElementById('labelDays').textContent = t.labelDays;
-  document.getElementById('labelPreferredTime').textContent = t.labelPreferredTime;
-  document.getElementById('labelDuration').textContent = t.labelDuration;
-
-  const valueDaysEl = document.getElementById('valueDays');
-  if (user.days.length === 0) {
-    valueDaysEl.textContent = t.notSet;
-  } else {
-    valueDaysEl.textContent = user.days.map(d => {
-      const idx = ['sun','mon','tue','wed','thu','fri','sat'].indexOf(d);
-      return t.dayNames[idx] || d;
-    }).join(' · ');
-  }
-
-  const valueTimeEl = document.getElementById('valuePreferredTime');
-  if (!user.time) {
-    valueTimeEl.textContent = t.notSet;
-  } else {
-    const key = 'time' + user.time.charAt(0).toUpperCase() + user.time.slice(1);
-    valueTimeEl.textContent = t[key] || user.time;
-  }
-
-  const valueDurEl = document.getElementById('valueDuration');
-  if (!user.duration) {
-    valueDurEl.textContent = t.notSet;
-  } else {
-    valueDurEl.textContent = user.duration + ' ' + t.minPerDay;
-  }
-
-  // Actions
-  document.getElementById('labelRetake').textContent = t.labelRetake;
-  document.getElementById('valueRetake').textContent = t.valueRetake;
-  document.getElementById('labelReset').textContent = t.labelReset;
-  document.getElementById('valueReset').textContent = t.valueReset;
-  document.getElementById('labelLogout').textContent = t.labelLogout;
-  document.getElementById('valueLogout').textContent = t.valueLogout;
-  document.getElementById('labelDelete').textContent = t.labelDelete;
-  document.getElementById('valueDelete').textContent = t.valueDelete;
-}
-
-/* ============================================
-   LANGUAGE APPLY
+   APPLY LANGUAGE
 ============================================ */
 function applyLanguage(lang) {
   currentLang = lang;
@@ -1321,190 +1036,526 @@ function applyLanguage(lang) {
   renderAll();
 }
 
-document.querySelectorAll('.lang-pill').forEach(pill => {
-  pill.addEventListener('click', () => {
-    const lang = pill.dataset.lang;
-    if (lang === currentLang) return;
-    applyLanguage(lang);
-    showToast(I18N[lang].languageChanged);
-  });
-});
-
 /* ============================================
-   FONT SIZE PILLS
+   RENDER ALL
 ============================================ */
-document.querySelectorAll('.font-pill').forEach(pill => {
-  pill.addEventListener('click', () => {
-    const size = pill.dataset.size;
-    applyFontSize(size);
-    document.querySelectorAll('.font-pill').forEach(p => {
-      p.classList.toggle('active', p.dataset.size === size);
-    });
-    showToast(I18N[currentLang].saved);
-  });
-});
+function renderAll() {
+  const t = I18N[currentLang];
+  const content = document.getElementById('mainContent');
+  const isCaregiver = state.accountType === 'caregiver';
 
-/* ============================================
-   TOGGLES
-============================================ */
-document.querySelectorAll('.toggle').forEach(toggle => {
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('on');
-    const key = toggle.dataset.toggle;
-    const isOn = toggle.classList.contains('on');
+  document.getElementById('pageTitle').textContent = t.pageTitle;
 
-    if (key === 'voice') {
-      localStorage.setItem('omega_voice_mode', String(isOn));
+  let html = '';
+
+  // ============ ADMIN HEADER CARD ============
+  const adminInitial = (state.admin.name || 'U').charAt(0).toUpperCase();
+  const adminEmailText = state.admin.email || t.notSet;
+
+  html += `
+    <div class="admin-header">
+      <div class="admin-avatar">${adminInitial}</div>
+      <div class="admin-info">
+        <div class="admin-name">${state.admin.name}</div>
+        <div class="admin-email">${adminEmailText}</div>
+      </div>
+    </div>
+  `;
+
+  // ============ ADMIN PROFILE ============
+  html += `
+    <div class="section s1">
+      <div class="section-title">${t.sectionAdmin}</div>
+      <div class="card-group">
+        <div class="setting-row clickable" data-action="editName">
+          <div class="setting-icon user">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelName}</div>
+            <div class="setting-value">${state.admin.name}</div>
+          </div>
+          <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+
+        <div class="setting-row clickable" data-action="editEmail">
+          <div class="setting-icon email">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelEmail}</div>
+            <div class="setting-value">${adminEmailText}</div>
+          </div>
+          <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+
+        <div class="setting-row clickable" data-action="editAge">
+          <div class="setting-icon cake">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelAge}</div>
+            <div class="setting-value">${state.admin.age ? state.admin.age + ' ' + t.years : t.notSet}</div>
+          </div>
+          <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // ============ PEOPLE I CARE FOR (Caregiver only) ============
+  if (isCaregiver) {
+    html += `
+      <div class="section s2">
+        <div class="section-title">${t.sectionPeople}</div>
+        <div class="card-group" id="peopleGroup">
+    `;
+
+    if (state.persons.length === 0) {
+      html += `
+        <div class="empty-state">
+          <div class="empty-state-icon">👥</div>
+          <div class="empty-state-text">${t.noPeople}<br>${t.noPeopleHint}</div>
+        </div>
+      `;
     } else {
-      const user = loadUserData();
-      user.notifications[key] = isOn;
-      localStorage.setItem('omega_notifications', JSON.stringify(user.notifications));
+      state.persons.forEach(p => {
+        const initial = (p.name || '?').charAt(0).toUpperCase();
+        const avatarContent = p.photo
+          ? `<img src="${p.photo}" alt="">`
+          : initial;
+
+        const metaParts = [];
+        if (p.age) metaParts.push(p.age + ' ' + t.years);
+        if (p.relationship) metaParts.push(p.relationship);
+
+        html += `
+          <div class="person-row" data-person-id="${p.id}">
+            <div class="person-avatar">${avatarContent}</div>
+            <div class="person-info">
+              <div class="person-name">${p.name || '—'}</div>
+              <div class="person-meta">${metaParts.join(' · ')}</div>
+            </div>
+            <div class="person-actions">
+              <button class="person-action-btn edit" data-action="editPerson" data-person-id="${p.id}" aria-label="Edit">
+                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              </button>
+              <button class="person-action-btn delete" data-action="deletePerson" data-person-id="${p.id}" aria-label="Delete">
+                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      });
     }
 
-    showToast(I18N[currentLang].saved);
+    html += `
+        <button class="add-person-row" id="addPersonBtn">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>${t.addPersonBtn}</span>
+        </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ============ APP SETTINGS ============
+  html += `
+    <div class="section s3">
+      <div class="section-title">${t.sectionApp}</div>
+      <div class="card-group">
+
+        <div class="setting-row">
+          <div class="setting-icon globe">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelLanguage}</div>
+            <div class="setting-value">${currentLang === 'en' ? 'English' : 'العربية'}</div>
+          </div>
+          <div class="lang-pills">
+            <button class="lang-pill ${currentLang === 'en' ? 'active' : ''}" data-lang="en">EN</button>
+            <button class="lang-pill ${currentLang === 'ar' ? 'active' : ''}" data-lang="ar">ع</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-icon voice">
+            <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelVoice}</div>
+            <div class="setting-value">${t.labelVoiceValue}</div>
+          </div>
+          <div class="toggle ${state.settings.voiceMode ? 'on' : ''}" data-toggle="voice"></div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-icon font">
+            <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelFont}</div>
+            <div class="setting-value">${t.labelFontValue}</div>
+          </div>
+          <div class="font-pills">
+            <button class="font-pill ${state.settings.fontSize === 'small' ? 'active' : ''}" data-size="small">A</button>
+            <button class="font-pill ${state.settings.fontSize === 'medium' ? 'active' : ''}" data-size="medium">A</button>
+            <button class="font-pill ${state.settings.fontSize === 'large' ? 'active' : ''}" data-size="large">A</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-icon bell">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelNotif}</div>
+            <div class="setting-value">${t.labelNotifValue}</div>
+          </div>
+          <div class="toggle ${state.settings.notifications.daily ? 'on' : ''}" data-toggle="daily"></div>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  // ============ ACCOUNT ============
+  html += `
+    <div class="section s4 danger-zone">
+      <div class="section-title">${t.sectionAccount}</div>
+      <div class="card-group">
+        <div class="setting-row clickable" data-action="logout">
+          <div class="setting-icon logout">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelLogout}</div>
+            <div class="setting-value">${t.labelLogoutValue}</div>
+          </div>
+          <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+
+        <div class="setting-row clickable" data-action="deleteAccount">
+          <div class="setting-icon trash">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+          </div>
+          <div class="setting-body">
+            <div class="setting-label">${t.labelDelete}</div>
+            <div class="setting-value">${t.labelDeleteValue}</div>
+          </div>
+          <svg class="setting-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </div>
+    </div>
+  `;
+
+  content.innerHTML = html;
+
+  // Bind events
+  bindEvents();
+}
+
+/* ============================================
+   BIND EVENTS
+============================================ */
+function bindEvents() {
+  // Language pills
+  document.querySelectorAll('.lang-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const lang = pill.dataset.lang;
+      if (lang === currentLang) return;
+      applyLanguage(lang);
+      showToast(I18N[lang].languageChanged);
+    });
   });
-});
 
-/* ============================================
-   EDIT NAME
-============================================ */
-document.getElementById('editNameRow').addEventListener('click', () => {
-  const user = loadUserData();
-  const t = I18N[currentLang];
-  const newName = prompt(t.labelName + ':', user.name);
-  if (newName && newName.trim().length > 0) {
-    localStorage.setItem('omega_user_name', newName.trim());
-    renderAll();
-    showToast(t.saved);
+  // Font pills
+  document.querySelectorAll('.font-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const size = pill.dataset.size;
+      state.settings.fontSize = size;
+      applyFontSize(size);
+      document.querySelectorAll('.font-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.size === size);
+      });
+      showToast(I18N[currentLang].saved);
+    });
+  });
+
+  // Toggles
+  document.querySelectorAll('.toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('on');
+      const isOn = toggle.classList.contains('on');
+      const key = toggle.dataset.toggle;
+
+      if (key === 'voice') {
+        state.settings.voiceMode = isOn;
+        localStorage.setItem('omega_voice_mode', String(isOn));
+      } else {
+        state.settings.notifications[key] = isOn;
+        localStorage.setItem('omega_notifications', JSON.stringify(state.settings.notifications));
+      }
+      showToast(I18N[currentLang].saved);
+    });
+  });
+
+  // Setting rows with actions
+  document.querySelectorAll('.setting-row[data-action]').forEach(row => {
+    row.addEventListener('click', () => {
+      handleAction(row.dataset.action);
+    });
+  });
+
+  // Person edit/delete buttons
+  document.querySelectorAll('[data-action="editPerson"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      editPerson(btn.dataset.personId);
+    });
+  });
+
+  document.querySelectorAll('[data-action="deletePerson"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      confirmDeletePerson(btn.dataset.personId);
+    });
+  });
+
+  // Add person
+  const addBtn = document.getElementById('addPersonBtn');
+  if (addBtn) {
+    addBtn.addEventListener('click', () => {
+      localStorage.setItem('omega_add_care_person', 'true');
+      localStorage.setItem('omega_add_return', 'profile-settings');
+      window.location.href = 'care-profile-setup.html';
+    });
   }
-});
-
-/* ============================================
-   EDIT AGE
-============================================ */
-document.getElementById('editAgeRow').addEventListener('click', () => {
-  const user = loadUserData();
-  const t = I18N[currentLang];
-  const newAge = prompt(t.labelAge + ':', user.age);
-  const ageNum = parseInt(newAge);
-  if (!isNaN(ageNum) && ageNum >= 6 && ageNum <= 120) {
-    localStorage.setItem('omega_age', String(ageNum));
-    renderAll();
-    showToast(t.saved);
-  }
-});
-
-/* ============================================
-   EDIT TRAINING PREFERENCES
-============================================ */
-document.getElementById('editDaysRow').addEventListener('click', () => {
-  window.location.href = 'profile-setup.html';
-});
-document.getElementById('editTimeRow').addEventListener('click', () => {
-  window.location.href = 'profile-setup.html';
-});
-document.getElementById('editDurationRow').addEventListener('click', () => {
-  window.location.href = 'profile-setup.html';
-});
-
-/* ============================================
-   MODAL SYSTEM
-============================================ */
-const modalOverlay = document.getElementById('modalOverlay');
-const modalTitle = document.getElementById('modalTitle');
-const modalText = document.getElementById('modalText');
-const modalConfirm = document.getElementById('modalConfirm');
-
-let modalAction = null;
-
-function showModal(title, text, confirmText, action) {
-  modalTitle.textContent = title;
-  modalText.textContent = text;
-  modalConfirm.textContent = confirmText;
-  modalAction = action;
-  modalOverlay.classList.add('show');
 }
-
-function hideModal() {
-  modalOverlay.classList.remove('show');
-  modalAction = null;
-}
-
-document.getElementById('modalCancel').addEventListener('click', hideModal);
-modalOverlay.addEventListener('click', (e) => {
-  if (e.target === modalOverlay) hideModal();
-});
-
-modalConfirm.addEventListener('click', () => {
-  if (modalAction) modalAction();
-  hideModal();
-});
 
 /* ============================================
    ACTIONS
 ============================================ */
+function handleAction(action) {
+  switch (action) {
+    case 'editName': return editAdminField('name');
+    case 'editEmail': return editAdminField('email');
+    case 'editAge': return editAdminField('age');
+    case 'logout': return confirmLogout();
+    case 'deleteAccount': return confirmDeleteAccount();
+  }
+}
 
-// Logout
-document.getElementById('logoutRow').addEventListener('click', () => {
+function editPerson(id) {
+  localStorage.setItem('omega_edit_care_person', id);
+  window.location.href = 'care-profile-setup.html';
+}
+
+function confirmDeletePerson(id) {
   const t = I18N[currentLang];
-  showModal(t.logoutTitle, t.logoutText, t.logoutConfirm, () => {
-    localStorage.removeItem('omega_user_name');
-    localStorage.removeItem('omega_age');
-    localStorage.removeItem('omega_account_type');
-    localStorage.removeItem('omega_days');
-    localStorage.removeItem('omega_time');
-    localStorage.removeItem('omega_duration');
-    localStorage.removeItem('omega_workout_queue');
-    localStorage.removeItem('omega_workout_date');
-    localStorage.removeItem('omega_current_exercise');
-    localStorage.removeItem('omega_personalized_plan');
-    localStorage.removeItem('omega_streak');
-    localStorage.removeItem('omega_total_sessions');
-    localStorage.removeItem('omega_last_session_date');
+  openModal({
+    icon: 'danger',
+    iconSvg: '<polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path>',
+    title: t.confirmDeletePersonTitle,
+    text: t.confirmDeletePersonText,
+    confirmText: t.confirmDeletePersonConfirm,
+    confirmDanger: true,
+    onConfirm: () => {
+      const persons = getPersons().filter(p => p.id !== id);
+      savePersons(persons);
 
-    window.location.href = 'signup.html';
+      // If deleted person was the current one, switch to first
+      const currentId = localStorage.getItem('omega_current_person_id');
+      if (currentId === id) {
+        if (persons.length > 0) {
+          localStorage.setItem('omega_current_person_id', persons[0].id);
+        } else {
+          localStorage.removeItem('omega_current_person_id');
+        }
+      }
+
+      state.persons = persons;
+      renderAll();
+      showToast(t.personDeleted);
+    }
   });
-});
+}
 
-// Reset Progress
-document.getElementById('resetProgressRow').addEventListener('click', () => {
+function editAdminField(field) {
   const t = I18N[currentLang];
-  showModal(t.resetTitle, t.resetText, t.resetConfirm, () => {
-    const keepKeys = [
-      'omega_user_name', 'omega_age', 'omega_account_type',
-      'omega_days', 'omega_time', 'omega_duration',
-      'omega_lang', 'omega_notifications',
-      'omega_voice_mode', 'omega_font_size'
-    ];
-    const allKeys = Object.keys(localStorage);
-    allKeys.forEach(key => {
-      if (key.startsWith('omega_') && !keepKeys.includes(key)) {
-        localStorage.removeItem(key);
+  let title, text, value, type, placeholder;
+
+  if (field === 'name') {
+    title = t.editNameTitle;
+    text = t.editNameText;
+    value = state.admin.name;
+    type = 'text';
+    placeholder = 'User';
+  } else if (field === 'email') {
+    title = t.editEmailTitle;
+    text = t.editEmailText;
+    value = state.admin.email || '';
+    type = 'email';
+    placeholder = 'you@example.com';
+  } else if (field === 'age') {
+    title = t.editAgeTitle;
+    text = t.editAgeText;
+    value = state.admin.age || '';
+    type = 'number';
+    placeholder = '24';
+  }
+
+  openModal({
+    icon: 'brand',
+    iconSvg: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>',
+    title,
+    text,
+    input: { type, value, placeholder },
+    confirmText: t.save,
+    onConfirm: (newValue) => {
+      const trimmed = String(newValue).trim();
+
+      if (field === 'name') {
+        if (trimmed.length < 2) return false;
+        state.admin.name = trimmed;
+        localStorage.setItem('omega_user_name', trimmed);
+      } else if (field === 'email') {
+        if (trimmed && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+          showToast(t.invalidEmail);
+          return false;
+        }
+        state.admin.email = trimmed;
+        localStorage.setItem('omega_user_email', trimmed);
+      } else if (field === 'age') {
+        const ageNum = parseInt(trimmed);
+        if (isNaN(ageNum) || ageNum < 6 || ageNum > 120) {
+          showToast(t.invalidAge);
+          return false;
+        }
+        state.admin.age = ageNum;
+        localStorage.setItem('omega_age', String(ageNum));
+      }
+
+      renderAll();
+      showToast(t.saved);
+      return true;
+    }
+  });
+}
+
+function confirmLogout() {
+  const t = I18N[currentLang];
+  openModal({
+    icon: 'danger',
+    iconSvg: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>',
+    title: t.confirmLogoutTitle,
+    text: t.confirmLogoutText,
+    confirmText: t.confirmLogoutConfirm,
+    confirmDanger: true,
+    onConfirm: () => {
+      const keepKeys = ['omega_lang', 'omega_font_size'];
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('omega_') && !keepKeys.includes(key)) {
+          localStorage.removeItem(key);
+        }
+      });
+      window.location.href = 'signup.html';
+    }
+  });
+}
+
+function confirmDeleteAccount() {
+  const t = I18N[currentLang];
+  openModal({
+    icon: 'danger',
+    iconSvg: '<polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path>',
+    title: t.confirmDeleteAccountTitle,
+    text: t.confirmDeleteAccountText,
+    confirmText: t.confirmDeleteAccountConfirm,
+    confirmDanger: true,
+    onConfirm: () => {
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('omega_')) localStorage.removeItem(key);
+      });
+      window.location.href = 'index.html';
+    }
+  });
+}
+
+/* ============================================
+   MODAL
+============================================ */
+function openModal({ icon, iconSvg, title, text, input, confirmText, confirmDanger, onConfirm }) {
+  const t = I18N[currentLang];
+  const overlay = document.getElementById('modalOverlay');
+  const box = document.getElementById('modalBox');
+
+  let inputHtml = '';
+  if (input) {
+    inputHtml = `
+      <div class="modal-input-wrap">
+        <input
+          type="${input.type}"
+          class="modal-input"
+          id="modalInput"
+          value="${input.value || ''}"
+          placeholder="${input.placeholder || ''}"
+          autocomplete="off"
+        />
+      </div>
+    `;
+  }
+
+  box.innerHTML = `
+    <div class="modal-icon ${icon}">
+      <svg viewBox="0 0 24 24">${iconSvg}</svg>
+    </div>
+    <div class="modal-title">${title}</div>
+    <div class="modal-text">${text}</div>
+    ${inputHtml}
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="modalCancel">${t.cancel}</button>
+      <button class="modal-btn confirm ${confirmDanger ? 'danger' : ''}" id="modalConfirm">${confirmText}</button>
+    </div>
+  `;
+
+  overlay.classList.add('show');
+
+  const inputEl = document.getElementById('modalInput');
+  if (inputEl) {
+    setTimeout(() => {
+      inputEl.focus();
+      if (input.type === 'text' || input.type === 'email') {
+        inputEl.select();
+      }
+    }, 100);
+
+    // Enter key submits
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('modalConfirm').click();
       }
     });
-    showToast(t.saved);
-  });
-});
+  }
 
-// Delete Account
-document.getElementById('deleteAccountRow').addEventListener('click', () => {
-  const t = I18N[currentLang];
-  showModal(t.deleteTitle, t.deleteText, t.deleteConfirm, () => {
-    const allKeys = Object.keys(localStorage);
-    allKeys.forEach(key => {
-      if (key.startsWith('omega_')) localStorage.removeItem(key);
-    });
-    window.location.href = 'index.html';
-  });
-});
+  document.getElementById('modalCancel').addEventListener('click', closeModal);
 
-// Retake Assessment
-document.getElementById('retakeAssessmentRow').addEventListener('click', () => {
-  const t = I18N[currentLang];
-  showModal(t.retakeTitle, t.retakeText, t.retakeConfirm, () => {
-    localStorage.setItem('omega_reassess_mode', 'true');
-    window.location.href = 'assessment-intro.html';
+  document.getElementById('modalConfirm').addEventListener('click', () => {
+    let value = inputEl ? inputEl.value : null;
+    const result = onConfirm(value);
+    if (result === false) return; // validation failed
+    closeModal();
   });
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modalOverlay') closeModal();
 });
 
 /* ============================================
@@ -1514,9 +1565,8 @@ let toastTimeout = null;
 
 function showToast(message) {
   const toast = document.getElementById('toast');
-  toast.textContent = message;
+  document.getElementById('toastText').textContent = message;
   toast.classList.add('show');
-
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {
     toast.classList.remove('show');
@@ -1533,8 +1583,13 @@ document.getElementById('backBtn').addEventListener('click', () => {
 /* ============================================
    INIT
 ============================================ */
-applyFontSize(localStorage.getItem('omega_font_size') || 'medium');
-applyLanguage(currentLang);
+function init() {
+  loadData();
+  applyFontSize(state.settings.fontSize);
+  applyLanguage(currentLang);
+}
+
+init();
 </script>
 
 </body>
