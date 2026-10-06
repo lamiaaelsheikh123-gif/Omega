@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
@@ -448,13 +448,12 @@ html[lang="ar"] .section-count { font-family: var(--f-ar); font-size: 12.5px; }
   animation: skillIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+/* ✅ 5 skills animations */
 .skill-card:nth-child(1) { animation-delay: 0.95s; }
 .skill-card:nth-child(2) { animation-delay: 1.00s; }
 .skill-card:nth-child(3) { animation-delay: 1.05s; }
 .skill-card:nth-child(4) { animation-delay: 1.10s; }
 .skill-card:nth-child(5) { animation-delay: 1.15s; }
-.skill-card:nth-child(6) { animation-delay: 1.20s; }
-.skill-card:nth-child(7) { animation-delay: 1.25s; }
 
 @keyframes skillIn {
   to { opacity: 1; transform: translateY(0); }
@@ -497,13 +496,12 @@ html[lang="ar"] .section-count { font-family: var(--f-ar); font-size: 12.5px; }
   z-index: 1;
 }
 
+/* ✅ 5 skills icons */
 .skill-icon.memory::before    { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
 .skill-icon.attention::before { background: linear-gradient(135deg, #EF4444, #FBBF24); }
-.skill-icon.speed::before     { background: linear-gradient(135deg, #3B82F6, #2EC4B6); }
 .skill-icon.problem::before   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); }
 .skill-icon.visual::before    { background: linear-gradient(135deg, #2EC4B6, #8B5CF6); }
-.skill-icon.language::before  { background: linear-gradient(135deg, #FBBF24, #EC4899); }
-.skill-icon.numerical::before { background: linear-gradient(135deg, #3B82F6, #8B5CF6); }
+.skill-icon.reasoning::before { background: linear-gradient(135deg, #3B82F6, #EC4899); }
 
 .skill-name {
   font-size: 11.5px;
@@ -592,7 +590,7 @@ html[lang="ar"] .skill-name { font-family: var(--f-ar); font-size: 12.5px; lette
   gap: 8px;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeUp 0.7s ease 1.4s forwards;
+  animation: fadeUp 0.7s ease 1.3s forwards;
 }
 
 .btn-primary::before {
@@ -673,7 +671,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
             </div>
           </div>
           <h1 class="hero-title" id="heroTitle">Assessment Complete!</h1>
-          <p class="hero-desc" id="heroDesc">You've finished all 7 cognitive challenges. Great job!</p>
+          <p class="hero-desc" id="heroDesc">You've finished all 5 cognitive challenges. Great job!</p>
         </div>
 
         <!-- AI Note -->
@@ -693,7 +691,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
         <!-- Summary -->
         <div class="section-head">
           <div class="section-title" id="sectionTitle">Your Results</div>
-          <div class="section-count" id="sectionCount">7 skills</div>
+          <div class="section-count" id="sectionCount">5 skills</div>
         </div>
 
         <div class="skills-grid" id="skillsGrid"></div>
@@ -722,38 +720,34 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16.5px; }
 const I18N = {
   en: {
     heroTitle: 'Assessment Complete!',
-    heroDesc: "You've finished all 7 cognitive challenges. Great job!",
+    heroDesc: "You've finished all 5 cognitive challenges. Great job!",
     aiText: 'AI is analyzing your results',
     sectionTitle: 'Your Results',
-    sectionCount: '7 skills',
+    sectionCount: '5 skills',
     nextLabel: 'See My Cognitive Profile',
 
     skills: {
       memory:    'Memory',
       attention: 'Attention',
-      speed:     'Processing Speed',
       problem:   'Problem Solving',
       visual:    'Visual Skills',
-      language:  'Language',
-      numerical: 'Numerical'
+      reasoning: 'Reasoning'
     }
   },
   ar: {
     heroTitle: 'اكتمل التقييم!',
-    heroDesc: 'أتممت جميع التحديات الذهنية السبعة. عمل رائع!',
+    heroDesc: 'أتممت جميع التحديات الذهنية الخمسة. عمل رائع!',
     aiText: 'الذكاء الاصطناعي يحلل نتائجك',
     sectionTitle: 'نتائجك',
-    sectionCount: '7 مهارات',
+    sectionCount: '5 مهارات',
     nextLabel: 'شاهد ملفك الذهني',
 
     skills: {
       memory:    'الذاكرة',
       attention: 'الانتباه',
-      speed:     'سرعة المعالجة',
       problem:   'حل المشكلات',
       visual:    'المهارات البصرية',
-      language:  'اللغة',
-      numerical: 'الرقمي'
+      reasoning: 'الاستدلال'
     }
   }
 };
@@ -792,7 +786,7 @@ document.getElementById('langToggle').addEventListener('click', () => {
 });
 
 /* ============================================
-   SKILLS CONFIG
+   SKILLS CONFIG — 5 skills
 ============================================ */
 const SKILLS = [
   {
@@ -806,11 +800,6 @@ const SKILLS = [
     icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`
   },
   {
-    key: 'speed',
-    storageKey: 'omega_speed_result',
-    icon: `<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`
-  },
-  {
     key: 'problem',
     storageKey: 'omega_problem_result',
     icon: `<svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg>`
@@ -821,14 +810,9 @@ const SKILLS = [
     icon: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`
   },
   {
-    key: 'language',
-    storageKey: 'omega_language_result',
-    icon: `<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`
-  },
-  {
-    key: 'numerical',
-    storageKey: 'omega_numerical_result',
-    icon: `<svg viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>`
+    key: 'reasoning',
+    storageKey: 'omega_reasoning_result',
+    icon: `<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"></circle><circle cx="18" cy="6" r="2"></circle><circle cx="12" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2"></circle><circle cx="18" cy="18" r="2"></circle><line x1="6" y1="6" x2="12" y2="12"></line><line x1="18" y1="6" x2="12" y2="12"></line><line x1="6" y1="18" x2="12" y2="12"></line><line x1="18" y1="18" x2="12" y2="12"></line></svg>`
   }
 ];
 
