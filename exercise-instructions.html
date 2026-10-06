@@ -632,6 +632,8 @@ const I18N = {
     difficulty: 'Difficulty', level: 'Level',
     min: 'min', adaptive: 'Adaptive',
     loadingText: 'All done! Taking you to your summary...',
+
+    // ✅ 5 skills content
     content: {
       memory: {
         badge: 'Memory Track', title: 'Sequence Memory',
@@ -655,17 +657,6 @@ const I18N = {
         ],
         tip: 'Keep your eyes moving. Do not fixate on one spot.'
       },
-      speed: {
-        badge: 'Speed Track', title: 'Quick Response',
-        sub: 'Solve simple problems as fast and accurately as you can.',
-        rounds: '8 rounds',
-        steps: [
-          { title: 'Read the problem', hint: 'Simple math or comparison appears on the screen.' },
-          { title: 'Tap the answer', hint: 'Choose from 4 options. You have limited time per question.' },
-          { title: 'Beat your time', hint: 'Speed improves with practice — but accuracy is key.' }
-        ],
-        tip: 'Trust your first instinct. Overthinking slows you down.'
-      },
       problem: {
         badge: 'Problem Solving', title: 'Think it Through',
         sub: 'Solve puzzles and patterns. If you miss, we will help you think.',
@@ -688,27 +679,16 @@ const I18N = {
         ],
         tip: 'Compare mentally — rotate the shape in your mind.'
       },
-      language: {
-        badge: 'Language Track', title: 'Read & Remember',
-        sub: 'Read a short story, then answer questions about it.',
+      reasoning: {
+        badge: 'Reasoning Track', title: 'Think & Reason',
+        sub: 'Mix of numerical, language, and conceptual reasoning.',
         rounds: '8 rounds',
         steps: [
-          { title: 'Read carefully', hint: 'A short story will appear for a limited time.' },
-          { title: 'The story hides', hint: 'After the timer ends, the story disappears.' },
-          { title: 'Answer the questions', hint: 'Choose the right answer from memory.' }
+          { title: 'Solve quick problems', hint: 'You\'ll see math, patterns, and word problems.' },
+          { title: 'Read & remember', hint: 'Sometimes you\'ll read a story and answer questions about it.' },
+          { title: 'Think it through', hint: 'Logic puzzles and riddles will test your reasoning.' }
         ],
-        tip: 'Focus on names, places, and key details.'
-      },
-      numerical: {
-        badge: 'Numerical Track', title: 'Numbers & Logic',
-        sub: 'Solve number patterns and calculations quickly.',
-        rounds: '8 rounds',
-        steps: [
-          { title: 'Read the question', hint: 'Simple calculations, patterns, or word problems appear.' },
-          { title: 'Pick the answer', hint: 'Choose from 4 options. Limited time per question.' },
-          { title: 'Keep the rhythm', hint: 'Speed matters, but do not rush too much.' }
-        ],
-        tip: 'For patterns, look at the difference between numbers first.'
+        tip: 'Read carefully. For patterns, look at the difference between numbers first.'
       }
     }
   },
@@ -718,6 +698,8 @@ const I18N = {
     difficulty: 'الصعوبة', level: 'المستوى',
     min: 'دقيقة', adaptive: 'تكيفي',
     loadingText: 'اكتمل كل شيء! جاري تحويلك للملخص...',
+
+    // ✅ 5 skills content
     content: {
       memory: {
         badge: 'مسار الذاكرة', title: 'ذاكرة التسلسل',
@@ -741,17 +723,6 @@ const I18N = {
         ],
         tip: 'حرّك عينيك باستمرار.'
       },
-      speed: {
-        badge: 'مسار السرعة', title: 'الرد السريع',
-        sub: 'حل مسائل بسيطة بأسرع شكل ممكن.',
-        rounds: '8 جولات',
-        steps: [
-          { title: 'اقرأ المسألة', hint: 'تظهر مسألة رياضية بسيطة.' },
-          { title: 'اختر الإجابة', hint: 'من 4 خيارات.' },
-          { title: 'تغلب على وقتك', hint: 'السرعة تتحسن مع التدريب.' }
-        ],
-        tip: 'ثق بحدسك الأول.'
-      },
       problem: {
         badge: 'حل المشكلات', title: 'فكّر جيدًا',
         sub: 'حل الألغاز والأنماط.',
@@ -774,34 +745,23 @@ const I18N = {
         ],
         tip: 'قارن ذهنيًا.'
       },
-      language: {
-        badge: 'مسار اللغة', title: 'اقرأ وتذكر',
-        sub: 'اقرأ قصة قصيرة ثم أجب.',
+      reasoning: {
+        badge: 'مسار الاستدلال', title: 'فكّر واستنتج',
+        sub: 'مزيج من التفكير الرقمي واللغوي والمفاهيمي.',
         rounds: '8 جولات',
         steps: [
-          { title: 'اقرأ بعناية', hint: 'قصة قصيرة لمدة محدودة.' },
-          { title: 'القصة تختفي', hint: 'بعد انتهاء الوقت تختفي القصة.' },
-          { title: 'أجب عن الأسئلة', hint: 'اختر الإجابة من ذاكرتك.' }
+          { title: 'حل مسائل سريعة', hint: 'سترى حسابات وأنماط ومسائل كلامية.' },
+          { title: 'اقرأ وتذكر', hint: 'أحيانًا ستقرأ قصة وتجيب أسئلة عنها.' },
+          { title: 'فكّر بعمق', hint: 'ألغاز منطقية ستختبر استدلالك.' }
         ],
-        tip: 'ركّز على الأسماء والأماكن.'
-      },
-      numerical: {
-        badge: 'المسار الرقمي', title: 'أرقام ومنطق',
-        sub: 'حل أنماط الأرقام بسرعة.',
-        rounds: '8 جولات',
-        steps: [
-          { title: 'اقرأ السؤال', hint: 'تظهر حسابات بسيطة.' },
-          { title: 'اختر الإجابة', hint: 'من 4 خيارات.' },
-          { title: 'حافظ على الإيقاع', hint: 'متتسرعش.' }
-        ],
-        tip: 'انظر للفرق بين الأرقام أولًا.'
+        tip: 'اقرأ بعناية. للأنماط، انظر للفرق بين الأرقام أولًا.'
       }
     }
   }
 };
 
 /* ============================================
-   ILLUSTRATIONS — بألوان أوميجا
+   ILLUSTRATIONS — 5 skills بألوان Omega
 ============================================ */
 const ILLUSTRATIONS = {
   memory: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -851,26 +811,6 @@ const ILLUSTRATIONS = {
       @keyframes f2 { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-8px) rotate(-6deg)} }
     </style>
   </svg>`,
-  speed: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="s1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
-      <linearGradient id="s2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
-    </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
-    <path d="M 55 130 A 55 55 0 1 1 145 130" fill="none" stroke="url(#s1)" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
-    <g style="animation: needle 2.4s ease-in-out infinite; transform-origin: 100px 100px;">
-      <line x1="100" y1="100" x2="100" y2="58" stroke="url(#s1)" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="100" cy="100" r="8" fill="url(#s1)"/>
-      <circle cx="100" cy="100" r="3.5" fill="#fff"/>
-    </g>
-    <g style="animation: bolt 1.8s ease-in-out infinite; transform-origin: 100px 100px;">
-      <path d="M 100 82 L 92 100 L 99 100 L 96 118 L 108 98 L 100 98 L 105 82 Z" fill="url(#s2)"/>
-    </g>
-    <style>
-      @keyframes needle { 0%,100%{transform:rotate(-40deg)} 50%{transform:rotate(40deg)} }
-      @keyframes bolt { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
-    </style>
-  </svg>`,
   problem: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
@@ -908,65 +848,37 @@ const ILLUSTRATIONS = {
       @keyframes eye { 0%,100%{transform:translateX(-6px)} 50%{transform:translateX(6px)} }
     </style>
   </svg>`,
-  language: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  reasoning: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="l1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
-      <linearGradient id="l2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
-      <linearGradient id="l3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
+      <linearGradient id="r1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#EC4899"/></linearGradient>
+      <linearGradient id="r2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
+      <linearGradient id="r3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#EC4899"/></linearGradient>
     </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
-    <g style="animation: book 3s ease-in-out infinite; transform-origin: 100px 110px;">
-      <path d="M 60 70 L 100 80 L 100 140 L 60 130 Z" fill="url(#l1)"/>
-      <path d="M 100 80 L 140 70 L 140 130 L 100 140 Z" fill="url(#l2)"/>
-      <line x1="68" y1="92" x2="94" y2="96" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-      <line x1="68" y1="102" x2="94" y2="106" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-      <line x1="106" y1="96" x2="132" y2="92" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-      <line x1="106" y1="106" x2="132" y2="102" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#3B82F6" stroke-width="0.8" opacity="0.15"/>
+    <circle cx="100" cy="100" r="60" fill="none" stroke="#3B82F6" stroke-width="0.8" opacity="0.25"/>
+
+    <g style="animation: node 3s ease-in-out infinite; transform-origin: 100px 100px;">
+      <!-- Network nodes -->
+      <line x1="60" y1="60" x2="100" y2="100" stroke="#3B82F6" stroke-width="1.8" opacity="0.5"/>
+      <line x1="140" y1="60" x2="100" y2="100" stroke="#EC4899" stroke-width="1.8" opacity="0.5"/>
+      <line x1="60" y1="140" x2="100" y2="100" stroke="#3B82F6" stroke-width="1.8" opacity="0.5"/>
+      <line x1="140" y1="140" x2="100" y2="100" stroke="#EC4899" stroke-width="1.8" opacity="0.5"/>
+
+      <circle cx="60" cy="60" r="12" fill="url(#r1)"/>
+      <circle cx="140" cy="60" r="12" fill="url(#r2)"/>
+      <circle cx="100" cy="100" r="16" fill="url(#r3)"/>
+      <circle cx="60" cy="140" r="12" fill="url(#r2)"/>
+      <circle cx="140" cy="140" r="12" fill="url(#r1)"/>
+
+      <circle cx="100" cy="100" r="6" fill="#fff"/>
     </g>
-    <g style="animation: f1 3.5s ease-in-out infinite; transform-origin: 45px 55px;">
-      <circle cx="45" cy="55" r="8" fill="url(#l3)" opacity="0.85"/>
-    </g>
-    <g style="animation: f2 4s ease-in-out infinite 0.4s; transform-origin: 155px 60px;">
-      <circle cx="155" cy="60" r="6" fill="url(#l2)" opacity="0.85"/>
-    </g>
+
     <style>
-      @keyframes book { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-5px) rotate(-1deg)} }
-      @keyframes f1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-4px,-8px)} }
-      @keyframes f2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(5px,-6px)} }
-    </style>
-  </svg>`,
-  numerical: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="n1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0E9487"/><stop offset="100%" stop-color="#2EC4B6"/></linearGradient>
-      <linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
-      <linearGradient id="n3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#EC4899"/></linearGradient>
-      <linearGradient id="n4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
-    </defs>
-    <circle cx="100" cy="100" r="78" fill="none" stroke="#0E9487" stroke-width="0.8" opacity="0.15"/>
-    <g style="animation: f1 3.5s ease-in-out infinite; transform-origin: 65px 65px;">
-      <circle cx="65" cy="65" r="22" fill="url(#n1)"/>
-      <text x="65" y="72" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="20" font-weight="800">7</text>
-    </g>
-    <g style="animation: f2 4s ease-in-out infinite 0.3s; transform-origin: 135px 65px;">
-      <circle cx="135" cy="65" r="20" fill="url(#n2)"/>
-      <text x="135" y="72" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="18" font-weight="800">3</text>
-    </g>
-    <g style="animation: f1 3.2s ease-in-out infinite 0.6s; transform-origin: 55px 130px;">
-      <circle cx="55" cy="130" r="18" fill="url(#n3)"/>
-      <text x="55" y="136" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="16" font-weight="800">5</text>
-    </g>
-    <g style="animation: f2 3.6s ease-in-out infinite 0.9s; transform-origin: 145px 130px;">
-      <circle cx="145" cy="130" r="20" fill="url(#n4)"/>
-      <text x="145" y="137" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="17" font-weight="800">+</text>
-    </g>
-    <g style="animation: bulb 2.5s ease-in-out infinite; transform-origin: 100px 100px;">
-      <circle cx="100" cy="100" r="14" fill="#0F172A"/>
-      <text x="100" y="106" text-anchor="middle" fill="#fff" font-family="Poppins" font-size="14" font-weight="800">?</text>
-    </g>
-    <style>
-      @keyframes f1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-4px,-8px)} }
-      @keyframes f2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(5px,-7px)} }
-      @keyframes bulb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+      @keyframes node {
+        0%, 100% { transform: scale(1); }
+        50%      { transform: scale(1.05); }
+      }
     </style>
   </svg>`
 };
@@ -991,7 +903,7 @@ function buildFreshQueue() {
     plan = [
       { key: 'memory',    rank: 1, sessions: 2, minutes: 10 },
       { key: 'attention', rank: 2, sessions: 2, minutes: 10 },
-      { key: 'speed',     rank: 3, sessions: 1, minutes: 8  }
+      { key: 'problem',   rank: 3, sessions: 1, minutes: 8  }
     ];
   }
 
@@ -1092,7 +1004,7 @@ function render() {
   document.getElementById('loadingContent').style.display = 'none';
 
   document.getElementById('badgeText').textContent = c.badge;
-  document.getElementById('illusCircle').innerHTML = ILLUSTRATIONS[currentExercise.key];
+  document.getElementById('illusCircle').innerHTML = ILLUSTRATIONS[currentExercise.key] || '';
   document.getElementById('exerciseTitle').textContent = c.title;
   document.getElementById('exerciseSub').textContent = c.sub;
 
