@@ -238,11 +238,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: relative;
 }
 
+/* ✅ 2/5 = 40% */
 .progress-fill {
   position: absolute;
   top: 0; left: 0;
   height: 100%;
-  width: 28.57%;
+  width: 40%;
   background: var(--g-brand);
   border-radius: var(--r-pill);
   box-shadow: 0 0 10px rgba(14, 148, 135, 0.3);
@@ -903,7 +904,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="progress-text" id="progressText">Step 2 of 7</div>
+          <div class="progress-text" id="progressText">Step 2 of 5</div>
         </div>
 
         <!-- ============ PHASE 1: READY ============ -->
@@ -1080,7 +1081,7 @@ html[lang="ar"] .btn-primary { font-family: var(--f-ar); font-size: 16px; }
 ============================================ */
 const I18N = {
   en: {
-    progress: 'Step 2 of 7',
+    progress: 'Step 2 of 5',
     readyTitle: 'Attention Challenge',
     readyDesc: 'Tap <b>only the target</b> as fast as you can. Ignore everything else!',
     metaTime: '30 sec',
@@ -1110,7 +1111,7 @@ const I18N = {
     nextLabel: 'Next Challenge'
   },
   ar: {
-    progress: 'الخطوة 2 من 7',
+    progress: 'الخطوة 2 من 5',
     readyTitle: 'تحدي الانتباه',
     readyDesc: 'اضغط على <b>الهدف فقط</b> بأسرع ما يمكن. تجاهل كل شيء آخر!',
     metaTime: '30 ثانية',
@@ -1573,7 +1574,7 @@ function goToPhase(id) {
 }
 
 /* ============================================
-   NEXT
+   NEXT → PROBLEM
 ============================================ */
 document.getElementById('nextBtn').addEventListener('click', () => {
   const btn = document.getElementById('nextBtn');
@@ -1581,7 +1582,7 @@ document.getElementById('nextBtn').addEventListener('click', () => {
   setTimeout(() => { btn.style.transform = ''; }, 150);
 
   setTimeout(() => {
-    window.location.href = 'assessment-speed.html';
+    window.location.href = 'assessment-problem.html';
   }, 250);
 });
 
