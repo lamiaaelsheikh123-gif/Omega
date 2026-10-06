@@ -669,12 +669,13 @@ const I18N = {
     subtitle: 'Our AI is processing your cognitive data to build your personalized profile.',
     progressLabel: 'Processing',
 
+    // ✅ 5 steps = 5 skills (updated from 7)
     steps: [
       { key: 'memory',    text: 'Analyzing memory patterns' },
       { key: 'attention', text: 'Evaluating attention focus' },
-      { key: 'speed',     text: 'Calculating processing speed' },
+      { key: 'problem',   text: 'Assessing problem-solving skills' },
       { key: 'visual',    text: 'Comparing visual recognition' },
-      { key: 'profile',   text: 'Generating your cognitive profile' }
+      { key: 'reasoning', text: 'Evaluating reasoning abilities' }
     ]
   },
   ar: {
@@ -682,12 +683,13 @@ const I18N = {
     subtitle: 'الذكاء الاصطناعي يعالج بياناتك الذهنية لبناء ملفك المخصص.',
     progressLabel: 'جاري المعالجة',
 
+    // ✅ 5 steps = 5 skills (updated from 7)
     steps: [
       { key: 'memory',    text: 'تحليل أنماط الذاكرة' },
       { key: 'attention', text: 'تقييم تركيز الانتباه' },
-      { key: 'speed',     text: 'حساب سرعة المعالجة' },
+      { key: 'problem',   text: 'تقييم مهارات حل المشكلات' },
       { key: 'visual',    text: 'مقارنة التمييز البصري' },
-      { key: 'profile',   text: 'إنشاء ملفك الذهني' }
+      { key: 'reasoning', text: 'تقييم قدرات الاستدلال' }
     ]
   }
 };
@@ -757,7 +759,7 @@ function renderSteps() {
    ANIMATION TIMELINE
 ============================================ */
 const TOTAL_DURATION = 10000; // 10 seconds
-const STEP_DURATION = TOTAL_DURATION / 5; // 2 seconds per step
+const STEP_DURATION = TOTAL_DURATION / 5; // 2 seconds per step (5 skills)
 
 let startTime = 0;
 
@@ -777,6 +779,7 @@ function tick() {
   const percent = Math.round(progress * 100);
   document.getElementById('progressPercent').textContent = percent;
 
+  // 5 steps → max index = 4
   const newStep = Math.min(Math.floor(elapsed / STEP_DURATION), 4);
 
   if (newStep !== currentStepIndex) {
