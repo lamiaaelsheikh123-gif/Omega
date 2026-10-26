@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Home</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --c-primary: #0E9487;
+  --c-primary-light: #2EC4B6;
+  --c-primary-dark: #076B5F;
+  --c-blue: #3B82F6;
+  --c-purple: #8B5CF6;
+  --c-success: #22C55E;
+  --c-warning: #FBBF24;
+  --c-error: #EF4444;
+  --c-navy: #0F172A;
+  --c-slate: #64748B;
+  --c-bg: #F8FAFC;
+  --c-card: #FFFFFF;
+  --c-border: #E2E8F0;
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
+  --g-text: linear-gradient(135deg, #0E9487 0%, #3B82F6 55%, #8B5CF6 100%);
+  --g-hero: linear-gradient(135deg, #0E9487 0%, #2EC4B6 50%, #3B82F6 100%);
+  --g-child: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #0E9487 100%);
+  --g-fire: linear-gradient(135deg, #EF4444, #FBBF24, #F59E0B);
+  --g-heart: linear-gradient(135deg, #EC4899, #8B5CF6);
+  --g-memory: linear-gradient(135deg, #8B5CF6 0%, #EC4899 60%, #8B5CF6 100%);
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
+  --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
+  --sh-hero: 0 20px 40px rgba(14, 148, 135, 0.32);
+  --sh-child: 0 20px 40px rgba(139, 92, 246, 0.35);
+  --sh-memory: 0 20px 40px rgba(139, 92, 246, 0.35);
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
+  --phone-w: 375px; --phone-h: 812px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: var(--f-en); -webkit-font-smoothing: antialiased; background: #E2E8F0; overflow: hidden; }
+html[lang="ar"] body { font-family: var(--f-ar); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.stage { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+  background: radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.12), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 148, 135, 0.10), transparent 50%), #E2E8F0; }
+.phone { position: relative; width: var(--phone-w); height: var(--phone-h); max-height: calc(100vh - 40px);
+  background: var(--c-bg); border-radius: 44px; overflow: hidden;
+  box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,0.35), 0 20px 40px rgba(0,0,0,0.15); }
+.phone::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 130px; height: 26px; background: #1a1a1a; border-radius: 0 0 18px 18px; z-index: 100; }
+@media (max-width: 480px) {
+  body { background: var(--c-bg); } .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+  .phone::before { display: none; }
+}
+
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--c-bg); overflow: hidden; }
+.screen::before { content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(14, 148, 135, 0.05), transparent 50%); pointer-events: none; z-index: 0; }
+
+.header { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center;
+  padding: 52px 22px 14px; flex-shrink: 0; gap: 10px; }
+.header-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; cursor: pointer;
+  border-radius: var(--r-md); padding: 4px 8px 4px 4px; margin-left: -4px; transition: background 0.2s ease; }
+.header-left:hover { background: rgba(14, 148, 135, 0.05); }
+.header-left:active { transform: scale(0.98); }
+.header-avatar { width: 46px; height: 46px; min-width: 46px; border-radius: 50%; background: var(--g-brand);
+  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; font-weight: 800;
+  flex-shrink: 0; box-shadow: 0 6px 16px rgba(14, 148, 135, 0.3); position: relative; overflow: hidden;
+  text-transform: uppercase; transition: transform 0.25s ease; }
+.header-left:hover .header-avatar { transform: scale(1.05); }
+body[data-view="child"] .header-avatar { background: var(--g-child); box-shadow: 0 6px 16px rgba(139, 92, 246, 0.3); }
+body[data-view="memory"] .header-avatar { background: var(--g-memory); box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35); }
+.header-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.header-avatar::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 16px; height: 16px;
+  border-radius: 50%; background: #fff; border: 2px solid var(--c-primary);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230E9487' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-size: 10px 10px; background-position: center; background-repeat: no-repeat; display: none; }
+body[data-view="child"] .header-avatar::after, body[data-view="memory"] .header-avatar::after { display: block; }
+.header-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.header-greet { font-size: 11.5px; font-weight: 500; color: var(--c-slate); letter-spacing: 0.2px; }
+html[lang="ar"] .header-greet { font-family: var(--f-ar); font-size: 12.5px; }
+.header-name { font-size: 18px; font-weight: 800; background: var(--g-text); -webkit-background-clip: text;
+  background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.4px; line-height: 1.15;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 4px; }
+.header-name.child { background: var(--g-child); -webkit-background-clip: text; background-clip: text; }
+.header-name.memory { background: var(--g-memory); -webkit-background-clip: text; background-clip: text; }
+.header-name svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 3; fill: none;
+  -webkit-text-fill-color: initial; flex-shrink: 0; opacity: 0.6; display: none; }
+body[data-view="child"] .header-name svg, body[data-view="memory"] .header-name svg { display: block; }
+html[lang="ar"] .header-name { font-family: var(--f-ar); font-size: 17px; letter-spacing: 0; }
+.header-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.icon-btn { position: relative; width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(14, 148, 135, 0.15);
+  display: inline-flex; align-items: center; justify-content: center; transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); }
+.icon-btn:hover { background: #fff; border-color: rgba(14, 148, 135, 0.35); transform: translateY(-2px); }
+.icon-btn:active { transform: scale(0.95); }
+.icon-btn svg { width: 17px; height: 17px; stroke: var(--c-navy); stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn .lang-mini { font-size: 10.5px; font-weight: 700; color: var(--c-primary); letter-spacing: 0.3px; }
+
+.content { position: relative; z-index: 5; flex: 1; padding: 4px 22px 40px; display: flex; flex-direction: column;
+  gap: 14px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; min-height: 0; }
+.content::-webkit-scrollbar { display: none; }
+.content > * { flex-shrink: 0; width: 100%; }
+
+.hero-card { position: relative; background: var(--g-hero); border-radius: var(--r-xl); padding: 22px 20px;
+  display: flex; flex-direction: column; gap: 16px; overflow: hidden; box-shadow: var(--sh-hero);
+  transition: background 0.5s ease, box-shadow 0.5s ease; }
+.hero-card.child { background: var(--g-child); box-shadow: var(--sh-child); }
+.hero-card::before { content: ''; position: absolute; top: -30%; right: -20%; width: 200px; height: 200px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); pointer-events: none; }
+.hero-card::after { content: ''; position: absolute; bottom: -40%; left: -20%; width: 220px; height: 220px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%); pointer-events: none; }
+.hero-top { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.hero-info { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+.hero-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.25); border-radius: var(--r-pill); font-size: 10px; font-weight: 700;
+  color: #fff; letter-spacing: 0.5px; text-transform: uppercase; align-self: flex-start; }
+html[lang="ar"] .hero-tag { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 11px; }
+.hero-tag svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2.5; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.hero-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.4px; line-height: 1.2; margin-top: 2px; }
+html[lang="ar"] .hero-title { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
+.hero-sub { font-size: 12.5px; font-weight: 500; color: rgba(255, 255, 255, 0.85); letter-spacing: 0.1px; }
+html[lang="ar"] .hero-sub { font-family: var(--f-ar); font-size: 13.5px; }
+.hero-illus { width: 60px; height: 60px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  border-radius: 18px; background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25); position: relative; }
+.hero-illus svg { width: 32px; height: 32px; stroke: #fff; stroke-width: 2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.hero-sessions { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 8px; padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18); border-radius: var(--r-md); }
+.session-row { display: flex; align-items: center; gap: 10px; }
+.session-row + .session-row { padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.session-icon-small { width: 26px; height: 26px; border-radius: 8px; background: rgba(255, 255, 255, 0.2);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.session-icon-small svg { width: 13px; height: 13px; stroke: #fff; stroke-width: 2.3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.session-name-small { flex: 1; font-size: 12.5px; font-weight: 600; color: #fff; letter-spacing: 0.1px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html[lang="ar"] .session-name-small { font-family: var(--f-ar); font-size: 13.5px; letter-spacing: 0; }
+.session-time-small { font-size: 11px; font-weight: 700; color: rgba(255, 255, 255, 0.9);
+  font-feature-settings: "tnum"; flex-shrink: 0; }
+html[lang="ar"] .session-time-small { font-family: var(--f-ar); font-size: 12px; }
+.hero-empty { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 16px; background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px dashed rgba(255, 255, 255, 0.3); border-radius: var(--r-md); text-align: center; }
+.hero-empty-icon { font-size: 24px; }
+.hero-empty-text { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.4; }
+html[lang="ar"] .hero-empty-text { font-family: var(--f-ar); font-size: 14px; }
+.hero-bottom { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.hero-total { display: flex; flex-direction: column; gap: 1px; }
+.hero-total-label { font-size: 9.5px; font-weight: 600; color: rgba(255, 255, 255, 0.75); letter-spacing: 0.4px; text-transform: uppercase; }
+html[lang="ar"] .hero-total-label { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 10.5px; }
+.hero-total-value { font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.4px; font-feature-settings: "tnum"; }
+.hero-start-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 20px; background: #fff;
+  color: var(--c-primary); font-size: 13.5px; font-weight: 700; letter-spacing: 0.3px; border-radius: var(--r-md);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); transition: all 0.25s ease; position: relative; overflow: hidden; flex-shrink: 0; }
+.hero-card.child .hero-start-btn { color: var(--c-purple); }
+.hero-start-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2); }
+.hero-start-btn:active { transform: scale(0.96); }
+.hero-start-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.5; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.hero-start-btn svg.fill-icon { fill: currentColor; stroke: none; }
+html[lang="ar"] .hero-start-btn { font-family: var(--f-ar); font-size: 14.5px; }
+
+.assess-hero { background: var(--g-hero); border-radius: var(--r-xl); padding: 24px 20px; position: relative;
+  overflow: hidden; box-shadow: var(--sh-hero); display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 14px; }
+.assess-hero::before { content: ''; position: absolute; top: -30%; right: -20%; width: 200px; height: 200px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); pointer-events: none; }
+.assess-hero::after { content: ''; position: absolute; bottom: -40%; left: -20%; width: 220px; height: 220px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%); pointer-events: none; }
+.assess-hero-icon { position: relative; z-index: 2; width: 76px; height: 76px; border-radius: 22px;
+  background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; }
+.assess-hero-icon svg { width: 38px; height: 38px; stroke: #fff; stroke-width: 2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.assess-hero-title { position: relative; z-index: 2; font-size: 22px; font-weight: 800; color: #fff;
+  letter-spacing: -0.4px; line-height: 1.25; }
+html[lang="ar"] .assess-hero-title { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
+.assess-hero-desc { position: relative; z-index: 2; font-size: 13px; font-weight: 500;
+  color: rgba(255, 255, 255, 0.9); line-height: 1.55; max-width: 290px; }
+html[lang="ar"] .assess-hero-desc { font-family: var(--f-ar); font-size: 14px; }
+.assess-hero-btn { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 26px; background: #fff; color: var(--c-primary); font-size: 14px; font-weight: 800;
+  letter-spacing: 0.3px; border-radius: var(--r-md); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  transition: all 0.25s ease; margin-top: 4px; }
+.assess-hero-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25); }
+.assess-hero-btn:active { transform: scale(0.97); }
+.assess-hero-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+html[dir="rtl"] .assess-hero-btn svg.arrow { transform: scaleX(-1); }
+html[lang="ar"] .assess-hero-btn { font-family: var(--f-ar); font-size: 15px; }
+
+.memory-hero { background: var(--g-memory); border-radius: var(--r-xl); padding: 26px 22px; position: relative;
+  overflow: hidden; box-shadow: var(--sh-memory); display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 14px; }
+.memory-hero::before { content: ''; position: absolute; top: -30%; right: -20%; width: 220px; height: 220px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+  pointer-events: none; animation: memoryGlow 4s ease-in-out infinite; }
+.memory-hero::after { content: ''; position: absolute; bottom: -40%; left: -20%; width: 240px; height: 240px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
+@keyframes memoryGlow { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+.memory-hero-icon { position: relative; z-index: 2; width: 84px; height: 84px; border-radius: 26px;
+  background: rgba(255, 255, 255, 0.22); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.35); display: flex; align-items: center; justify-content: center;
+  font-size: 38px; line-height: 1; animation: memoryFloat 3s ease-in-out infinite; }
+@keyframes memoryFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.memory-hero-title { position: relative; z-index: 2; font-size: 23px; font-weight: 800; color: #fff;
+  letter-spacing: -0.4px; line-height: 1.25; }
+html[lang="ar"] .memory-hero-title { font-family: var(--f-ar); font-size: 22px; letter-spacing: 0; }
+.memory-hero-sub { position: relative; z-index: 2; font-size: 13px; font-weight: 500;
+  color: rgba(255, 255, 255, 0.92); line-height: 1.55; max-width: 290px; }
+html[lang="ar"] .memory-hero-sub { font-family: var(--f-ar); font-size: 14px; }
+.memory-hero-btn { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 28px; background: #fff; color: var(--c-purple); font-size: 15px; font-weight: 800;
+  letter-spacing: 0.3px; border-radius: var(--r-md); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  transition: all 0.25s ease; margin-top: 4px; }
+.memory-hero-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28); }
+.memory-hero-btn:active { transform: scale(0.97); }
+.memory-hero-btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+html[dir="rtl"] .memory-hero-btn svg { transform: scaleX(-1); }
+html[lang="ar"] .memory-hero-btn { font-family: var(--f-ar); font-size: 16px; }
+
+.skills-preview { background: #fff; border: 1.5px solid var(--c-border); border-radius: var(--r-xl);
+  padding: 16px; position: relative; overflow: hidden; }
+.skills-preview::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--g-brand); }
+.skills-preview-head { font-size: 13px; font-weight: 700; color: var(--c-navy); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px; }
+.skills-preview-head::before { content: ''; width: 3px; height: 14px; background: var(--g-brand); border-radius: var(--r-pill); }
+html[lang="ar"] .skills-preview-head { font-family: var(--f-ar); font-size: 14px; }
+.skills-preview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.skills-preview-item { display: flex; align-items: center; gap: 8px; padding: 10px 10px;
+  background: rgba(14, 148, 135, 0.04); border: 1px solid rgba(14, 148, 135, 0.1); border-radius: var(--r-md); }
+.skills-preview-item:nth-child(5) { grid-column: 1 / -1; }
+.skills-preview-icon { width: 26px; height: 26px; border-radius: 8px; display: inline-flex; align-items: center;
+  justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+.skills-preview-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+.skills-preview-icon.memory::before    { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
+.skills-preview-icon.problem::before   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); }
+.skills-preview-icon.visual::before    { background: linear-gradient(135deg, #2EC4B6, #8B5CF6); }
+.skills-preview-icon.attention::before { background: linear-gradient(135deg, #EF4444, #FBBF24); }
+.skills-preview-icon.reasoning::before { background: linear-gradient(135deg, #3B82F6, #EC4899); }
+.skills-preview-icon svg { width: 13px; height: 13px; stroke: #fff; stroke-width: 2.3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 2; }
+.skills-preview-name { font-size: 11.5px; font-weight: 600; color: var(--c-navy); line-height: 1.2; }
+html[lang="ar"] .skills-preview-name { font-family: var(--f-ar); font-size: 12.5px; }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; padding-inline-start: 4px;
+  margin-top: 6px; min-height: 20px; }
+.section-title { font-size: 13.5px; font-weight: 700; color: var(--c-navy); letter-spacing: 0.2px;
+  display: flex; align-items: center; gap: 8px; }
+.section-title::before { content: ''; width: 3px; height: 14px; background: var(--g-brand);
+  border-radius: var(--r-pill); flex-shrink: 0; transition: background 0.4s ease; }
+body[data-view="child"] .section-title::before { background: var(--g-child); }
+body[data-view="memory"] .section-title::before { background: var(--g-memory); }
+html[lang="ar"] .section-title { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
+.section-link { font-size: 11.5px; font-weight: 600; color: var(--c-primary); letter-spacing: 0.2px;
+  transition: opacity 0.2s ease; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
+.section-link:hover { opacity: 0.7; }
+.section-link svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+html[dir="rtl"] .section-link svg { transform: scaleX(-1); }
+html[lang="ar"] .section-link { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
+
+.memory-card { background: #fff; border: 1.5px solid rgba(236, 72, 153, 0.25); border-radius: var(--r-xl);
+  padding: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(236, 72, 153, 0.08); }
+.memory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--g-heart); }
+.memory-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.memory-icon { width: 34px; height: 34px; border-radius: 10px; background: var(--g-heart); display: inline-flex;
+  align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 6px 16px rgba(236, 72, 153, 0.35); }
+.memory-icon svg { width: 17px; height: 17px; stroke: #fff; stroke-width: 2.3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.memory-text { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+.memory-title { font-size: 13.5px; font-weight: 800; color: var(--c-navy); letter-spacing: -0.2px; }
+html[lang="ar"] .memory-title { font-family: var(--f-ar); font-size: 14.5px; letter-spacing: 0; }
+.memory-stats { font-size: 10.5px; font-weight: 600; color: var(--c-slate); letter-spacing: 0.1px; }
+html[lang="ar"] .memory-stats { font-family: var(--f-ar); font-size: 11.5px; letter-spacing: 0; }
+.memory-avatars { display: flex; align-items: center; gap: 6px; padding: 4px 0 12px; flex-wrap: wrap; }
+.memory-avatar { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px;
+  background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.18); border-radius: var(--r-pill);
+  font-size: 11px; font-weight: 700; color: var(--c-navy); letter-spacing: 0.1px; max-width: 110px; }
+html[lang="ar"] .memory-avatar { font-family: var(--f-ar); font-size: 12px; letter-spacing: 0; }
+.memory-avatar-letter { width: 22px; height: 22px; border-radius: 50%; background: var(--g-heart);
+  display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 10px;
+  font-weight: 800; flex-shrink: 0; text-transform: uppercase; overflow: hidden; }
+.memory-avatar-letter img { width: 100%; height: 100%; object-fit: cover; }
+.memory-avatar-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.memory-avatar-more { padding: 5px 10px; background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.18);
+  border-radius: var(--r-pill); font-size: 10.5px; font-weight: 700; color: var(--c-purple); }
+html[lang="ar"] .memory-avatar-more { font-family: var(--f-ar); font-size: 11.5px; }
+.memory-desc { font-size: 11.5px; color: var(--c-slate); line-height: 1.5; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+html[lang="ar"] .memory-desc { font-family: var(--f-ar); font-size: 12.5px; }
+.memory-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.memory-btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 6px;
+  border-radius: var(--r-md); font-size: 11.5px; font-weight: 700; letter-spacing: 0.1px; transition: all 0.25s ease;
+  text-align: center; white-space: nowrap; overflow: hidden; }
+html[lang="ar"] .memory-btn { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
+.memory-btn svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.6; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.memory-btn.add { background: rgba(139, 92, 246, 0.1); color: var(--c-purple); border: 1px solid rgba(139, 92, 246, 0.25); }
+.memory-btn.add:hover { background: rgba(139, 92, 246, 0.18); transform: translateY(-1px); }
+.memory-btn.manage { background: rgba(14, 148, 135, 0.08); color: var(--c-primary); border: 1px solid rgba(14, 148, 135, 0.2); }
+.memory-btn.manage:hover { background: rgba(14, 148, 135, 0.15); transform: translateY(-1px); }
+.memory-btn.train { background: var(--g-heart); color: #fff; box-shadow: 0 6px 14px rgba(236, 72, 153, 0.35); }
+.memory-btn.train:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(236, 72, 153, 0.45); }
+.memory-btn:active { transform: scale(0.96); }
+.voice-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
+  background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--r-pill);
+  font-size: 9.5px; font-weight: 700; color: var(--c-purple); letter-spacing: 0.3px; }
+html[lang="ar"] .voice-badge { font-family: var(--f-ar); font-size: 10.5px; letter-spacing: 0; }
+.voice-badge svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.memory-empty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 8px 0 4px; text-align: center; }
+.memory-empty-text { font-size: 12px; color: var(--c-slate); line-height: 1.5; max-width: 260px; }
+html[lang="ar"] .memory-empty-text { font-family: var(--f-ar); font-size: 13px; }
+.memory-empty-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; background: var(--g-heart);
+  color: #fff; font-size: 12.5px; font-weight: 700; border-radius: var(--r-md);
+  box-shadow: 0 6px 16px rgba(236, 72, 153, 0.35); transition: all 0.25s ease; }
+.memory-empty-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(236, 72, 153, 0.45); }
+.memory-empty-btn:active { transform: scale(0.96); }
+html[lang="ar"] .memory-empty-btn { font-family: var(--f-ar); font-size: 13.5px; }
+.memory-empty-btn svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 2.6; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+
+.progress-card { background: #fff; border: 1.5px solid var(--c-border); border-radius: var(--r-xl);
+  padding: 16px; position: relative; overflow: hidden; }
+.progress-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+  background: var(--g-brand); transition: background 0.4s ease; }
+body[data-view="child"] .progress-card::before { background: var(--g-child); }
+.skill-bars { display: flex; flex-direction: column; gap: 14px; margin-top: 6px; }
+.skill-bar-row { display: flex; flex-direction: column; gap: 6px; }
+.skill-bar-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.skill-bar-info { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; }
+.skill-bar-icon { width: 24px; height: 24px; border-radius: 7px; display: inline-flex; align-items: center;
+  justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+.skill-bar-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+.skill-bar-icon svg { width: 13px; height: 13px; stroke: #fff; stroke-width: 2.3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 2; }
+.skill-bar-icon.memory::before    { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
+.skill-bar-icon.problem::before   { background: linear-gradient(135deg, #8B5CF6, #3B82F6); }
+.skill-bar-icon.visual::before    { background: linear-gradient(135deg, #2EC4B6, #8B5CF6); }
+.skill-bar-icon.attention::before { background: linear-gradient(135deg, #EF4444, #FBBF24); }
+.skill-bar-icon.reasoning::before { background: linear-gradient(135deg, #3B82F6, #EC4899); }
+.skill-bar-name { font-size: 12px; font-weight: 700; color: var(--c-navy); letter-spacing: 0.1px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html[lang="ar"] .skill-bar-name { font-family: var(--f-ar); font-size: 13px; letter-spacing: 0; }
+.level-badge { display: inline-flex; align-items: center; gap: 3px; padding: 3px 9px; border-radius: var(--r-pill);
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase; flex-shrink: 0; white-space: nowrap; }
+html[lang="ar"] .level-badge { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 10.5px; }
+.level-badge svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 2.6; fill: currentColor;
+  stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.level-badge.lvl1 { background: rgba(239, 68, 68, 0.14); color: var(--c-error); }
+.level-badge.lvl2 { background: rgba(251, 191, 36, 0.14); color: #B45309; }
+.level-badge.lvl3 { background: rgba(59, 130, 246, 0.14); color: var(--c-blue); }
+.level-badge.lvl4 { background: rgba(14, 148, 135, 0.14); color: var(--c-primary); }
+.level-badge.lvl5 { background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(59, 130, 246, 0.15)); color: var(--c-purple); }
+.skill-bar-score { font-size: 12px; font-weight: 800; font-feature-settings: "tnum"; letter-spacing: -0.2px; flex-shrink: 0; }
+.skill-bar-score.high { color: var(--c-success); }
+.skill-bar-score.mid  { color: var(--c-warning); }
+.skill-bar-score.low  { color: var(--c-error); }
+.skill-bar-track { width: 100%; height: 6px; background: rgba(14, 148, 135, 0.08); border-radius: var(--r-pill);
+  overflow: hidden; position: relative; }
+.skill-bar-fill { height: 100%; width: 0%; border-radius: var(--r-pill); transition: width 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
+.skill-bar-fill.high { background: linear-gradient(90deg, #22C55E, #4ADE80); box-shadow: 0 0 6px rgba(34, 197, 94, 0.4); }
+.skill-bar-fill.mid  { background: linear-gradient(90deg, #FBBF24, #F59E0B); box-shadow: 0 0 6px rgba(251, 191, 36, 0.4); }
+.skill-bar-fill.low  { background: linear-gradient(90deg, #EF4444, #F87171); box-shadow: 0 0 6px rgba(239, 68, 68, 0.4); }
+
+.chart-card { background: #fff; border: 1.5px solid var(--c-border); border-radius: var(--r-xl);
+  padding: 16px 14px 12px; position: relative; overflow: hidden; }
+.chart-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+  background: var(--g-brand); transition: background 0.4s ease; }
+body[data-view="child"] .chart-card::before { background: var(--g-child); }
+.chart-svg { width: 100%; height: 110px; display: block; overflow: visible; margin-top: 4px; }
+.chart-line { fill: none; stroke: url(#lineGrad); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards; }
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+.chart-area { fill: url(#areaGrad); opacity: 0; animation: fadeIn 0.8s ease 1.8s forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+.chart-dot { fill: #fff; stroke: url(#lineGrad); stroke-width: 2.4; opacity: 0;
+  animation: dotPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.chart-dot:nth-child(1) { animation-delay: 0.6s; }
+.chart-dot:nth-child(2) { animation-delay: 0.8s; }
+.chart-dot:nth-child(3) { animation-delay: 1.0s; }
+.chart-dot:nth-child(4) { animation-delay: 1.2s; }
+@keyframes dotPop { 0% { opacity: 0; r: 0; } 60% { opacity: 1; r: 5; } 100% { opacity: 1; r: 3.5; } }
+.chart-value { font-size: 9px; font-weight: 700; fill: var(--c-primary); font-family: 'Poppins', sans-serif;
+  opacity: 0; animation: fadeIn 0.4s ease 1.8s forwards; text-anchor: middle; font-feature-settings: "tnum"; }
+.chart-labels { display: flex; justify-content: space-between; padding: 6px 8px 0; }
+.chart-label { font-size: 9.5px; font-weight: 600; color: var(--c-slate); letter-spacing: 0.3px; text-align: center; flex: 1; }
+html[lang="ar"] .chart-label { font-family: var(--f-ar); font-size: 10.5px; letter-spacing: 0; }
+
+.quick-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 4px; }
+.quick-btn { display: flex; align-items: center; gap: 10px; padding: 14px; background: #fff;
+  border: 1.5px solid var(--c-border); border-radius: var(--r-lg); transition: all 0.25s ease;
+  text-align: start; position: relative; overflow: hidden; }
+.quick-btn:hover { transform: translateY(-2px); border-color: rgba(14, 148, 135, 0.3);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06); }
+.quick-btn:active { transform: scale(0.97); }
+.quick-icon { width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center;
+  justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+.quick-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+.quick-btn.progress-btn .quick-icon::before  { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
+.quick-btn.schedule-btn .quick-icon::before  { background: linear-gradient(135deg, #8B5CF6, #3B82F6); }
+.quick-icon svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 2; }
+.quick-text { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.quick-title { font-size: 12px; font-weight: 700; color: var(--c-navy); letter-spacing: 0.1px; line-height: 1.2; }
+html[lang="ar"] .quick-title { font-family: var(--f-ar); font-size: 13px; letter-spacing: 0; }
+.quick-sub { font-size: 10px; color: var(--c-slate); font-weight: 500; }
+html[lang="ar"] .quick-sub { font-family: var(--f-ar); font-size: 11px; }
+
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+.history-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #fff;
+  border: 1.5px solid var(--c-border); border-radius: var(--r-lg); transition: all 0.25s ease; }
+.history-row:hover { transform: translateY(-1px); border-color: rgba(14, 148, 135, 0.3); }
+.history-icon { width: 34px; height: 34px; border-radius: 10px; background: var(--g-memory); display: inline-flex;
+  align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; box-shadow: 0 6px 16px rgba(139, 92, 246, 0.3); }
+.history-body { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.history-title { font-size: 12.5px; font-weight: 700; color: var(--c-navy); }
+html[lang="ar"] .history-title { font-family: var(--f-ar); font-size: 13.5px; }
+.history-meta { font-size: 10.5px; color: var(--c-slate); font-weight: 500; }
+html[lang="ar"] .history-meta { font-family: var(--f-ar); font-size: 11.5px; }
+.history-badge { padding: 4px 10px; border-radius: var(--r-pill); font-size: 10.5px; font-weight: 700;
+  background: rgba(139, 92, 246, 0.12); color: var(--c-purple); flex-shrink: 0; font-feature-settings: "tnum"; }
+
+.sheet-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+.sheet-overlay.show { opacity: 1; pointer-events: auto; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--c-bg); border-radius: 28px 28px 0 0;
+  max-height: 92%; display: flex; flex-direction: column; z-index: 501; transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1); box-shadow: 0 -20px 60px rgba(15, 23, 42, 0.3);
+  overflow: hidden; }
+.sheet.show { transform: translateY(0); }
+.sheet-handle { width: 44px; height: 5px; background: var(--c-border); border-radius: var(--r-pill);
+  margin: 12px auto 8px; flex-shrink: 0; }
+.sheet-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 22px 12px; flex-shrink: 0; }
+.sheet-title-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.sheet-title { font-size: 19px; font-weight: 800; color: var(--c-navy); letter-spacing: -0.3px; line-height: 1.25; }
+html[lang="ar"] .sheet-title { font-family: var(--f-ar); font-size: 18px; letter-spacing: 0; }
+.sheet-sub { font-size: 12px; color: var(--c-slate); line-height: 1.5; }
+html[lang="ar"] .sheet-sub { font-family: var(--f-ar); font-size: 13px; }
+.sheet-optional { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px;
+  background: rgba(139, 92, 246, 0.12); color: var(--c-purple); font-size: 9.5px; font-weight: 700;
+  border-radius: var(--r-pill); letter-spacing: 0.4px; text-transform: uppercase; align-self: flex-start; }
+html[lang="ar"] .sheet-optional { font-family: var(--f-ar); text-transform: none; letter-spacing: 0; font-size: 10.5px; }
+.sheet-close { width: 34px; height: 34px; border-radius: 50%; background: rgba(14, 148, 135, 0.08);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s ease; }
+.sheet-close:hover { background: rgba(14, 148, 135, 0.15); transform: rotate(90deg); }
+.sheet-close svg { width: 14px; height: 14px; stroke: var(--c-slate); stroke-width: 2.4; fill: none; stroke-linecap: round; }
+.sheet-body { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 4px 22px 12px; display: flex;
+  flex-direction: column; gap: 10px; min-height: 0; }
+.sheet-body::-webkit-scrollbar { display: none; }
+.sheet-footer { padding: 12px 22px 26px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;
+  background: var(--c-bg); border-top: 1px solid rgba(226, 232, 240, 0.5); }
+.sheet-primary { position: relative; width: 100%; padding: 15px 24px; background: var(--g-brand); color: #fff;
+  font-size: 14.5px; font-weight: 600; letter-spacing: 0.4px; border-radius: var(--r-md); overflow: hidden;
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.28); transition: transform 0.2s ease, box-shadow 0.25s ease;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.sheet-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(14, 148, 135, 0.35); }
+.sheet-primary:active { transform: scale(0.97); }
+.sheet-primary svg { width: 15px; height: 15px; stroke: #fff; stroke-width: 2.4; fill: none; transition: transform 0.3s ease; }
+html[dir="rtl"] .sheet-primary svg { transform: scaleX(-1); }
+.sheet-primary:hover svg { transform: translateX(4px); }
+html[dir="rtl"] .sheet-primary:hover svg { transform: scaleX(-1) translateX(4px); }
+html[lang="ar"] .sheet-primary { font-family: var(--f-ar); font-size: 15.5px; }
+.sheet-skip { width: 100%; padding: 10px; color: var(--c-slate); font-size: 12.5px; font-weight: 500;
+  text-align: center; border-radius: var(--r-md); transition: all 0.25s ease; }
+.sheet-skip:hover { color: var(--c-primary); background: rgba(14, 148, 135, 0.06); }
+html[lang="ar"] .sheet-skip { font-family: var(--f-ar); font-size: 13.5px; }
+
+.person-list { display: flex; flex-direction: column; gap: 8px; }
+.person-list-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #fff;
+  border: 1.5px solid var(--c-border); border-radius: var(--r-lg); transition: all 0.25s ease; cursor: pointer;
+  text-align: start; width: 100%; position: relative; overflow: hidden; }
+.person-list-item:hover { transform: translateY(-1px); border-color: rgba(14, 148, 135, 0.35);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06); }
+.person-list-item:active { transform: scale(0.98); }
+.person-list-item.active { border-color: transparent;
+  background: linear-gradient(135deg, rgba(14, 148, 135, 0.08), rgba(59, 130, 246, 0.05));
+  box-shadow: 0 10px 28px rgba(14, 148, 135, 0.18); border: 2px solid transparent;
+  background-clip: padding-box; position: relative; padding: 11px 13px; }
+.person-list-item.active::before { content: ''; position: absolute; inset: -2px; border-radius: var(--r-lg);
+  background: var(--g-brand); z-index: -1; }
+.person-avatar { width: 48px; height: 48px; min-width: 48px; border-radius: 50%; background: var(--g-child);
+  display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; font-weight: 800;
+  flex-shrink: 0; text-transform: uppercase; overflow: hidden; box-shadow: 0 6px 16px rgba(139, 92, 246, 0.28);
+  position: relative; }
+.person-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.person-avatar.memory-mode { background: var(--g-memory); box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4); }
+.person-body { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.person-name { font-size: 14.5px; font-weight: 800; color: var(--c-navy); letter-spacing: -0.2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html[lang="ar"] .person-name { font-family: var(--f-ar); font-size: 15px; letter-spacing: 0; }
+.person-meta-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.person-meta-pill { display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; border-radius: var(--r-pill);
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.2px; background: rgba(100, 116, 139, 0.08); color: var(--c-slate); }
+.person-meta-pill.mode-full { background: rgba(14, 148, 135, 0.12); color: var(--c-primary); }
+.person-meta-pill.mode-memory { background: rgba(139, 92, 246, 0.14); color: var(--c-purple); }
+.person-meta-pill.pending { background: rgba(251, 191, 36, 0.14); color: #B45309; }
+.person-meta-pill svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 2.5; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+html[lang="ar"] .person-meta-pill { font-family: var(--f-ar); font-size: 10.5px; letter-spacing: 0; }
+.person-active-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--g-brand);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(14, 148, 135, 0.4); }
+.person-active-badge svg { width: 13px; height: 13px; stroke: #fff; stroke-width: 3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.add-person-row { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px;
+  background: rgba(139, 92, 246, 0.06); border: 1.5px dashed rgba(139, 92, 246, 0.4); border-radius: var(--r-lg);
+  font-size: 13px; font-weight: 700; color: var(--c-purple); transition: all 0.25s ease; cursor: pointer;
+  width: 100%; margin-top: 4px; }
+.add-person-row:hover { background: rgba(139, 92, 246, 0.12); border-color: rgba(139, 92, 246, 0.6); transform: translateY(-1px); }
+.add-person-row:active { transform: scale(0.97); }
+.add-person-row svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2.5; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+html[lang="ar"] .add-person-row { font-family: var(--f-ar); font-size: 14px; }
+
+.add-memory-options { display: flex; flex-direction: column; gap: 10px; }
+.add-memory-option { display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff;
+  border: 1.5px solid var(--c-border); border-radius: var(--r-lg); transition: all 0.25s ease; text-align: start; }
+.add-memory-option:hover { transform: translateY(-2px); border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 24px rgba(139, 92, 246, 0.12); }
+.add-memory-option:active { transform: scale(0.97); }
+.add-memory-icon { width: 42px; height: 42px; border-radius: 12px; display: inline-flex; align-items: center;
+  justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+.add-memory-icon::before { content: ''; position: absolute; inset: 0; z-index: 1; }
+.add-memory-icon.person::before { background: linear-gradient(135deg, #EC4899, #8B5CF6); }
+.add-memory-icon.place::before  { background: linear-gradient(135deg, #0E9487, #2EC4B6); }
+.add-memory-icon.event::before  { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+.add-memory-icon svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 2.3; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 2; }
+.add-memory-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.add-memory-title { font-size: 14px; font-weight: 700; color: var(--c-navy); letter-spacing: -0.1px; }
+html[lang="ar"] .add-memory-title { font-family: var(--f-ar); font-size: 15px; letter-spacing: 0; }
+.add-memory-desc { font-size: 11.5px; color: var(--c-slate); line-height: 1.5; }
+html[lang="ar"] .add-memory-desc { font-family: var(--f-ar); font-size: 12.5px; }
+.add-memory-arrow { width: 16px; height: 16px; stroke: var(--c-slate); stroke-width: 2.4; fill: none;
+  flex-shrink: 0; opacity: 0.5; }
+html[dir="rtl"] .add-memory-arrow { transform: scaleX(-1); }
+
+.checkin-question { background: #fff; border: 1.5px solid var(--c-border); border-radius: var(--r-lg);
+  padding: 14px; transition: all 0.3s ease; }
+.checkin-question.answered { border-color: rgba(139, 92, 246, 0.3); }
+.cq-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.cq-icon { width: 34px; height: 34px; border-radius: 10px; background: rgba(139, 92, 246, 0.1);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cq-icon svg { width: 17px; height: 17px; stroke: var(--c-purple); stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.cq-text { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+.cq-title { font-size: 13px; font-weight: 700; color: var(--c-navy); letter-spacing: -0.1px; }
+html[lang="ar"] .cq-title { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
+.cq-sub { font-size: 11px; color: var(--c-slate); line-height: 1.4; }
+html[lang="ar"] .cq-sub { font-family: var(--f-ar); font-size: 12px; }
+.cq-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.cq-opt { padding: 10px 4px; border: 1.5px solid var(--c-border); background: #fff; border-radius: var(--r-md);
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  transition: all 0.25s cubic-bezier(0.65, 0, 0.35, 1); cursor: pointer; position: relative; overflow: hidden; }
+.cq-opt:hover { border-color: rgba(139, 92, 246, 0.4); transform: translateY(-1px); }
+.cq-opt:active { transform: scale(0.96); }
+.cq-opt .opt-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c-border); transition: all 0.3s ease; }
+.cq-opt .opt-label { font-size: 11px; font-weight: 600; color: var(--c-navy); transition: color 0.3s ease; }
+html[lang="ar"] .cq-opt .opt-label { font-family: var(--f-ar); font-size: 12px; }
+.cq-opt.selected { border-color: transparent; transform: translateY(-1px); }
+.cq-opt[data-value="low"].selected { background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.4); }
+.cq-opt[data-value="low"].selected .opt-dot { background: var(--c-error); box-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
+.cq-opt[data-value="low"].selected .opt-label { color: var(--c-error); }
+.cq-opt[data-value="mid"].selected { background: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.4); }
+.cq-opt[data-value="mid"].selected .opt-dot { background: var(--c-warning); box-shadow: 0 0 8px rgba(251, 191, 36, 0.5); }
+.cq-opt[data-value="mid"].selected .opt-label { color: var(--c-warning); }
+.cq-opt[data-value="high"].selected { background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.4); }
+.cq-opt[data-value="high"].selected .opt-dot { background: var(--c-success); box-shadow: 0 0 8px rgba(34, 197, 94, 0.5); }
+.cq-opt[data-value="high"].selected .opt-label { color: var(--c-success); }
+.cq-opt.selected::after { content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.5) 0%, transparent 70%); animation: optPop 0.5s ease; }
+@keyframes optPop { 0% { transform: scale(0.4); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
+
+.levelup-toast { position: absolute; top: 110px; left: 50%; transform: translateX(-50%) translateY(-30px);
+  padding: 10px 18px; background: linear-gradient(135deg, #8B5CF6, #3B82F6); color: #fff; border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 800; letter-spacing: 0.3px; box-shadow: 0 12px 32px rgba(139, 92, 246, 0.45);
+  z-index: 400; opacity: 0; pointer-events: none; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.levelup-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.levelup-toast svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 2.6; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+html[lang="ar"] .levelup-toast { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+
+<body data-view="self">
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0E9487"/>
+      <stop offset="50%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0E9487" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#0E9487" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+
+      <div class="header">
+        <div class="header-left" id="headerLeft">
+          <div class="header-avatar" id="headerAvatar">U</div>
+          <div class="header-text">
+            <div class="header-greet" id="greet">Good Morning 👋</div>
+            <div class="header-name" id="userName">
+              <span id="userNameText">User</span>
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="langBtn" aria-label="Language">
+            <span class="lang-mini" id="langMini">EN</span>
+          </button>
+          <button class="icon-btn" id="settingsBtn" aria-label="Settings">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="content" id="mainContent"></div>
+
+      <div class="sheet-overlay" id="personSwitcherOverlay"></div>
+      <div class="sheet" id="personSwitcherSheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title-wrap">
+            <h2 class="sheet-title" id="switcherTitle">People I care for</h2>
+            <p class="sheet-sub" id="switcherSub">Switch between the people you're supporting.</p>
+          </div>
+          <button class="sheet-close" id="switcherClose" aria-label="Close">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="sheet-body" id="switcherBody"></div>
+        <div class="sheet-footer">
+          <button class="add-person-row" id="addPersonSheetBtn">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span id="addPersonSheetLabel">Add another person</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sheet-overlay" id="checkinOverlay"></div>
+      <div class="sheet" id="checkinSheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title-wrap">
+            <h2 class="sheet-title" id="sheetTitle">How are you feeling today?</h2>
+            <p class="sheet-sub" id="sheetSub">A quick check-in helps us understand your performance context.</p>
+            <span class="sheet-optional" id="sheetOptional">Optional</span>
+          </div>
+          <button class="sheet-close" id="sheetClose" aria-label="Close">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="sheet-body" id="checkinBody"></div>
+        <div class="sheet-footer">
+          <button class="sheet-primary" id="checkinContinue">
+            <span id="checkinContinueLabel">Continue</span>
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </button>
+          <button class="sheet-skip" id="checkinSkip">Skip for now</button>
+        </div>
+      </div>
+
+      <div class="sheet-overlay" id="addMemoryOverlay"></div>
+      <div class="sheet" id="addMemorySheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title-wrap">
+            <h2 class="sheet-title" id="addMemoryTitle">What would you like to add?</h2>
+            <p class="sheet-sub" id="addMemorySub">Add someone or something you care about.</p>
+          </div>
+          <button class="sheet-close" id="addMemoryClose" aria-label="Close">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="sheet-body">
+          <div class="add-memory-options">
+            <button class="add-memory-option" data-type="person">
+              <div class="add-memory-icon person">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div class="add-memory-info">
+                <div class="add-memory-title" id="addPersonTitle">Add a Person</div>
+                <div class="add-memory-desc" id="addPersonDesc">Family, friend, or someone important</div>
+              </div>
+              <svg class="add-memory-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button class="add-memory-option" data-type="place">
+              <div class="add-memory-icon place">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div class="add-memory-info">
+                <div class="add-memory-title" id="addPlaceTitle">Add a Place</div>
+                <div class="add-memory-desc" id="addPlaceDesc">Home, mosque, park, etc.</div>
+              </div>
+              <svg class="add-memory-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <button class="add-memory-option" data-type="event">
+              <div class="add-memory-icon event">
+                <svg viewBox="0 0 24 24"><path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z"></path></svg>
+              </div>
+              <div class="add-memory-info">
+                <div class="add-memory-title" id="addEventTitle">Add an Event</div>
+                <div class="add-memory-desc" id="addEventDesc">Birthday, anniversary, or memory</div>
+              </div>
+              <svg class="add-memory-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="levelup-toast" id="levelupToast">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span id="levelupText">🎉 Level Up!</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* TRANSLATIONS */
+const I18N = {
+  en: {
+    greetMorning: 'Good Morning', greetAfternoon: 'Good Afternoon', greetEvening: 'Good Evening',
+    heroTag: "Today's Workout", heroTitle: 'Cognitive Training', heroSub: 'Ready to train your mind?',
+    heroRestTitle: 'Rest Day', heroRestSub: 'Take a break — you deserve it!',
+    heroTotalLabel: 'Total', heroTotalUnit: 'min', startLabel: 'Start Workout',
+    restDayText: 'No sessions today. See you tomorrow!',
+    heroTagChild: "{name}'s Workout", heroTitleChild: "{name}'s Training", heroSubChild: 'Ready to train their mind?',
+    heroRestTitleChild: 'Rest Day', heroRestSubChild: 'No training scheduled for {name} today.',
+    startLabelChild: 'Start Workout', restDayTextChild: 'No sessions for {name} today.',
+    memHeroTag: 'Memory Care', memHeroTitle: 'Memory Conversation',
+    memHeroSub: 'Have a warm AI conversation about the people and moments you love.',
+    memStartLabel: 'Start Conversation',
+    memHeroTagChild: "{name}'s Memory Time", memHeroTitleChild: "{name}'s Memory Chat",
+    memHeroSubChild: 'A gentle AI conversation about their memories.',
+    memStartLabelChild: 'Start Chat',
+    memRecentTitle: 'Recent Sessions', memNoSessions: 'No conversations yet — start your first one!',
+    memMemoriesLabel: 'Memories',
+    memorySectionTitle: 'Personal Memory', progressSectionTitle: "This Week's Progress",
+    chartSectionTitle: 'Weekly Trend', seeAllText: 'See All',
+    memoryTitle: 'Personal Memory', memoryEmptyTitle: 'Build Your Memory Bank',
+    memoryEmptyText: 'Add important people and moments to unlock personalized memory training.',
+    memoryEmptyBtn: 'Add First Person',
+    memoryStatsPeople: 'people', memoryStatsPlaces: 'places', memoryStatsEvents: 'events',
+    memoryDesc: 'Keep them fresh in your mind today.',
+    memoryAddBtn: 'Add', memoryManageBtn: 'Manage', memoryTrainBtn: 'Train', memoryMore: 'more',
+    voiceBadge: 'Voice ON', weekLabel: 'Week',
+    quickProgress: 'Progress', quickProgressSub: 'Track your gains',
+    quickSchedule: 'Schedule', quickScheduleSub: 'See your week',
+    assessHeroTitle: 'Take Your Assessment',
+    assessHeroDesc: 'A 10-minute cognitive check to understand your unique strengths and build your personalized training plan.',
+    assessBtnLabel: 'Take Your Assessment', skillsPreviewTitle: "What We'll Assess",
+    levelUpToast: 'Level Up!',
+    levelNames: { 1: 'Beginner', 2: 'Learning', 3: 'Intermediate', 4: 'Advanced', 5: 'Expert' },
+    sheetTitle: 'How are you feeling today?',
+    sheetSub: 'A quick check-in helps us understand your performance context.',
+    sheetOptional: 'Optional',
+    cqSleep: 'Sleep Quality', cqsSleep: 'How did you sleep last night?',
+    cqStress: 'Stress Level', cqsStress: 'How stressed do you feel right now?',
+    cqEnergy: 'Energy Level', cqsEnergy: 'How energetic do you feel?',
+    sheetTitleChild: 'How is {name} feeling today?',
+    sheetSubChild: "A quick check-in helps us understand {name}'s context.",
+    cqSleepChild: "{name}'s Sleep Quality", cqsSleepChild: 'How did {name} sleep last night?',
+    cqStressChild: "{name}'s Stress Level", cqsStressChild: 'How stressed is {name} right now?',
+    cqEnergyChild: "{name}'s Energy Level", cqsEnergyChild: 'How energetic is {name} feeling?',
+    sleepLow: 'Poor', sleepMid: 'Okay', sleepHigh: 'Good',
+    stressLow: 'Low', stressMid: 'Medium', stressHigh: 'High',
+    energyLow: 'Low', energyMid: 'Medium', energyHigh: 'High',
+    checkinContinue: 'Continue', checkinSkip: 'Skip for now',
+    addMemoryTitle: 'What would you like to add?', addMemorySub: 'Add someone or something you care about.',
+    addPersonTitle: 'Add a Person', addPersonDesc: 'Family, friend, or someone important',
+    addPlaceTitle: 'Add a Place', addPlaceDesc: 'Home, mosque, park, etc.',
+    addEventTitle: 'Add an Event', addEventDesc: 'Birthday, anniversary, or memory',
+    switcherTitle: 'People I care for', switcherSub: 'Switch between the people you support.',
+    addPersonSheetLabel: 'Add another person',
+    personModeFull: 'Assess & Train', personModeMemory: 'Memory Care',
+    personPendingAssess: 'Assessment needed', yearsOld: 'years',
+    skills: { memory: 'Memory', problem: 'Problem Solving', visual: 'Visual Skills', attention: 'Attention', reasoning: 'Reasoning' }
+  },
+  ar: {
+    greetMorning: 'صباح الخير', greetAfternoon: 'مساء الخير', greetEvening: 'مساء الخير',
+    heroTag: 'تمرين اليوم', heroTitle: 'التدريب الذهني', heroSub: 'جاهز لتدريب عقلك؟',
+    heroRestTitle: 'يوم راحة', heroRestSub: 'خذ استراحة — تستحقها!',
+    heroTotalLabel: 'الإجمالي', heroTotalUnit: 'دقيقة', startLabel: 'ابدأ التمرين',
+    restDayText: 'لا توجد جلسات اليوم. نراك غدًا!',
+    heroTagChild: 'تمرين {name}', heroTitleChild: 'تدريب {name}', heroSubChild: 'جاهز لتدريب عقله؟',
+    heroRestTitleChild: 'يوم راحة', heroRestSubChild: 'لا يوجد تدريب مجدول لـ {name} اليوم.',
+    startLabelChild: 'ابدأ التمرين', restDayTextChild: 'لا توجد جلسات لـ {name} اليوم.',
+    memHeroTag: 'رعاية الذاكرة', memHeroTitle: 'محادثة الذاكرة',
+    memHeroSub: 'أجرِ محادثة دافئة مع الذكاء الاصطناعي عن الأشخاص واللحظات التي تحبها.',
+    memStartLabel: 'ابدأ المحادثة',
+    memHeroTagChild: 'وقت ذاكرة {name}', memHeroTitleChild: 'محادثة ذاكرة {name}',
+    memHeroSubChild: 'محادثة ذكية لطيفة عن ذكرياتهم.',
+    memStartLabelChild: 'ابدأ المحادثة',
+    memRecentTitle: 'الجلسات الأخيرة', memNoSessions: 'لا توجد محادثات بعد — ابدأ أول واحدة!',
+    memMemoriesLabel: 'ذكريات',
+    memorySectionTitle: 'الذاكرة الشخصية', progressSectionTitle: 'تقدم هذا الأسبوع',
+    chartSectionTitle: 'الاتجاه الأسبوعي', seeAllText: 'عرض الكل',
+    memoryTitle: 'الذاكرة الشخصية', memoryEmptyTitle: 'ابنِ بنك الذكريات',
+    memoryEmptyText: 'أضف أشخاصًا ولحظات مهمة لفتح تدريب الذاكرة المخصص.',
+    memoryEmptyBtn: 'أضف أول شخص',
+    memoryStatsPeople: 'أشخاص', memoryStatsPlaces: 'أماكن', memoryStatsEvents: 'أحداث',
+    memoryDesc: 'حافظ عليهم في ذاكرتك اليوم.',
+    memoryAddBtn: 'إضافة', memoryManageBtn: 'إدارة', memoryTrainBtn: 'تدريب', memoryMore: 'المزيد',
+    voiceBadge: 'الصوت مفعّل', weekLabel: 'أسبوع',
+    quickProgress: 'التقدم', quickProgressSub: 'تابع التطور',
+    quickSchedule: 'الجدول', quickScheduleSub: 'شاهد الأسبوع',
+    assessHeroTitle: 'ابدأ تقييمك',
+    assessHeroDesc: 'فحص ذهني سريع (10 دقائق) لفهم نقاط قوتك وبناء خطة تدريب مخصصة لك.',
+    assessBtnLabel: 'ابدأ التقييم', skillsPreviewTitle: 'ما سنقوم بتقييمه',
+    levelUpToast: 'ترقية مستوى!',
+    levelNames: { 1: 'مبتدئ', 2: 'متعلم', 3: 'متوسط', 4: 'متقدم', 5: 'خبير' },
+    sheetTitle: 'كيف تشعر اليوم؟',
+    sheetSub: 'فحص سريع يساعدنا على فهم سياق أدائك.',
+    sheetOptional: 'اختياري',
+    cqSleep: 'جودة النوم', cqsSleep: 'كيف نمت الليلة الماضية؟',
+    cqStress: 'مستوى التوتر', cqsStress: 'ما مستوى التوتر لديك الآن؟',
+    cqEnergy: 'مستوى الطاقة', cqsEnergy: 'ما مستوى طاقتك الآن؟',
+    sheetTitleChild: 'كيف يشعر {name} اليوم؟',
+    sheetSubChild: 'فحص سريع يساعدنا على فهم حالة {name}.',
+    cqSleepChild: 'جودة نوم {name}', cqsSleepChild: 'كيف نام {name} الليلة الماضية؟',
+    cqStressChild: 'مستوى توتر {name}', cqsStressChild: 'ما مستوى التوتر لدى {name} الآن؟',
+    cqEnergyChild: 'مستوى طاقة {name}', cqsEnergyChild: 'ما مستوى طاقة {name} الآن؟',
+    sleepLow: 'ضعيف', sleepMid: 'متوسط', sleepHigh: 'جيد',
+    stressLow: 'منخفض', stressMid: 'متوسط', stressHigh: 'مرتفع',
+    energyLow: 'منخفض', energyMid: 'متوسط', energyHigh: 'مرتفع',
+    checkinContinue: 'متابعة', checkinSkip: 'تخطي الآن',
+    addMemoryTitle: 'ماذا تريد أن تضيف؟', addMemorySub: 'أضف شخصًا أو شيئًا تهتم به.',
+    addPersonTitle: 'أضف شخصًا', addPersonDesc: 'عائلة، صديق، أو شخص مهم',
+    addPlaceTitle: 'أضف مكانًا', addPlaceDesc: 'المنزل، المسجد، الحديقة، إلخ.',
+    addEventTitle: 'أضف حدثًا', addEventDesc: 'عيد ميلاد، ذكرى، أو لحظة',
+    switcherTitle: 'الأشخاص الذين أعتني بهم', switcherSub: 'بدّل بين الأشخاص الذين تدعمهم.',
+    addPersonSheetLabel: 'أضف شخصًا آخر',
+    personModeFull: 'التقييم والتدريب', personModeMemory: 'رعاية الذاكرة',
+    personPendingAssess: 'يحتاج تقييم', yearsOld: 'سنة',
+    skills: { memory: 'الذاكرة', problem: 'حل المشكلات', visual: 'المهارات البصرية', attention: 'الانتباه', reasoning: 'الاستدلال' }
+  }
+};
+
+const SKILLS = [
+  { key: 'memory',    storageBase: 'omega_memory_result',    icon: `<svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path></svg>` },
+  { key: 'problem',   storageBase: 'omega_problem_result',   icon: `<svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg>` },
+  { key: 'visual',    storageBase: 'omega_visual_result',    icon: `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>` },
+  { key: 'attention', storageBase: 'omega_attention_result', icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>` },
+  { key: 'reasoning', storageBase: 'omega_reasoning_result', icon: `<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"></circle><circle cx="18" cy="6" r="2"></circle><circle cx="12" cy="12" r="2.5"></circle><circle cx="6" cy="18" r="2"></circle><circle cx="18" cy="18" r="2"></circle><line x1="6" y1="6" x2="12" y2="12"></line><line x1="18" y1="6" x2="12" y2="12"></line><line x1="6" y1="18" x2="12" y2="12"></line><line x1="18" y1="18" x2="12" y2="12"></line></svg>` }
+];
+
+const SKILL_ICONS = {};
+SKILLS.forEach(s => SKILL_ICONS[s.key] = s.icon);
+
+const STORAGE_KEY = 'omega_lang';
+const VIEW_MODE_KEY = 'omega_view_mode';
+
+let currentLang = localStorage.getItem(STORAGE_KEY) || 'en';
+let viewMode = localStorage.getItem(VIEW_MODE_KEY) || 'self';
+const htmlEl = document.documentElement;
+
+function getCurrentPersonId() {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  if (accountType !== 'caregiver') return null;
+  const personId = localStorage.getItem('omega_current_person_id');
+  return personId || null;
+}
+
+function getPersonKey(base) {
+  const pid = getCurrentPersonId();
+  return pid ? (base + '_' + pid) : base;
+}
+
+/* ✅ getScore — per-person أولاً، ثم fallback للـ global */
+function getScore(storageBase) {
+  const keysToTry = [getPersonKey(storageBase), storageBase];
+  for (const key of keysToTry) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || '{}');
+      if (typeof data.accuracy === 'number') return data.accuracy;
+    } catch (e) {}
+  }
+  return 0;
+}
+
+/* ✅ getLevel — per-person أولاً، ثم fallback للـ global */
+function getLevel(storageBase) {
+  const keysToTry = [getPersonKey(storageBase), storageBase];
+  for (const key of keysToTry) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || '{}');
+      if (typeof data.level === 'number') return data.level;
+      if (typeof data.accuracy === 'number') {
+        const score = data.accuracy;
+        if (score >= 85) return 5;
+        if (score >= 70) return 4;
+        if (score >= 50) return 3;
+        if (score >= 30) return 2;
+        return 1;
+      }
+    } catch (e) {}
+  }
+  return 1;
+}
+
+function getScoreClass(score) {
+  if (score >= 70) return 'high';
+  if (score >= 40) return 'mid';
+  return 'low';
+}
+
+function getLevelClass(level) {
+  return 'lvl' + Math.min(5, Math.max(1, level));
+}
+
+function getLevelLabel(level) {
+  const names = I18N[currentLang].levelNames;
+  return names[level] || names[1];
+}
+
+/* ✅ isAssessmentDone — per-person أولاً، ثم fallback للـ global */
+function isAssessmentDone() {
+  return SKILLS.every(s => {
+    const keysToTry = [getPersonKey(s.storageBase), s.storageBase];
+    return keysToTry.some(key => {
+      const raw = localStorage.getItem(key);
+      if (!raw) return false;
+      try {
+        const data = JSON.parse(raw);
+        return typeof data.accuracy === 'number';
+      } catch (e) { return false; }
+    });
+  });
+}
+
+/* ✅ isAssessmentDoneFor — per-person للأشخاص، ثم fallback للـ global */
+function isAssessmentDoneFor(personId) {
+  return SKILLS.every(s => {
+    const perPersonKey = 'omega_' + s.key + '_result_' + personId;
+    const globalKey = 'omega_' + s.key + '_result';
+    const raw = localStorage.getItem(perPersonKey) || localStorage.getItem(globalKey);
+    if (!raw) return false;
+    try {
+      const data = JSON.parse(raw);
+      return typeof data.accuracy === 'number';
+    } catch (e) { return false; }
+  });
+}
+
+function getBankItems(category) {
+  try {
+    const key = getPersonKey('omega_bank_' + category);
+    const arr = JSON.parse(localStorage.getItem(key) || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) { return []; }
+}
+
+let checkinState = { sleep: null, stress: null, energy: null };
+
+function getCaredPersons() {
+  try {
+    const arr = JSON.parse(localStorage.getItem('omega_care_persons') || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) { return []; }
+}
+
+function getCurrentPerson() {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const userName = localStorage.getItem('omega_user_name') || 'User';
+  if (accountType !== 'caregiver') {
+    return { name: userName, age: localStorage.getItem('omega_age'), type: 'self', careMode: 'full' };
+  }
+  const persons = getCaredPersons();
+  if (persons.length === 0) {
+    return { name: userName, age: localStorage.getItem('omega_age'), type: 'self', careMode: 'full' };
+  }
+  const currentId = localStorage.getItem('omega_current_person_id');
+  const found = persons.find(p => p.id === currentId);
+  return found || persons[0];
+}
+
+function getCurrentCareMode() {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  if (accountType !== 'caregiver') return 'full';
+  const person = getCurrentPerson();
+  return person.careMode || 'full';
+}
+
+function applyViewMode(mode) {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const isCaregiver = accountType === 'caregiver';
+  const careMode = getCurrentCareMode();
+
+  if (isCaregiver) {
+    mode = 'child';
+    const persons = getCaredPersons();
+    if (persons.length > 0) {
+      const currentId = localStorage.getItem('omega_current_person_id');
+      if (!currentId || !persons.find(p => p.id === currentId)) {
+        localStorage.setItem('omega_current_person_id', persons[0].id);
+      }
+    }
+  }
+
+  const finalView = (isCaregiver && careMode === 'memory') ? 'memory' : (isCaregiver ? 'child' : 'self');
+  viewMode = finalView;
+  localStorage.setItem(VIEW_MODE_KEY, finalView);
+  document.body.setAttribute('data-view', finalView);
+
+  const isChildView = finalView === 'child';
+  const isMemoryView = finalView === 'memory';
+
+  const avatarEl = document.getElementById('headerAvatar');
+  const nameEl = document.getElementById('userNameText');
+  const nameContainer = document.getElementById('userName');
+  const person = getCurrentPerson();
+
+  if (isChildView || isMemoryView) {
+    const initial = (person.name || '?').charAt(0).toUpperCase();
+    const photo = person.photo;
+    if (photo) {
+      avatarEl.innerHTML = `<img src="${photo}" alt="">`;
+    } else {
+      avatarEl.textContent = initial;
+    }
+    nameEl.textContent = person.name;
+    nameContainer.classList.toggle('child', isChildView);
+    nameContainer.classList.toggle('memory', isMemoryView);
+  } else {
+    const userName = localStorage.getItem('omega_user_name') || 'User';
+    avatarEl.textContent = userName.charAt(0).toUpperCase();
+    avatarEl.innerHTML = userName.charAt(0).toUpperCase();
+    nameEl.textContent = userName;
+    nameContainer.classList.remove('child', 'memory');
+  }
+
+  renderAll();
+}
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  document.getElementById('langMini').textContent = lang === 'en' ? 'EN' : 'ع';
+
+  const t = I18N[lang];
+  const hour = new Date().getHours();
+  let greetKey = 'greetMorning';
+  if (hour >= 12 && hour < 17) greetKey = 'greetAfternoon';
+  else if (hour >= 17 || hour < 5) greetKey = 'greetEvening';
+  document.getElementById('greet').textContent = t[greetKey] + ' 👋';
+
+  applyCheckinLanguage(lang, t);
+  document.getElementById('sheetOptional').textContent = t.sheetOptional;
+  document.getElementById('checkinContinueLabel').textContent = t.checkinContinue;
+  document.getElementById('checkinSkip').textContent = t.checkinSkip;
+
+  document.getElementById('addMemoryTitle').textContent = t.addMemoryTitle;
+  document.getElementById('addMemorySub').textContent = t.addMemorySub;
+  document.getElementById('addPersonTitle').textContent = t.addPersonTitle;
+  document.getElementById('addPersonDesc').textContent = t.addPersonDesc;
+  document.getElementById('addPlaceTitle').textContent = t.addPlaceTitle;
+  document.getElementById('addPlaceDesc').textContent = t.addPlaceDesc;
+  document.getElementById('addEventTitle').textContent = t.addEventTitle;
+  document.getElementById('addEventDesc').textContent = t.addEventDesc;
+
+  document.getElementById('switcherTitle').textContent = t.switcherTitle;
+  document.getElementById('switcherSub').textContent = t.switcherSub;
+  document.getElementById('addPersonSheetLabel').textContent = t.addPersonSheetLabel;
+
+  document.getElementById('levelupText').textContent = '🎉 ' + t.levelUpToast;
+
+  renderAll();
+}
+
+function applyCheckinLanguage(lang, t) {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const person = getCurrentPerson();
+  const isCaregiver = accountType === 'caregiver';
+
+  const sheetTitle = document.getElementById('sheetTitle');
+  const sheetSub = document.getElementById('sheetSub');
+  const cqSleep = document.getElementById('cqSleep');
+  const cqsSleep = document.getElementById('cqsSleep');
+  const cqStress = document.getElementById('cqStress');
+  const cqsStress = document.getElementById('cqsStress');
+  const cqEnergy = document.getElementById('cqEnergy');
+  const cqsEnergy = document.getElementById('cqsEnergy');
+
+  if (isCaregiver && person.name) {
+    sheetTitle.textContent = t.sheetTitleChild.replace('{name}', person.name);
+    sheetSub.textContent = t.sheetSubChild.replace('{name}', person.name);
+    cqSleep.textContent = t.cqSleepChild.replace('{name}', person.name);
+    cqsSleep.textContent = t.cqsSleepChild.replace('{name}', person.name);
+    cqStress.textContent = t.cqStressChild.replace('{name}', person.name);
+    cqsStress.textContent = t.cqsStressChild.replace('{name}', person.name);
+    cqEnergy.textContent = t.cqEnergyChild.replace('{name}', person.name);
+    cqsEnergy.textContent = t.cqsEnergyChild.replace('{name}', person.name);
+  } else {
+    sheetTitle.textContent = t.sheetTitle;
+    sheetSub.textContent = t.sheetSub;
+    cqSleep.textContent = t.cqSleep;
+    cqsSleep.textContent = t.cqsSleep;
+    cqStress.textContent = t.cqStress;
+    cqsStress.textContent = t.cqsStress;
+    cqEnergy.textContent = t.cqEnergy;
+    cqsEnergy.textContent = t.cqsEnergy;
+  }
+
+  const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+  el('sleepLow', t.sleepLow); el('sleepMid', t.sleepMid); el('sleepHigh', t.sleepHigh);
+  el('stressLow', t.stressLow); el('stressMid', t.stressMid); el('stressHigh', t.stressHigh);
+  el('energyLow', t.energyLow); el('energyMid', t.energyMid); el('energyHigh', t.energyHigh);
+}
+
+function renderAll() {
+  const content = document.getElementById('mainContent');
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const isCaregiver = accountType === 'caregiver';
+  const careMode = getCurrentCareMode();
+
+  if (isCaregiver && careMode === 'memory') {
+    renderMemoryCareMode(content);
+    return;
+  }
+
+  const assessmentDone = isAssessmentDone();
+  if (assessmentDone) {
+    renderAfterAssessment(content);
+  } else {
+    renderBeforeAssessment(content);
+  }
+}
+
+function renderBeforeAssessment(content) {
+  const t = I18N[currentLang];
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const isCaregiver = accountType === 'caregiver';
+  const person = getCurrentPerson();
+
+  const title = isCaregiver
+    ? t.assessHeroTitle.replace('Your', person.name + "'s")
+    : t.assessHeroTitle;
+
+  content.innerHTML = `
+    <div class="assess-hero">
+      <div class="assess-hero-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path>
+          <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path>
+        </svg>
+      </div>
+      <h2 class="assess-hero-title">${title}</h2>
+      <p class="assess-hero-desc">${t.assessHeroDesc}</p>
+      <button class="assess-hero-btn" id="takeAssessmentBtn">
+        <span>${t.assessBtnLabel}</span>
+        <svg class="arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="skills-preview">
+      <div class="skills-preview-head">${t.skillsPreviewTitle}</div>
+      <div class="skills-preview-grid">
+        ${SKILLS.map(s => `
+          <div class="skills-preview-item">
+            <div class="skills-preview-icon ${s.key}">${s.icon}</div>
+            <div class="skills-preview-name">${t.skills[s.key]}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  const takeBtn = document.getElementById('takeAssessmentBtn');
+  if (takeBtn) {
+    takeBtn.addEventListener('click', () => {
+      localStorage.setItem('omega_assessment_started', new Date().toISOString());
+      localStorage.removeItem('omega_reassess_mode');
+      window.location.href = 'assessment-intro.html';
+    });
+  }
+}
+
+function renderAfterAssessment(content) {
+  const t = I18N[currentLang];
+
+  content.innerHTML = `
+    <div class="hero-card" id="heroCard"></div>
+
+    <div class="section-head">
+      <div class="section-title">${t.memorySectionTitle}</div>
+    </div>
+    <div class="memory-card" id="memoryCard"></div>
+
+    <div class="section-head">
+      <div class="section-title">${t.progressSectionTitle}</div>
+      <a href="progress.html" class="section-link" id="seeAllLink">
+        <span>${t.seeAllText}</span>
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+    <div class="progress-card">
+      <div class="skill-bars" id="skillBars"></div>
+    </div>
+
+    <div class="section-head">
+      <div class="section-title">${t.chartSectionTitle}</div>
+    </div>
+    <div class="chart-card">
+      <svg class="chart-svg" id="chartSvg" viewBox="0 0 300 110" preserveAspectRatio="none"></svg>
+      <div class="chart-labels" id="chartLabels"></div>
+    </div>
+
+    <div class="quick-actions">
+      <button class="quick-btn progress-btn" id="progressBtn">
+        <div class="quick-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </div>
+        <div class="quick-text">
+          <div class="quick-title">${t.quickProgress}</div>
+          <div class="quick-sub">${t.quickProgressSub}</div>
+        </div>
+      </button>
+      <button class="quick-btn schedule-btn" id="scheduleBtn">
+        <div class="quick-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </div>
+        <div class="quick-text">
+          <div class="quick-title">${t.quickSchedule}</div>
+          <div class="quick-sub">${t.quickScheduleSub}</div>
+        </div>
+      </button>
+    </div>
+  `;
+
+  renderHero();
+  renderMemory();
+  renderSkillBars();
+  renderChart();
+  bindAfterAssessmentEvents();
+}
+
+function renderMemoryCareMode(content) {
+  const t = I18N[currentLang];
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const person = getCurrentPerson();
+  const isChildView = accountType === 'caregiver';
+
+  const heroTitle = isChildView ? t.memHeroTitleChild.replace('{name}', person.name) : t.memHeroTitle;
+  const heroSub = isChildView ? t.memHeroSubChild.replace('{name}', person.name) : t.memHeroSub;
+  const startLabel = isChildView ? t.memStartLabelChild : t.memStartLabel;
+
+  content.innerHTML = `
+    <div class="memory-hero">
+      <div class="memory-hero-icon">💜</div>
+      <div class="memory-hero-title">${heroTitle}</div>
+      <div class="memory-hero-sub">${heroSub}</div>
+      <button class="memory-hero-btn" id="startMemoryChatBtn">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        </svg>
+        <span>${startLabel}</span>
+      </button>
+    </div>
+
+    <div class="section-head">
+      <div class="section-title">${t.memorySectionTitle}</div>
+    </div>
+    <div class="memory-card" id="memoryCard"></div>
+
+    <div class="section-head">
+      <div class="section-title">${t.memRecentTitle}</div>
+    </div>
+    <div class="history-list" id="memoryHistory"></div>
+
+    <div class="quick-actions">
+      <button class="quick-btn progress-btn" id="progressBtn">
+        <div class="quick-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </div>
+        <div class="quick-text">
+          <div class="quick-title">${t.quickProgress}</div>
+          <div class="quick-sub">${t.quickProgressSub}</div>
+        </div>
+      </button>
+      <button class="quick-btn schedule-btn" id="scheduleBtn">
+        <div class="quick-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </div>
+        <div class="quick-text">
+          <div class="quick-title">${t.quickSchedule}</div>
+          <div class="quick-sub">${t.quickScheduleSub}</div>
+        </div>
+      </button>
+    </div>
+  `;
+
+  renderMemory();
+  renderMemoryHistory();
+
+  const startChatBtn = document.getElementById('startMemoryChatBtn');
+  if (startChatBtn) {
+    startChatBtn.addEventListener('click', () => {
+      window.location.href = 'personal-memory-play.html';
+    });
+  }
+
+  const progressBtn = document.getElementById('progressBtn');
+  if (progressBtn) progressBtn.addEventListener('click', () => window.location.href = 'progress.html');
+
+  const scheduleBtn = document.getElementById('scheduleBtn');
+  if (scheduleBtn) scheduleBtn.addEventListener('click', () => {
+    window.location.href = 'weekly-schedule.html';
+  });
+}
+
+function renderMemoryHistory() {
+  const t = I18N[currentLang];
+  const container = document.getElementById('memoryHistory');
+  if (!container) return;
+
+  let result = {};
+  try {
+    const key = getPersonKey('omega_personal_memory_result');
+    result = JSON.parse(localStorage.getItem(key) || '{}');
+  } catch (e) {}
+
+  if (!result.timestamp) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:20px 12px;color:var(--c-slate);font-size:12.5px;background:#fff;border:1.5px dashed var(--c-border);border-radius:var(--r-lg);">
+        ${t.memNoSessions}
+      </div>
+    `;
+    return;
+  }
+
+  const date = new Date(result.timestamp);
+  const dateLabel = date.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', {
+    month: 'short', day: 'numeric'
+  });
+
+  const turns = result.turns || 0;
+  const duration = result.duration || 0;
+  const minutes = Math.floor(duration / 60);
+
+  container.innerHTML = `
+    <div class="history-row">
+      <div class="history-icon">💜</div>
+      <div class="history-body">
+        <div class="history-title">${t.memHeroTitle}</div>
+        <div class="history-meta">${dateLabel} · ${minutes} ${t.heroTotalUnit} · ${turns} ${currentLang === 'ar' ? 'سؤال' : 'questions'}</div>
+      </div>
+      <div class="history-badge">${result.accuracy || 0}%</div>
+    </div>
+  `;
+}
+
+function bindAfterAssessmentEvents() {
+  const progressBtn = document.getElementById('progressBtn');
+  if (progressBtn) progressBtn.addEventListener('click', () => window.location.href = 'progress.html');
+
+  const scheduleBtn = document.getElementById('scheduleBtn');
+  if (scheduleBtn) scheduleBtn.addEventListener('click', () => window.location.href = 'weekly-schedule.html');
+
+  const seeAllLink = document.getElementById('seeAllLink');
+  if (seeAllLink) {
+    seeAllLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'progress.html';
+    });
+  }
+}
+
+function renderHero() {
+  const t = I18N[currentLang];
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  const person = getCurrentPerson();
+  const isChildView = viewMode === 'child' && accountType === 'caregiver';
+
+  const heroCard = document.getElementById('heroCard');
+  if (!heroCard) return;
+
+  const sessions = getTodaySessions();
+  heroCard.classList.toggle('child', isChildView);
+
+  if (sessions.length === 0) {
+    heroCard.innerHTML = `
+      <div class="hero-top">
+        <div class="hero-info">
+          <div class="hero-tag">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <span>${t.heroTag}</span>
+          </div>
+          <div class="hero-title">${isChildView ? t.heroRestTitleChild : t.heroRestTitle}</div>
+          <div class="hero-sub">${isChildView ? t.heroRestSubChild.replace('{name}', person.name) : t.heroRestSub}</div>
+        </div>
+        <div class="hero-illus">
+          <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </div>
+      </div>
+      <div class="hero-empty">
+        <span class="hero-empty-icon">😴</span>
+        <div class="hero-empty-text">${isChildView ? t.restDayTextChild.replace('{name}', person.name) : t.restDayText}</div>
+      </div>
+    `;
+    return;
+  }
+
+  const sessionsHtml = sessions.map(s => `
+    <div class="session-row">
+      <div class="session-icon-small">${SKILL_ICONS[s.key] || ''}</div>
+      <div class="session-name-small">${t.skills[s.key] || s.key}</div>
+      <div class="session-time-small">${s.minutes} ${t.heroTotalUnit}</div>
+    </div>
+  `).join('');
+
+  const total = sessions.reduce((sum, s) => sum + s.minutes, 0);
+
+  const illusSvg = isChildView
+    ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'
+    : '<path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path>';
+
+  const btnIcon = '<polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon>';
+
+  heroCard.innerHTML = `
+    <div class="hero-top">
+      <div class="hero-info">
+        <div class="hero-tag">
+          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>${isChildView ? t.heroTagChild.replace('{name}', person.name) : t.heroTag}</span>
+        </div>
+        <div class="hero-title">${isChildView ? t.heroTitleChild.replace('{name}', person.name) : t.heroTitle}</div>
+        <div class="hero-sub">${isChildView ? t.heroSubChild : t.heroSub}</div>
+      </div>
+      <div class="hero-illus">
+        <svg viewBox="0 0 24 24">${illusSvg}</svg>
+      </div>
+    </div>
+    <div class="hero-sessions">${sessionsHtml}</div>
+    <div class="hero-bottom">
+      <div class="hero-total">
+        <div class="hero-total-label">${t.heroTotalLabel}</div>
+        <div class="hero-total-value">${total} ${t.heroTotalUnit}</div>
+      </div>
+      <button class="hero-start-btn" id="heroStartBtn">
+        <svg viewBox="0 0 24 24" class="fill-icon">${btnIcon}</svg>
+        <span>${isChildView ? t.startLabelChild : t.startLabel}</span>
+      </button>
+    </div>
+  `;
+
+  const heroStartBtn = document.getElementById('heroStartBtn');
+  if (heroStartBtn) {
+    heroStartBtn.addEventListener('click', () => {
+      window.location.href = 'exercise-instructions.html';
+    });
+  }
+}
+
+function getTodaySessions() {
+  const dayOrder = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  const todayIdx = new Date().getDay();
+  const todayKey = dayOrder[todayIdx];
+
+  let plan = [];
+  try {
+    const planKey = getPersonKey('omega_personalized_plan');
+    plan = JSON.parse(localStorage.getItem(planKey) || '[]');
+  } catch (e) { plan = []; }
+
+  if (!plan || plan.length === 0) {
+    plan = [
+      { key: 'memory', rank: 1, sessions: 3, minutes: 10 },
+      { key: 'attention', rank: 2, sessions: 2, minutes: 10 },
+      { key: 'problem', rank: 3, sessions: 2, minutes: 8 }
+    ];
+  }
+
+  let trainingDays = [];
+  try {
+    const perPerson = localStorage.getItem(getPersonKey('omega_days'));
+    const global = localStorage.getItem('omega_days');
+    trainingDays = JSON.parse(perPerson || global || '[]');
+  } catch (e) { trainingDays = []; }
+
+  if (!trainingDays || trainingDays.length === 0) {
+    trainingDays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  }
+
+  const dayMap = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+  const sortedDays = [...trainingDays].sort((a, b) => dayMap[a] - dayMap[b]);
+
+  const allSessions = [];
+  plan.forEach(p => {
+    for (let i = 0; i < (p.sessions || 1); i++) {
+      allSessions.push({ key: p.key, minutes: p.minutes || 10, rank: p.rank });
+    }
+  });
+
+  const daySessions = {};
+  sortedDays.forEach(d => { daySessions[d] = []; });
+  allSessions.forEach((sess, i) => {
+    const day = sortedDays[i % sortedDays.length];
+    daySessions[day].push(sess);
+  });
+
+  return daySessions[todayKey] || [];
+}
+
+function renderMemory() {
+  const t = I18N[currentLang];
+  const card = document.getElementById('memoryCard');
+  if (!card) return;
+
+  const people = getBankItems('people');
+  const places = getBankItems('places');
+  const events = getBankItems('events');
+
+  const totalItems = people.length + places.length + events.length;
+  const voiceOn = localStorage.getItem('omega_voice_mode') === 'true';
+
+  if (totalItems === 0) {
+    card.innerHTML = `
+      <div class="memory-head">
+        <div class="memory-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        </div>
+        <div class="memory-text">
+          <div class="memory-title">${t.memoryEmptyTitle}</div>
+        </div>
+      </div>
+      <div class="memory-empty">
+        <div class="memory-empty-text">${t.memoryEmptyText}</div>
+        <button class="memory-empty-btn" id="memoryEmptyBtn">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>${t.memoryEmptyBtn}</span>
+        </button>
+      </div>
+    `;
+    const emptyBtn = document.getElementById('memoryEmptyBtn');
+    if (emptyBtn) emptyBtn.addEventListener('click', openAddMemorySheet);
+    return;
+  }
+
+  const firstPeople = people.slice(0, 3);
+  const moreCount = people.length - firstPeople.length;
+
+  const avatarsHtml = firstPeople.map(p => {
+    const letter = (p.name || '?').charAt(0).toUpperCase();
+    const photo = p.photo ? `<img src="${p.photo}" alt="">` : letter;
+    return `
+      <div class="memory-avatar">
+        <div class="memory-avatar-letter">${photo}</div>
+        <div class="memory-avatar-name">${p.name || '—'}</div>
+      </div>
+    `;
+  }).join('');
+
+  const moreHtml = moreCount > 0 ? `<div class="memory-avatar-more">+${moreCount} ${t.memoryMore}</div>` : '';
+
+  const statsParts = [];
+  if (people.length > 0) statsParts.push(`👥 ${people.length} ${t.memoryStatsPeople}`);
+  if (places.length > 0) statsParts.push(`📍 ${places.length} ${t.memoryStatsPlaces}`);
+  if (events.length > 0) statsParts.push(`🎉 ${events.length} ${t.memoryStatsEvents}`);
+
+  const voiceBadgeHtml = voiceOn ? `
+    <span class="voice-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+      <span>${t.voiceBadge}</span>
+    </span>
+  ` : '';
+
+  card.innerHTML = `
+    <div class="memory-head">
+      <div class="memory-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </div>
+      <div class="memory-text">
+        <div class="memory-title">${t.memoryTitle}</div>
+        <div class="memory-stats">${statsParts.join(' · ')}</div>
+      </div>
+    </div>
+    <div class="memory-avatars">${avatarsHtml}${moreHtml}</div>
+    <div class="memory-desc">${t.memoryDesc}${voiceBadgeHtml}</div>
+    <div class="memory-actions">
+      <button class="memory-btn add" id="memoryAddBtn">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>${t.memoryAddBtn}</span>
+      </button>
+      <button class="memory-btn manage" id="memoryManageBtn">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span>${t.memoryManageBtn}</span>
+      </button>
+      <button class="memory-btn train" id="memoryTrainBtn">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+        <span>${t.memoryTrainBtn}</span>
+      </button>
+    </div>
+  `;
+
+  document.getElementById('memoryAddBtn').addEventListener('click', openAddMemorySheet);
+  document.getElementById('memoryManageBtn').addEventListener('click', () => {
+    window.location.href = 'personal-memory-bank.html';
+  });
+  document.getElementById('memoryTrainBtn').addEventListener('click', () => {
+    window.location.href = 'personal-memory-play.html';
+  });
+}
+
+function renderSkillBars() {
+  const t = I18N[currentLang];
+  const container = document.getElementById('skillBars');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  SKILLS.forEach(skill => {
+    const score = getScore(skill.storageBase);
+    const level = getLevel(skill.storageBase);
+    const cls = getScoreClass(score);
+    const levelWord = getLevelLabel(level);
+
+    const row = document.createElement('div');
+    row.className = 'skill-bar-row';
+    row.innerHTML = `
+      <div class="skill-bar-top">
+        <div class="skill-bar-info">
+          <div class="skill-bar-icon ${skill.key}">${skill.icon}</div>
+          <div class="skill-bar-name">${t.skills[skill.key]}</div>
+          <div class="level-badge ${getLevelClass(level)}">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"></polygon></svg>
+            <span>${levelWord}</span>
+          </div>
+        </div>
+        <div class="skill-bar-score ${cls}">${score}%</div>
+      </div>
+      <div class="skill-bar-track">
+        <div class="skill-bar-fill ${cls}" data-width="${score}"></div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+
+  setTimeout(() => {
+    container.querySelectorAll('.skill-bar-fill').forEach(el => {
+      el.style.width = el.dataset.width + '%';
+    });
+  }, 100);
+}
+
+function renderChart() {
+  const t = I18N[currentLang];
+  const svg = document.getElementById('chartSvg');
+  const labelsEl = document.getElementById('chartLabels');
+  if (!svg || !labelsEl) return;
+
+  const values = [45, 58, 70, 82];
+  const maxVal = 100;
+  const width = 300;
+  const height = 110;
+  const paddingX = 24;
+  const paddingY = 20;
+
+  const stepX = (width - paddingX * 2) / (values.length - 1);
+
+  const points = values.map((v, i) => {
+    const x = paddingX + i * stepX;
+    const y = height - paddingY - (v / maxVal) * (height - paddingY * 2);
+    return { x, y, value: v };
+  });
+
+  let svgContent = '';
+  for (let i = 0; i <= 3; i++) {
+    const y = paddingY + (i / 3) * (height - paddingY * 2);
+    svgContent += `<line x1="${paddingX}" y1="${y}" x2="${width - paddingX}" y2="${y}" stroke="rgba(14,148,135,0.07)" stroke-width="1" stroke-dasharray="3 4"/>`;
+  }
+
+  const areaPath = `M ${points[0].x} ${height - paddingY} ${points.map(p => `L ${p.x} ${p.y}`).join(' ')} L ${points[points.length - 1].x} ${height - paddingY} Z`;
+  svgContent += `<path class="chart-area" d="${areaPath}"/>`;
+
+  const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + ` ${p.x} ${p.y}`).join(' ');
+  svgContent += `<path class="chart-line" d="${linePath}"/>`;
+
+  points.forEach(p => {
+    svgContent += `<circle class="chart-dot" cx="${p.x}" cy="${p.y}" r="3.5"/>`;
+    svgContent += `<text class="chart-value" x="${p.x}" y="${p.y - 8}">${p.value}%</text>`;
+  });
+
+  svg.innerHTML = svgContent;
+
+  labelsEl.innerHTML = '';
+  values.forEach((_, i) => {
+    const label = document.createElement('div');
+    label.className = 'chart-label';
+    label.textContent = `${t.weekLabel} ${i + 1}`;
+    labelsEl.appendChild(label);
+  });
+}
+
+function openPersonSwitcher() {
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  if (accountType !== 'caregiver') return;
+
+  renderSwitcherBody();
+  document.getElementById('personSwitcherOverlay').classList.add('show');
+  setTimeout(() => {
+    document.getElementById('personSwitcherSheet').classList.add('show');
+  }, 50);
+}
+
+function closePersonSwitcher() {
+  document.getElementById('personSwitcherSheet').classList.remove('show');
+  document.getElementById('personSwitcherOverlay').classList.remove('show');
+}
+
+function renderSwitcherBody() {
+  const t = I18N[currentLang];
+  const body = document.getElementById('switcherBody');
+  const persons = getCaredPersons();
+  const currentId = localStorage.getItem('omega_current_person_id');
+
+  if (persons.length === 0) {
+    body.innerHTML = `<div style="text-align:center;padding:24px 12px;color:var(--c-slate);font-size:13px;">No people yet — add one below.</div>`;
+    return;
+  }
+
+  body.innerHTML = `
+    <div class="person-list">
+      ${persons.map(p => {
+        const isActive = p.id === currentId;
+        const initial = (p.name || '?').charAt(0).toUpperCase();
+        const photo = p.photo ? `<img src="${p.photo}" alt="">` : initial;
+        const mode = p.careMode || 'full';
+        const modeLabel = mode === 'memory' ? t.personModeMemory : t.personModeFull;
+        const modeClass = mode === 'memory' ? 'mode-memory' : 'mode-full';
+        const isMemory = mode === 'memory';
+        const needsAssessment = (mode === 'full') && !isAssessmentDoneFor(p.id);
+
+        return `
+          <button class="person-list-item ${isActive ? 'active' : ''}" data-person-id="${p.id}">
+            <div class="person-avatar ${isMemory ? 'memory-mode' : ''}">${photo}</div>
+            <div class="person-body">
+              <div class="person-name">${p.name || '—'}</div>
+              <div class="person-meta-row">
+                ${p.age ? `<span class="person-meta-pill">${p.age} ${t.yearsOld}</span>` : ''}
+                ${needsAssessment
+                  ? `<span class="person-meta-pill pending">
+                       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                       <span>${t.personPendingAssess}</span>
+                     </span>`
+                  : `<span class="person-meta-pill ${modeClass}">
+                       <svg viewBox="0 0 24 24">${mode === 'memory'
+                         ? '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>'
+                         : '<path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"></path><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"></path>'}
+                       </svg>
+                       <span>${modeLabel}</span>
+                     </span>`
+                }
+              </div>
+            </div>
+            ${isActive ? `
+              <div class="person-active-badge">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+            ` : ''}
+          </button>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  body.querySelectorAll('.person-list-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const personId = item.dataset.personId;
+      if (personId === currentId) {
+        closePersonSwitcher();
+        return;
+      }
+      localStorage.setItem('omega_current_person_id', personId);
+      closePersonSwitcher();
+      setTimeout(() => {
+        applyViewMode('child');
+      }, 200);
+    });
+  });
+}
+
+function buildCheckinBody() {
+  const body = document.getElementById('checkinBody');
+  if (!body) return;
+  body.innerHTML = `
+    <div class="checkin-question" data-q="sleep">
+      <div class="cq-head">
+        <div class="cq-icon"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></div>
+        <div class="cq-text">
+          <div class="cq-title" id="cqSleep">Sleep Quality</div>
+          <div class="cq-sub" id="cqsSleep">How did you sleep last night?</div>
+        </div>
+      </div>
+      <div class="cq-options" data-question="sleep">
+        <button class="cq-opt" data-value="low"><span class="opt-dot"></span><span class="opt-label" id="sleepLow">Poor</span></button>
+        <button class="cq-opt" data-value="mid"><span class="opt-dot"></span><span class="opt-label" id="sleepMid">Okay</span></button>
+        <button class="cq-opt" data-value="high"><span class="opt-dot"></span><span class="opt-label" id="sleepHigh">Good</span></button>
+      </div>
+    </div>
+    <div class="checkin-question" data-q="stress">
+      <div class="cq-head">
+        <div class="cq-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+        <div class="cq-text">
+          <div class="cq-title" id="cqStress">Stress Level</div>
+          <div class="cq-sub" id="cqsStress">How stressed do you feel right now?</div>
+        </div>
+      </div>
+      <div class="cq-options" data-question="stress">
+        <button class="cq-opt" data-value="low"><span class="opt-dot"></span><span class="opt-label" id="stressLow">Low</span></button>
+        <button class="cq-opt" data-value="mid"><span class="opt-dot"></span><span class="opt-label" id="stressMid">Medium</span></button>
+        <button class="cq-opt" data-value="high"><span class="opt-dot"></span><span class="opt-label" id="stressHigh">High</span></button>
+      </div>
+    </div>
+    <div class="checkin-question" data-q="energy">
+      <div class="cq-head">
+        <div class="cq-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+        <div class="cq-text">
+          <div class="cq-title" id="cqEnergy">Energy Level</div>
+          <div class="cq-sub" id="cqsEnergy">How energetic do you feel?</div>
+        </div>
+      </div>
+      <div class="cq-options" data-question="energy">
+        <button class="cq-opt" data-value="low"><span class="opt-dot"></span><span class="opt-label" id="energyLow">Low</span></button>
+        <button class="cq-opt" data-value="mid"><span class="opt-dot"></span><span class="opt-label" id="energyMid">Medium</span></button>
+        <button class="cq-opt" data-value="high"><span class="opt-dot"></span><span class="opt-label" id="energyHigh">High</span></button>
+      </div>
+    </div>
+  `;
+
+  document.querySelectorAll('#checkinBody .cq-options').forEach(group => {
+    const question = group.dataset.question;
+    const options = group.querySelectorAll('.cq-opt');
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        checkinState[question] = opt.dataset.value;
+        group.closest('.checkin-question').classList.add('answered');
+      });
+    });
+  });
+
+  applyCheckinLanguage(currentLang, I18N[currentLang]);
+}
+
+function openCheckinSheet() {
+  const key = getPersonKey('omega_daily_checkin_date');
+  localStorage.setItem(key, new Date().toISOString().split('T')[0]);
+  document.getElementById('checkinOverlay').classList.add('show');
+  setTimeout(() => {
+    document.getElementById('checkinSheet').classList.add('show');
+  }, 50);
+}
+
+function closeCheckinSheet() {
+  document.getElementById('checkinSheet').classList.remove('show');
+  document.getElementById('checkinOverlay').classList.remove('show');
+}
+
+function shouldShowCheckin() {
+  const key = getPersonKey('omega_daily_checkin_date');
+  const lastCheckin = localStorage.getItem(key);
+  const today = new Date().toISOString().split('T')[0];
+  return lastCheckin !== today;
+}
+
+function openAddMemorySheet() {
+  document.getElementById('addMemoryOverlay').classList.add('show');
+  setTimeout(() => {
+    document.getElementById('addMemorySheet').classList.add('show');
+  }, 50);
+}
+
+function closeAddMemorySheet() {
+  document.getElementById('addMemorySheet').classList.remove('show');
+  document.getElementById('addMemoryOverlay').classList.remove('show');
+}
+
+function showLevelUpToast() {
+  const toast = document.getElementById('levelupToast');
+  if (!toast) return;
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
+}
+
+function bindGlobalEvents() {
+  document.getElementById('settingsBtn').addEventListener('click', () => {
+    window.location.href = 'profile-settings.html';
+  });
+
+  document.getElementById('langBtn').addEventListener('click', () => {
+    applyLanguage(currentLang === 'en' ? 'ar' : 'en');
+  });
+
+  document.getElementById('headerLeft').addEventListener('click', () => {
+    openPersonSwitcher();
+  });
+
+  document.getElementById('personSwitcherOverlay').addEventListener('click', closePersonSwitcher);
+  document.getElementById('switcherClose').addEventListener('click', closePersonSwitcher);
+
+  document.getElementById('addPersonSheetBtn').addEventListener('click', () => {
+    closePersonSwitcher();
+    localStorage.setItem('omega_add_care_person', 'true');
+    localStorage.setItem('omega_add_return', 'home');
+    setTimeout(() => {
+      window.location.href = 'care-profile-setup.html';
+    }, 250);
+  });
+
+  document.getElementById('checkinOverlay').addEventListener('click', closeCheckinSheet);
+  document.getElementById('sheetClose').addEventListener('click', closeCheckinSheet);
+  document.getElementById('checkinContinue').addEventListener('click', () => {
+    const key = getPersonKey('omega_daily_context');
+    localStorage.setItem(key, JSON.stringify(checkinState));
+    closeCheckinSheet();
+  });
+  document.getElementById('checkinSkip').addEventListener('click', closeCheckinSheet);
+
+  document.getElementById('addMemoryOverlay').addEventListener('click', closeAddMemorySheet);
+  document.getElementById('addMemoryClose').addEventListener('click', closeAddMemorySheet);
+  document.querySelectorAll('.add-memory-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const type = opt.dataset.type;
+      localStorage.setItem('omega_add_type', type);
+      localStorage.setItem('omega_add_return', 'home');
+      window.location.href = 'add-person.html';
+    });
+  });
+}
+
+function init() {
+  buildCheckinBody();
+  bindGlobalEvents();
+
+  const accountType = localStorage.getItem('omega_account_type') || 'myself';
+  if (accountType === 'caregiver') {
+    viewMode = 'child';
+  } else {
+    viewMode = 'self';
+  }
+
+  applyViewMode(viewMode);
+  applyLanguage(currentLang);
+
+  if (shouldShowCheckin()) {
+    setTimeout(() => openCheckinSheet(), 1200);
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
