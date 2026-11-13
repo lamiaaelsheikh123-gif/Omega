@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta name="theme-color" content="#F8FAFC" />
-<title>Omega — AI Voice Call</title>
+<title>Omega — Companion Session</title>
 
 <!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -851,6 +851,51 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
     transition-duration: 0.01ms !important;
   }
 }
+/* ============================================
+   COMPANION (avatar session)
+============================================ */
+.topbar { justify-content: center; }
+.persona-btn { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 999px;
+  background: rgba(255,255,255,.85); border: 1px solid var(--c-border); font-size: 12.5px; font-weight: 600;
+  color: var(--c-navy); box-shadow: 0 4px 12px rgba(15,23,42,.06); }
+html[lang="ar"] .persona-btn { font-family: var(--f-ar); font-size: 13px; padding: 6px 6px 6px 14px; }
+.persona-btn .mini { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; background: #E0F7F4; flex-shrink: 0; }
+.persona-btn .mini svg { width: 100%; height: 100%; display: block; }
+.main-call { justify-content: flex-start; gap: 10px; padding: 14px 22px 0; }
+.companion { position: relative; width: 190px; height: 190px; border-radius: 50%; flex-shrink: 0; overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, #fff, #DFF7F2 72%);
+  box-shadow: 0 18px 40px rgba(14,148,135,.16), 0 0 0 6px rgba(255,255,255,.75); transition: box-shadow .4s ease; }
+.companion.speaking { box-shadow: 0 18px 40px rgba(14,148,135,.26), 0 0 0 6px rgba(46,196,182,.4), 0 0 0 15px rgba(46,196,182,.12); }
+.companion > svg { width: 100%; height: 100%; display: block; animation: breathe 4.5s ease-in-out infinite; }
+@keyframes breathe { 50% { transform: translateY(3px) scale(1.012); } }
+.eyes { transform-box: fill-box; transform-origin: center; animation: blink 5s infinite; }
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96.5% { transform: scaleY(.08); } }
+.m-open { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.companion.speaking .m-open { opacity: 1; animation: talk .34s ease-in-out infinite alternate; }
+.companion.speaking .m-smile { opacity: 0; }
+@keyframes talk { from { transform: scale(.8, .3); } to { transform: scale(1, 1); } }
+.waveform { margin-top: 0; height: 16px; }
+.caption { min-height: 78px; max-width: 306px; display: flex; align-items: center; justify-content: center; text-align: center;
+  font-size: 17px; line-height: 1.55; font-weight: 600; color: var(--c-navy); }
+html[lang="ar"] .caption { font-family: var(--f-ar); font-size: 18px; }
+.caption.me { color: var(--c-primary-dark); font-weight: 500; font-size: 15px; }
+.mem-card { display: none; align-items: center; gap: 12px; padding: 10px 18px 10px 10px; background: #fff; border-radius: 18px;
+  border: 1px solid var(--c-border); box-shadow: 0 10px 26px rgba(15,23,42,.08); max-width: 300px; }
+html[lang="ar"] .mem-card { padding: 10px 10px 10px 18px; }
+.mem-card.show { display: flex; animation: cardIn .45s cubic-bezier(.2,.9,.3,1.2); }
+@keyframes cardIn { from { opacity: 0; transform: translateY(14px) scale(.92); } }
+.mem-photo { width: 64px; height: 64px; border-radius: 14px; overflow: hidden; background: var(--g-brand); color: #fff;
+  font-weight: 700; font-size: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mem-photo img { width: 100%; height: 100%; object-fit: cover; }
+.mem-info { text-align: start; min-width: 60px; }
+.mem-name { font-weight: 700; color: var(--c-navy); font-size: 16px; }
+.mem-meta { font-size: 12.5px; color: var(--c-slate); }
+html[lang="ar"] .mem-name, html[lang="ar"] .mem-meta { font-family: var(--f-ar); }
+.ctrl-btn.end { background: #fff; border: 1.5px solid var(--c-border); box-shadow: 0 8px 20px rgba(15,23,42,.08); }
+.ctrl-btn.end:hover { box-shadow: 0 12px 26px rgba(15,23,42,.12); }
+.ctrl-btn.end svg { stroke: var(--c-slate); }
+.controls { padding-top: 12px; }
+
 </style>
 </head>
 
@@ -862,64 +907,26 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 
       <!-- Top Bar -->
       <div class="topbar">
-        <div class="call-status-badge">
-          <span class="live-dot"></span>
-          <span id="liveText">Live</span>
-        </div>
-        <div class="call-timer" id="callTimer">00:00</div>
+        <button class="persona-btn" id="personaBtn" aria-label="Change companion">
+          <span class="mini" id="personaMini"></span>
+          <span id="personaLabel">Change companion</span>
+        </button>
+        <span id="liveText" hidden></span><span id="callTimer" hidden>00:00</span>
       </div>
 
       <!-- Main -->
       <div class="main-call">
-
-        <!-- AI Avatar -->
-        <div class="avatar-wrap" id="avatarWrap">
-          <div class="avatar-halo"></div>
-          <div class="avatar-ring"></div>
-          <div class="avatar-ring-2"></div>
-          <div class="avatar-core">
-            <!-- Omega logo (mini) -->
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="omegaGradCall" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%"   stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#E0F7F4"/>
-                </linearGradient>
-              </defs>
-              <path d="M 60 142 C 44 122 36 98 44 74 C 54 44 76 28 100 28 C 124 28 146 44 156 74 C 164 98 156 122 140 142"
-                    fill="none"
-                    stroke="url(#omegaGradCall)"
-                    stroke-width="22"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"/>
-              <path d="M 60 142 Q 52 150 42 152"
-                    fill="none"
-                    stroke="url(#omegaGradCall)"
-                    stroke-width="22"
-                    stroke-linecap="round"/>
-              <path d="M 140 142 Q 148 150 158 152"
-                    fill="none"
-                    stroke="url(#omegaGradCall)"
-                    stroke-width="22"
-                    stroke-linecap="round"/>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Name + Status -->
+        <div class="companion" id="avatarWrap"></div>
         <div>
-          <div class="call-name" id="callName">Omega AI</div>
-          <div class="call-status-text">
-            <span id="statusText">Connecting...</span>
-          </div>
+          <div class="call-name" id="callName"></div>
+          <div class="call-status-text"><span id="statusText">…</span></div>
         </div>
-
-        <!-- Waveform -->
-        <div class="waveform" id="waveform">
-          <span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span>
+        <div class="waveform" id="waveform"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="caption" id="caption"></div>
+        <div class="mem-card" id="memCard">
+          <div class="mem-photo" id="memPhoto"></div>
+          <div class="mem-info"><div class="mem-name" id="memName"></div><div class="mem-meta" id="memMeta"></div></div>
         </div>
-
       </div>
 
       <!-- Transcript Button -->
@@ -958,11 +965,9 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
           <span class="ctrl-label" id="micLabel">Tap to talk</span>
         </button>
 
-        <button class="ctrl-btn end" id="endBtn" aria-label="End call">
-          <svg viewBox="0 0 24 24">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" transform="rotate(135 12 12)"></path>
-          </svg>
-          <span class="ctrl-label" id="endLabel">End</span>
+        <button class="ctrl-btn end" id="endBtn" aria-label="Later">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
+          <span class="ctrl-label" id="endLabel">Later</span>
         </button>
       </div>
 
@@ -1013,62 +1018,46 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 ============================================ */
 const I18N = {
   en: {
-    liveText: 'Live',
-    connecting: 'Connecting...',
-    aiSpeaking: 'Omega is speaking...',
-    yourTurn: 'Your turn — tap the mic',
-    listening: 'Listening...',
-    mute: 'Mute',
-    unmute: 'Unmute',
-    tapToTalk: 'Tap to talk',
-    stopTalk: 'Tap to stop',
-    end: 'End',
-    transcriptLabel: 'Show Transcript',
-    sheetTitle: 'Conversation',
-    inputPlaceholder: 'Type your answer...',
-    endTitle: 'Call Ended',
-    endDesc: 'Great session! You practiced your memory today.',
-    durationLabel: 'Duration',
-    turnsLabel: 'Questions',
-    backHome: 'Back to Home',
-    noSpeechSupport: 'Voice not supported — typing mode enabled',
-    intro1: "Hi {name}! I'm Omega. Ready for a quick memory chat?",
-    intro2: "Let's talk about the people and moments you care about.",
-    noMemoryBank: 'It looks like your Memory Bank is empty. Add some people first!',
-    qWho: 'Tell me about {person}. Who are they to you?',
-    qWhere: 'What do you remember about {place}?',
-    qWhen: 'When did {event} happen? Tell me about it.',
-    feedback: "That's wonderful. Thanks for sharing.",
-    nextQ: "Let's continue."
+    connecting: 'One moment…', aiSpeaking: 'Talking with you', yourTurn: 'Your turn — tap the mic', listening: 'Listening…',
+    mute: 'Mute', unmute: 'Sound on', tapToTalk: 'Tap and talk', stopTalk: 'Tap to stop', end: 'Later',
+    transcriptLabel: 'See what we said', sheetTitle: 'Our conversation', inputPlaceholder: 'Type your answer…',
+    endTitle: 'Well done!', endDesc: 'Your memory worked nicely today. See you soon.',
+    durationLabel: 'Time', turnsLabel: 'Remembered', backHome: 'Back to Home',
+    noSpeechSupport: 'Voice is not available here — type your answer', change: 'Change companion',
+    greetM: 'Good morning', greetE: 'Good evening',
+    intro: "{g}, {name}! I'm {ai}, and I'll be with you today. Let's remember the people and places you love, together.",
+    noMemoryBank: 'Your Memory Bank is still empty. Add your first person and I will be right here.',
+    qWho: 'Look at this photo. Do you remember who this is?',
+    qWhere: 'What do you remember about {n}? Tell me.', qWhen: 'What do you remember about {n}? Tell me.',
+    good: ['Well done! Yes, this is {n}.', "That's right! This is {n}. Your memory is working well."],
+    close: 'Very close! {mh}the name starts with “{h}”.',
+    hint: 'Try once more, take your time. {mh}the name starts with “{h}”.',
+    unsure: 'No problem at all, take your time. {mh}the name starts with “{h}”.',
+    reveal: 'This is {n}{meta}. That is okay, we will remember together next time.',
+    nice: ['I love that you remember. {n} clearly means a lot to you.', 'Thank you for telling me about {n}.'],
+    skip: "That's okay, we'll come back to it together.",
+    bye: 'That was a lovely time with you, {name}. See you later.'
   },
   ar: {
-    liveText: 'مباشر',
-    connecting: 'جاري الاتصال...',
-    aiSpeaking: 'أوميجا يتحدث...',
-    yourTurn: 'دورك — اضغط المايك',
-    listening: 'أستمع إليك...',
-    mute: 'كتم',
-    unmute: 'إلغاء الكتم',
-    tapToTalk: 'اضغط للتحدث',
-    stopTalk: 'اضغط للإيقاف',
-    end: 'إنهاء',
-    transcriptLabel: 'عرض المحادثة',
-    sheetTitle: 'المحادثة',
-    inputPlaceholder: 'اكتب ردك...',
-    endTitle: 'انتهت المكالمة',
-    endDesc: 'جلسة رائعة! تدربت على ذاكرتك اليوم.',
-    durationLabel: 'المدة',
-    turnsLabel: 'الأسئلة',
-    backHome: 'العودة للرئيسية',
-    noSpeechSupport: 'الصوت غير مدعوم — تم تفعيل وضع الكتابة',
-    intro1: 'أهلًا {name}! أنا أوميجا. جاهز لمحادثة سريعة عن الذاكرة؟',
-    intro2: 'هيا نتحدث عن الأشخاص واللحظات اللي بتحبها.',
-    noMemoryBank: 'يبدو إن بنك الذكريات فاضي. أضف بعض الأشخاص أولًا!',
-    qWho: 'حدثني عن {person}. من يكون بالنسبة لك؟',
-    qWhere: 'ماذا تتذكر عن {place}؟',
-    qWhen: 'متى حدث {event}؟ أخبرني عنه.',
-    feedback: 'هذا رائع. شكرًا لمشاركتك.',
-    nextQ: 'هيا نكمل.'
+    connecting: 'لحظة…', aiSpeaking: 'بكلمك دلوقتي', yourTurn: 'دورك، اضغط على المايك', listening: 'سامعك…',
+    mute: 'كتم', unmute: 'تشغيل الصوت', tapToTalk: 'اضغط وكلمني', stopTalk: 'اضغط للإيقاف', end: 'نكمل بعدين',
+    transcriptLabel: 'شوف الكلام', sheetTitle: 'كلامنا', inputPlaceholder: 'اكتب ردك هنا…',
+    endTitle: 'برافو عليك!', endDesc: 'ذاكرتك اشتغلت حلو النهاردة. أشوفك قريب.',
+    durationLabel: 'المدة', turnsLabel: 'افتكرت', backHome: 'رجوع للرئيسية',
+    noSpeechSupport: 'الصوت مش متاح هنا، اكتب ردك', change: 'غيّر الشخصية',
+    greetM: 'صباح الخير', greetE: 'مساء الخير',
+    intro: '{g} يا {name}! أنا {ai}، وهكون معاك النهاردة. تعالى نفتكر سوا الناس والأماكن اللي بتحبها.',
+    noMemoryBank: 'بنك الذكريات لسه فاضي. ضيف أول شخص وأنا معاك.',
+    qWho: 'بص على الصورة دي. فاكر دي مين؟',
+    qWhere: 'فاكر إيه عن {n}؟ احكيلي.', qWhen: 'فاكر إيه عن {n}؟ احكيلي.',
+    good: ['برافو عليك! فعلًا ده {n}.', 'صح! ده {n}. ذاكرتك شغالة حلو.'],
+    close: 'قريب جدًا! {mh}واسمه بيبدأ بحرف «{h}».',
+    hint: 'جرب تاني، خد وقتك. {mh}واسمه بيبدأ بحرف «{h}».',
+    unsure: 'مفيش مشكلة خالص، خد وقتك. {mh}واسمه بيبدأ بحرف «{h}».',
+    reveal: 'ده {n}{meta}. مش مشكلة، هنفتكره سوا المرة الجاية.',
+    nice: ['حلو أوي إنك فاكر. واضح إن {n} ليه مكان كبير عندك.', 'شكرًا إنك حكيتلي عن {n}.'],
+    skip: 'مفيش مشكلة، هنرجعله مع بعض.',
+    bye: 'كان وقت حلو معاك يا {name}. نكمل بعدين.'
   }
 };
 
@@ -1095,7 +1084,11 @@ const state = {
   isEnded: false,
   speechSupported: false,
   recognition: null,
-  currentQuestion: null
+  currentQuestion: null,
+  recalled: 0,
+  maxQ: 5,
+  persona: null,
+  userAge: 0
 };
 
 /* ============================================
@@ -1155,10 +1148,11 @@ function applyLanguage(lang) {
   htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
   const t = I18N[lang];
-  $('liveText').textContent = t.liveText;
   $('muteLabel').textContent = state.isMuted ? t.unmute : t.mute;
   $('micLabel').textContent = t.tapToTalk;
   $('endLabel').textContent = t.end;
+  $('personaLabel').textContent = t.change;
+  if (state.persona) $('callName').textContent = FACES[state.persona].n[lang];
   $('transcriptLabel').textContent = t.transcriptLabel;
   $('sheetTitle').textContent = t.sheetTitle;
   $('textInput').placeholder = t.inputPlaceholder;
@@ -1203,6 +1197,7 @@ function addTranscriptLine(role, text) {
   line.innerHTML = `<div class="t-bubble">${escapeHtml(text)}</div>`;
   body.appendChild(line);
   body.scrollTop = body.scrollHeight;
+  setCaption(role, text);
 }
 
 /* ============================================
@@ -1224,12 +1219,14 @@ function speak(text, callback) {
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = currentLang === 'ar' ? 'ar-EG' : 'en-US';
-  utter.rate = 0.95;
-  utter.pitch = 1.05;
+  const F = FACES[state.persona] || {};
+  utter.rate = (F.rate || 0.95) * (state.userAge >= 60 ? 0.92 : 1);
+  utter.pitch = F.pitch || 1;
 
   const voices = window.speechSynthesis.getVoices();
   const langVoices = voices.filter(v => v.lang.startsWith(currentLang === 'ar' ? 'ar' : 'en'));
-  if (langVoices.length > 0) utter.voice = langVoices[0];
+  const gRe = F.g === 'f' ? /salma|hoda|zira|female|samantha|susan|sara|laila|amira|fiona|karen/i : /shakir|maged|tarik|david|mark|male|daniel|alex/i;
+  utter.voice = langVoices.find(v => gRe.test(v.name)) || langVoices[0] || null;
 
   state.isAISpeaking = true;
   setAISpeakingUI(true);
@@ -1344,94 +1341,169 @@ function setListeningUI(isOn) {
 }
 
 /* ============================================
-   CONVERSATION FLOW
+   COMPANION — faces, personas
 ============================================ */
-function buildQuestion() {
-  const t = I18N[currentLang];
-  const items = state.memoryItems;
+const FACES = {
+  kid_m:   { n: { en: 'Adam', ar: 'آدم' },   g: 'm', kid: 1, skin: '#F1C7A0', hair: '#3A2A22', style: 'short',    shirt: '#3B82F6', pitch: 1.4,  rate: 1.05 },
+  kid_f:   { n: { en: 'Lina', ar: 'لينا' },  g: 'f', kid: 1, skin: '#F3CBA8', hair: '#4A2E22', style: 'pigtails', shirt: '#F472B6', pitch: 1.55, rate: 1.05 },
+  adult_m: { n: { en: 'Karim', ar: 'كريم' }, g: 'm',         skin: '#E8B88E', hair: '#2A1D18', style: 'short',    shirt: '#0E9487', pitch: 0.9,  rate: 0.95 },
+  adult_f: { n: { en: 'Laila', ar: 'ليلى' }, g: 'f',         skin: '#EDBE96', hair: '#7C6FD6', style: 'hijab',    shirt: '#5B4BB5', pitch: 1.12, rate: 0.95 },
+  elder_m: { n: { en: 'Sami', ar: 'سامي' },  g: 'm', old: 1, skin: '#E3B38A', hair: '#E5E7EB', style: 'sides',    shirt: '#64748B', glasses: 1, pitch: 0.8,  rate: 0.88 },
+  elder_f: { n: { en: 'Mona', ar: 'منى' },   g: 'f', old: 1, skin: '#E8B991', hair: '#E9D8C0', style: 'hijab',    shirt: '#0E9487', glasses: 1, pitch: 1.05, rate: 0.88 }
+};
+const ORDER = ['kid_m', 'kid_f', 'adult_m', 'adult_f', 'elder_m', 'elder_f'];
 
-  if (items.length === 0) return null;
+function buildFace(f) {
+  const k = f.kid, hy = k ? 100 : 94, ey = k ? 102 : 96, er = k ? 6.5 : 4.6, ex = k ? 19 : 18, rx = k ? 50 : 46;
+  const dk = '#1F2937', base = k ? 92 : 88, ctl = k ? 30 : 22;
+  const brow = f.old ? '#9CA3AF' : (f.style === 'hijab' ? '#4B3B30' : f.hair);
+  let back = '', front = '';
+  if (f.style === 'pigtails') back = `<circle cx="44" cy="100" r="17" fill="${f.hair}"/><circle cx="156" cy="100" r="17" fill="${f.hair}"/>`;
+  if (f.style === 'hijab') back = `<path d="M44 104C36 34 164 34 156 104C158 142 152 168 142 182H58C48 168 42 142 44 104Z" fill="${f.hair}"/>`;
+  if (f.style === 'short' || f.style === 'pigtails') front = `<path d="M52 ${base}C50 ${ctl} 150 ${ctl} 148 ${base}C136 72 114 64 100 64C86 64 64 72 52 ${base}Z" fill="${f.hair}"/>`;
+  if (f.style === 'sides') front = `<path d="M54 92C50 70 60 62 70 62C62 72 60 82 60 96ZM146 92C150 70 140 62 130 62C138 72 140 82 140 96Z" fill="${f.hair}"/>`;
+  if (f.style === 'hijab') front = `<path d="M54 90C52 28 148 28 146 90C132 68 68 68 54 90Z" fill="${f.hair}"/>`;
+  const hij = f.style === 'hijab';
+  const neck = hij ? '' : `<rect x="87" y="128" width="26" height="30" rx="11" fill="${f.skin}"/>`;
+  const ears = hij ? '' : `<circle cx="54" cy="${hy + 4}" r="8" fill="${f.skin}"/><circle cx="146" cy="${hy + 4}" r="8" fill="${f.skin}"/>`;
+  const m = ey + (k ? 27 : 30);
+  const glasses = f.glasses ? `<g fill="none" stroke="#475569" stroke-width="2.8"><circle cx="${100 - ex}" cy="${ey}" r="14"/><circle cx="${100 + ex}" cy="${ey}" r="14"/><path d="M${100 - ex + 14} ${ey}H${100 + ex - 14}"/></g>` : '';
+  const wr = f.old ? `<path d="M62 ${ey - 2}q-5 4-5 10M138 ${ey - 2}q5 4 5 10M84 ${ey - 24}q16-5 32 0" stroke="#A9795A" stroke-width="2" fill="none" opacity=".35" stroke-linecap="round"/>` : '';
+  return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M26 200C26 164 62 150 100 150C138 150 174 164 174 200Z" fill="${f.shirt}"/>
+    ${back}${neck}${ears}
+    <ellipse cx="100" cy="${hy}" rx="${rx}" ry="50" fill="${f.skin}"/>
+    ${front}${wr}
+    <ellipse cx="${100 - 30}" cy="${ey + 16}" rx="9" ry="6" fill="#F87171" opacity=".22"/><ellipse cx="${100 + 30}" cy="${ey + 16}" rx="9" ry="6" fill="#F87171" opacity=".22"/>
+    <path d="M${100 - ex - 9} ${ey - 12}Q${100 - ex} ${ey - 17} ${100 - ex + 9} ${ey - 12}M${100 + ex - 9} ${ey - 12}Q${100 + ex} ${ey - 17} ${100 + ex + 9} ${ey - 12}" stroke="${brow}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <g class="eyes"><circle cx="${100 - ex}" cy="${ey}" r="${er}" fill="${dk}"/><circle cx="${100 + ex}" cy="${ey}" r="${er}" fill="${dk}"/>
+      <circle cx="${100 - ex + 1.8}" cy="${ey - 1.8}" r="${er * 0.3}" fill="#fff"/><circle cx="${100 + ex + 1.8}" cy="${ey - 1.8}" r="${er * 0.3}" fill="#fff"/></g>
+    ${glasses}
+    <path d="M97 ${ey + 14}Q100 ${ey + 20} 104 ${ey + 14}" stroke="#B4795A" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/>
+    <path class="m-smile" d="M87 ${m}Q100 ${m + 13} 113 ${m}" stroke="#9B3B3B" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <ellipse class="m-open" cx="100" cy="${m + 4}" rx="10" ry="8" fill="#7F1D1D"/>
+    <ellipse class="m-open" cx="100" cy="${m + 9}" rx="5" ry="3" fill="#F87171"/>
+  </svg>`;
+}
 
-  const item = getRandomUnused(items, 'item');
-  let qText = '';
-
-  if (item.type === 'person') {
-    qText = t.qWho.replace('{person}', item.name);
-  } else if (item.type === 'place') {
-    qText = t.qWhere.replace('{place}', item.name);
+function pickPersona() {
+  let age = 0, g = '';
+  if (localStorage.getItem('omega_account_type') === 'caregiver') {
+    try {
+      const arr = JSON.parse(localStorage.getItem('omega_care_persons') || '[]');
+      const id = localStorage.getItem('omega_current_person_id');
+      const p = arr.find(x => String(x.id) === String(id)) || arr[0] || {};
+      age = parseInt(p.age) || 0; g = String(p.gender || '');
+    } catch (e) {}
   } else {
-    qText = t.qWhen.replace('{event}', item.name);
+    age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+    g = localStorage.getItem('omega_gender') || localStorage.getItem('omega_user_gender') || '';
   }
+  state.userAge = age;
+  const saved = localStorage.getItem('omega_avatar_persona');
+  if (FACES[saved]) return saved;
+  // companion matches the user's gender; kids get a kid-like friend, everyone else a warm adult
+  return (age && age < 13 ? 'kid_' : 'adult_') + (g.toLowerCase().startsWith('m') ? 'm' : 'f');
+}
 
-  return { text: qText, item };
+function setPersona(key, save) {
+  state.persona = key;
+  const f = FACES[key];
+  $('avatarWrap').innerHTML = buildFace(f);
+  $('personaMini').innerHTML = buildFace(f);
+  $('callName').textContent = f.n[currentLang];
+  if (save) { try { localStorage.setItem('omega_avatar_persona', key); } catch (e) {} }
+}
+
+function setCaption(role, text) {
+  const c = $('caption');
+  c.textContent = text;
+  c.classList.toggle('me', role !== 'ai');
+}
+
+/* ============================================
+   CONVERSATION FLOW — answers are actually checked
+============================================ */
+const norm = s => String(s || '').toLowerCase()
+  .replace(/[\u064B-\u0652\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
+  .replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim();
+const UNSURE = /(مش فاكر|مش عارف|معرفش|ما اعرفش|نسيت|مش متاكد|dont know|don t know|do not know|not sure|no idea|forgot|cant remember|can t remember)/;
+const fmt = (str, v) => str.replace(/\{(\w+)\}/g, (_, k) => (v[k] == null ? '' : v[k]));
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+function say(text, cb) { addTranscriptLine('ai', text); speak(text, cb); }
+
+function showCard(item, reveal) {
+  const hide = item.type === 'person' && !reveal;
+  const ph = $('memPhoto');
+  ph.innerHTML = '';
+  if (item.photo) { const img = new Image(); img.src = item.photo; img.alt = ''; ph.appendChild(img); }
+  else ph.textContent = hide ? '؟' : (item.name || '?').charAt(0);
+  $('memName').textContent = hide ? '؟' : item.name;
+  $('memMeta').textContent = hide ? '' : (item.meta || '');
+  $('memCard').classList.add('show');
+}
+
+function openMic() {
+  if (state.isEnded) return;
+  $('statusText').textContent = I18N[currentLang].yourTurn;
+  if (state.speechSupported && !state.isMuted) setTimeout(startListening, 400);
 }
 
 function startConversation() {
   const t = I18N[currentLang];
-  const userName = localStorage.getItem('omega_user_name') || 'there';
-
+  const userName = localStorage.getItem('omega_user_name') || (currentLang === 'ar' ? 'يا صديقي' : 'friend');
   if (state.memoryItems.length === 0) {
-    const msg = t.noMemoryBank;
-    addTranscriptLine('ai', msg);
-    speak(msg, () => {
-      setTimeout(() => endCall(), 800);
-    });
+    say(t.noMemoryBank, () => setTimeout(endCall, 800));
     return;
   }
-
-  const intro = t.intro1.replace('{name}', userName) + ' ' + t.intro2;
-  addTranscriptLine('ai', intro);
-
-  speak(intro, () => {
-    setTimeout(askNextQuestion, 600);
-  });
+  state.maxQ = Math.min(5, state.memoryItems.length);
+  const g = new Date().getHours() < 12 ? t.greetM : t.greetE;
+  say(fmt(t.intro, { g, name: userName, ai: FACES[state.persona].n[currentLang] }), () => setTimeout(askNextQuestion, 600));
 }
 
 function askNextQuestion() {
   if (state.isEnded) return;
-  const q = buildQuestion();
-  if (!q) {
-    endCall();
-    return;
-  }
-
-  state.currentQuestion = q;
+  if (state.turns >= state.maxQ) { finishSession(); return; }
+  const t = I18N[currentLang];
+  const item = getRandomUnused(state.memoryItems, 'item');
+  const text = item.type === 'person' ? t.qWho : fmt(item.type === 'place' ? t.qWhere : t.qWhen, { n: item.name });
+  state.currentQuestion = { text, item, tries: 0 };
   state.turns++;
-
-  addTranscriptLine('ai', q.text);
-  $('statusText').textContent = I18N[currentLang].aiSpeaking;
-
-  speak(q.text, () => {
-    if (state.isEnded) return;
-    $('statusText').textContent = I18N[currentLang].yourTurn;
-    if (state.speechSupported && !state.isMuted) {
-      setTimeout(() => startListening(), 400);
-    }
-  });
+  showCard(item, false);
+  say(text, openMic);
 }
 
 function handleUserAnswer(text) {
   if (state.isEnded || !state.currentQuestion) return;
   state.isListening = false;
   setListeningUI(false);
+  const q = state.currentQuestion;
   state.currentQuestion = null;
-
   addTranscriptLine('me', text);
 
-  const t = I18N[currentLang];
-  const responses = [
-    t.feedback,
-    t.nextQ,
-    t.feedback + ' ' + t.nextQ
-  ];
-  const reply = responses[Math.floor(Math.random() * responses.length)];
+  const t = I18N[currentLang], item = q.item, a = norm(text);
+  const v = { n: item.name, meta: item.meta ? ' (' + item.meta + ')' : '', mh: item.meta ? item.meta + (currentLang === 'ar' ? '، ' : ', ') : '', h: [...item.name][0] };
+  const unsure = UNSURE.test(a) || a.length < 2;
+  let reply, next = true;
 
-  setTimeout(() => {
-    addTranscriptLine('ai', reply);
-    speak(reply, () => {
-      setTimeout(askNextQuestion, 800);
-    });
-  }, 500);
+  if (item.type !== 'person') {
+    if (unsure) reply = t.skip; else { state.recalled++; reply = fmt(pick(t.nice), v); }
+  } else {
+    const toks = norm(item.name).split(' ').filter(x => x.length > 1);
+    const mt = norm(item.meta || '').split(' ').filter(x => x.length > 1);
+    const ok = toks.some(k => a.includes(k));
+    const part = !ok && mt.some(k => a.includes(k));
+    if (ok) { state.recalled++; reply = fmt(pick(t.good), v); showCard(item, true); }
+    else if (q.tries < 1) { q.tries++; state.currentQuestion = q; next = false; reply = fmt(part ? t.close : (unsure ? t.unsure : t.hint), v); }
+    else { reply = fmt(t.reveal, v); showCard(item, true); }
+  }
+
+  setTimeout(() => say(reply, () => { if (next) setTimeout(askNextQuestion, 800); else openMic(); }), 500);
+}
+
+function finishSession() {
+  const name = localStorage.getItem('omega_user_name') || (currentLang === 'ar' ? 'يا صديقي' : 'friend');
+  say(fmt(I18N[currentLang].bye, { name }), () => setTimeout(endCall, 700));
 }
 
 /* ============================================
@@ -1446,7 +1518,7 @@ function endCall() {
 
   const duration = stopTimer();
   $('statDuration').textContent = formatTime(duration);
-  $('statTurns').textContent = state.turns;
+  $('statTurns').textContent = state.recalled + '/' + state.turns;
 
   $('endOverlay').classList.add('show');
 
@@ -1454,7 +1526,7 @@ function endCall() {
     const result = {
       duration,
       turns: state.turns,
-      accuracy: Math.min(100, 40 + state.turns * 8),
+      accuracy: state.turns ? Math.round(100 * state.recalled / state.turns) : 0,
       timestamp: Date.now()
     };
     localStorage.setItem('omega_personal_memory_result', JSON.stringify(result));
@@ -1530,6 +1602,11 @@ $('textInput').addEventListener('keydown', (e) => {
   }
 });
 
+$('personaBtn').addEventListener('click', () => {
+  const i = (ORDER.indexOf(state.persona) + 1) % ORDER.length;
+  setPersona(ORDER[i], true);
+});
+
 /* ============================================
    VOICES LOADED (async)
 ============================================ */
@@ -1541,6 +1618,7 @@ if ('speechSynthesis' in window) {
    INIT
 ============================================ */
 function init() {
+  setPersona(pickPersona(), false);
   applyLanguage(currentLang);
   loadMemoryBank();
   initSpeechRecognition();
