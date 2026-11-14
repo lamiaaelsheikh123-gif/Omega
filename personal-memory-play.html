@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#F8FAFC" />
+<meta name="theme-color" content="#FFFBF5" />
 <title>Omega — Companion Session</title>
 
-<!-- ✅ الخطوط الأصلية: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================
-   DESIGN TOKENS — Omega
+   DESIGN TOKENS
 ============================================ */
 :root {
   --c-primary:       #0E9487;
@@ -21,24 +20,18 @@
   --c-primary-dark:  #076B5F;
   --c-blue:          #3B82F6;
   --c-purple:        #8B5CF6;
-
   --c-success: #22C55E;
   --c-warning: #FBBF24;
   --c-error:   #EF4444;
-
   --c-navy:   #0F172A;
   --c-slate:  #64748B;
   --c-bg:     #F8FAFC;
   --c-card:   #FFFFFF;
   --c-border: #E2E8F0;
-
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
-
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 24px; --r-pill: 999px;
-
   --f-en: 'Poppins', system-ui, sans-serif;
   --f-ar: 'Cairo', system-ui, sans-serif;
-
   --phone-w: 375px;
   --phone-h: 812px;
 }
@@ -59,9 +52,7 @@ html[lang="ar"] body { font-family: var(--f-ar); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 input { font-family: inherit; }
 
-/* ============================================
-   PHONE FRAME
-============================================ */
+/* PHONE FRAME */
 .stage {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
@@ -76,7 +67,7 @@ input { font-family: inherit; }
   position: relative;
   width: var(--phone-w); height: var(--phone-h);
   max-height: calc(100vh - 40px);
-  background: var(--c-bg);
+  background: #FFFBF5;
   border-radius: 44px;
   overflow: hidden;
   box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a,
@@ -95,97 +86,145 @@ input { font-family: inherit; }
 }
 
 @media (max-width: 480px) {
-  body { background: var(--c-bg); }
-  .stage { padding: 0; background: var(--c-bg); }
+  body { background: #FFFBF5; }
+  .stage { padding: 0; background: #FFFBF5; }
   .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
   .phone::before { display: none; }
 }
 
-/* ============================================
-   SCREEN — ✅ خلفية تدرج فاتحة من ألوان Omega
-============================================ */
+/* SCREEN — Warm cream background (not tech-y) */
 .screen {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg,
-    #ECFDF5 0%,
-    #F0F9FF 35%,
-    #F5F3FF 70%,
-    #FAFAFF 100%);
+  background:
+    radial-gradient(circle at 25% 15%, rgba(255, 220, 180, 0.20) 0%, transparent 55%),
+    radial-gradient(circle at 80% 85%, rgba(200, 180, 255, 0.10) 0%, transparent 55%),
+    linear-gradient(180deg, #FFFBF5 0%, #FFF8F0 40%, #FEF5EB 70%, #FFF9F2 100%);
   overflow: hidden;
 }
 
-/* Soft glow overlays خفيفة جدًا */
 .screen::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 30% 20%, rgba(46, 196, 182, 0.10) 0%, transparent 50%),
-    radial-gradient(circle at 75% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 55%);
+    radial-gradient(circle at 30% 20%, rgba(46, 196, 182, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 75% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 55%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* ============================================
-   TOP BAR — Timer + Live
-============================================ */
+/* TOP BAR */
 .topbar {
   position: relative;
   z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 52px 22px 0;
+  gap: 10px;
+  padding: 52px 18px 0;
   flex-shrink: 0;
 }
 
-.call-status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: #fff;
-  border: 1px solid rgba(14, 148, 135, 0.15);
-  border-radius: var(--r-pill);
-  color: var(--c-primary);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
-}
-
-.call-status-badge .live-dot {
-  width: 7px; height: 7px;
+.close-btn {
+  width: 36px; height: 36px;
   border-radius: 50%;
-  background: var(--c-success);
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
-  animation: liveDot 1.4s ease-in-out infinite;
-}
-
-@keyframes liveDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: 0.5; transform: scale(0.85); }
-}
-
-.call-timer {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--c-navy);
-  letter-spacing: 0.5px;
-  font-feature-settings: "tnum";
-  padding: 6px 14px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.85);
   border: 1px solid rgba(14, 148, 135, 0.15);
-  border-radius: var(--r-pill);
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
 }
 
-/* ============================================
-   MAIN — Avatar + Name
-============================================ */
+.close-btn:hover { background: #fff; transform: rotate(90deg); }
+.close-btn svg { width: 14px; height: 14px; stroke: var(--c-slate); stroke-width: 2.4; fill: none; stroke-linecap: round; }
+
+.persona-btn {
+  flex: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 14px 5px 5px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--c-border);
+  font-size: 12.5px; font-weight: 600;
+  color: var(--c-navy);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  transition: all 0.2s ease;
+  min-width: 0;
+}
+
+.persona-btn:hover { border-color: rgba(14, 148, 135, 0.3); }
+
+html[lang="ar"] .persona-btn {
+  font-family: var(--f-ar);
+  font-size: 13px;
+  padding: 5px 5px 5px 14px;
+}
+
+.persona-btn .mini {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #E0F7F4;
+  flex-shrink: 0;
+}
+
+.persona-btn .mini svg { width: 100%; height: 100%; display: block; }
+
+.persona-btn .label {
+  flex: 1;
+  text-align: start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.persona-btn .label svg {
+  width: 12px; height: 12px;
+  stroke: currentColor; stroke-width: 2.4; fill: none;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* PROGRESS DOTS */
+.progress-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--c-border);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.progress-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(14, 148, 135, 0.2);
+  transition: all 0.3s ease;
+}
+
+.progress-dot.done {
+  background: var(--c-primary);
+  box-shadow: 0 0 6px rgba(14, 148, 135, 0.5);
+}
+
+.progress-dot.current {
+  width: 18px;
+  border-radius: var(--r-pill);
+  background: var(--g-brand);
+  box-shadow: 0 0 8px rgba(14, 148, 135, 0.4);
+}
+
+/* MAIN */
 .main-call {
   position: relative;
   z-index: 5;
@@ -193,475 +232,404 @@ input { font-family: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 20px 24px;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 16px 22px 0;
   min-height: 0;
   text-align: center;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
-/* Avatar wrap */
-.avatar-wrap {
+.main-call::-webkit-scrollbar { display: none; }
+
+/* AVATAR */
+.companion {
   position: relative;
-  width: 140px;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 170px; height: 170px;
+  border-radius: 50%;
   flex-shrink: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, #fff, #DFF7F2 72%);
+  box-shadow: 0 18px 40px rgba(14, 148, 135, 0.16), 0 0 0 6px rgba(255, 255, 255, 0.75);
+  transition: box-shadow 0.4s ease;
 }
 
-/* Soft halo خفيف */
-.avatar-halo {
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(46, 196, 182, 0.28) 0%, transparent 65%);
-  filter: blur(20px);
-  z-index: 0;
-  animation: haloPulse 3.5s ease-in-out infinite;
+.companion.speaking {
+  box-shadow: 0 18px 40px rgba(14, 148, 135, 0.26), 0 0 0 6px rgba(46, 196, 182, 0.4), 0 0 0 15px rgba(46, 196, 182, 0.12);
 }
 
-@keyframes haloPulse {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50%      { opacity: 0.85; transform: scale(1.08); }
+.companion > svg {
+  width: 100%; height: 100%;
+  display: block;
+  animation: breathe 4.5s ease-in-out infinite;
 }
 
-/* Ring حول الأفاتار (أخضر خفيف) */
-.avatar-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid rgba(14, 148, 135, 0.25);
-  transition: border-color 0.4s ease;
+@keyframes breathe {
+  50% { transform: translateY(3px) scale(1.012); }
 }
 
-.avatar-wrap.speaking .avatar-ring {
-  border-color: rgba(14, 148, 135, 0.6);
+.eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 5s infinite;
 }
 
-/* Ring ثاني خارجي */
-.avatar-ring-2 {
-  position: absolute;
-  inset: -12px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(139, 92, 246, 0.15);
+@keyframes blink {
+  0%, 94%, 100% { transform: scaleY(1); }
+  96.5% { transform: scaleY(0.08); }
+}
+
+.m-open {
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
-.avatar-wrap.speaking .avatar-ring-2 {
+.companion.speaking .m-open {
   opacity: 1;
-  animation: ringWave 2.4s ease-out infinite;
+  animation: talk 0.34s ease-in-out infinite alternate;
 }
 
-@keyframes ringWave {
-  0%   { transform: scale(0.95); opacity: 0.6; }
-  100% { transform: scale(1.4); opacity: 0; }
+.companion.speaking .m-smile { opacity: 0; }
+
+@keyframes talk {
+  from { transform: scale(0.8, 0.3); }
+  to { transform: scale(1, 1); }
 }
 
-/* Avatar core */
-.avatar-core {
-  position: relative;
-  width: 108px; height: 108px;
-  border-radius: 50%;
-  background: var(--g-brand);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  box-shadow:
-    0 12px 32px rgba(14, 148, 135, 0.28),
-    inset 0 -4px 12px rgba(0, 0, 0, 0.08),
-    inset 0 4px 12px rgba(255, 255, 255, 0.35);
-  overflow: hidden;
-  border: 3px solid #fff;
-  transition: transform 0.3s ease;
-}
-
-.avatar-wrap.speaking .avatar-core {
-  transform: scale(1.04);
-}
-
-.avatar-core::before {
-  content: '';
-  position: absolute;
-  top: -25%; right: -20%;
-  width: 80px; height: 80px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.avatar-core svg {
-  width: 52px;
-  height: 52px;
-  position: relative;
-  z-index: 2;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-/* Name + Status */
+/* NAME + STATUS */
 .call-name {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--c-navy);
-  letter-spacing: -0.4px;
-  line-height: 1.2;
-}
-html[lang="ar"] .call-name { font-family: var(--f-ar); font-size: 21px; letter-spacing: 0; }
-
-.call-status-text {
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--c-slate);
-  letter-spacing: 0.2px;
-  min-height: 20px;
-  margin-top: 4px;
-}
-html[lang="ar"] .call-status-text { font-family: var(--f-ar); font-size: 14.5px; }
-
-/* Waveform — بسيط جدًا */
-.waveform {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  height: 24px;
-  margin-top: 2px;
-  opacity: 0.3;
-  transition: opacity 0.3s ease;
-}
-
-.waveform.active { opacity: 1; }
-
-.waveform span {
-  width: 3px;
-  background: linear-gradient(180deg, #0E9487, #2EC4B6);
-  border-radius: var(--r-pill);
-  height: 6px;
-}
-
-.waveform.active span {
-  animation: waveBar 1.2s ease-in-out infinite;
-}
-
-.waveform span:nth-child(1) { animation-delay: 0s;    }
-.waveform span:nth-child(2) { animation-delay: 0.1s;  }
-.waveform span:nth-child(3) { animation-delay: 0.2s;  }
-.waveform span:nth-child(4) { animation-delay: 0.3s;  }
-.waveform span:nth-child(5) { animation-delay: 0.4s;  }
-.waveform span:nth-child(6) { animation-delay: 0.5s;  }
-.waveform span:nth-child(7) { animation-delay: 0.6s;  }
-
-@keyframes waveBar {
-  0%, 100% { height: 6px; }
-  50%      { height: 20px; }
-}
-
-/* ============================================
-   TRANSCRIPT BUTTON
-============================================ */
-.transcript-btn {
-  position: relative;
-  z-index: 10;
-  align-self: center;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 16px;
-  background: #fff;
-  border: 1px solid rgba(14, 148, 135, 0.15);
-  border-radius: var(--r-pill);
-  color: var(--c-navy);
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
-  margin-bottom: 12px;
-}
-
-.transcript-btn:hover {
-  border-color: rgba(14, 148, 135, 0.35);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-}
-
-.transcript-btn:active { transform: scale(0.96); }
-
-.transcript-btn svg {
-  width: 13px; height: 13px;
-  stroke: var(--c-primary);
-  stroke-width: 2.4; fill: none;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-
-html[lang="ar"] .transcript-btn { font-family: var(--f-ar); font-size: 12.5px; letter-spacing: 0; }
-
-/* ============================================
-   TRANSCRIPT SHEET — فاتح
-============================================ */
-.transcript-sheet {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  background: #fff;
-  border-radius: 28px 28px 0 0;
-  max-height: 65%;
-  display: flex;
-  flex-direction: column;
-  z-index: 30;
-  transform: translateY(100%);
-  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
-  box-shadow: 0 -20px 60px rgba(15, 23, 42, 0.18);
-  overflow: hidden;
-}
-
-.transcript-sheet.show { transform: translateY(0); }
-
-.sheet-handle {
-  width: 44px; height: 5px;
-  background: var(--c-border);
-  border-radius: var(--r-pill);
-  margin: 12px auto 6px;
-  flex-shrink: 0;
-}
-
-.sheet-header {
-  padding: 4px 22px 12px;
-  border-bottom: 1px solid var(--c-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
-
-.sheet-title {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--c-navy);
   letter-spacing: -0.3px;
-}
-html[lang="ar"] .sheet-title { font-family: var(--f-ar); font-size: 16px; letter-spacing: 0; }
-
-.sheet-close {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  background: rgba(14, 148, 135, 0.08);
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s ease;
+  line-height: 1.2;
+  margin-top: 6px;
 }
 
-.sheet-close:hover { background: rgba(14, 148, 135, 0.15); transform: rotate(90deg); }
-
-.sheet-close svg {
-  width: 13px; height: 13px;
-  stroke: var(--c-slate); stroke-width: 2.4; fill: none;
-  stroke-linecap: round;
+html[lang="ar"] .call-name {
+  font-family: var(--f-ar);
+  font-size: 19px;
+  letter-spacing: 0;
 }
 
-.transcript-body {
-  flex: 1;
-  overflow-y: auto;
-  scrollbar-width: none;
-  padding: 14px 20px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 0;
-}
-
-.transcript-body::-webkit-scrollbar { display: none; }
-
-.t-line {
-  display: flex;
-  gap: 8px;
-  animation: lineIn 0.35s ease;
-}
-
-@keyframes lineIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.t-line.ai { align-items: flex-start; }
-.t-line.me { align-items: flex-start; flex-direction: row-reverse; }
-
-.t-bubble {
-  max-width: 78%;
-  padding: 10px 14px;
-  border-radius: 16px;
-  font-size: 13px;
+.call-status-text {
+  font-size: 12.5px;
   font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0.1px;
+  color: var(--c-slate);
+  letter-spacing: 0.2px;
+  min-height: 18px;
+  margin-top: 2px;
 }
 
-html[lang="ar"] .t-bubble { font-family: var(--f-ar); font-size: 14px; letter-spacing: 0; }
+html[lang="ar"] .call-status-text {
+  font-family: var(--f-ar);
+  font-size: 13.5px;
+}
 
-.t-line.ai .t-bubble {
-  background: linear-gradient(135deg, rgba(14, 148, 135, 0.08), rgba(46, 196, 182, 0.06));
-  border: 1px solid rgba(14, 148, 135, 0.15);
+/* SINGLE PULSE (replaces waveform) */
+.pulse {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pulse.active { opacity: 1; }
+
+.pulse-inner {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0E9487, #2EC4B6);
+  box-shadow: 0 0 8px rgba(46, 196, 182, 0.6);
+  animation: pulseBreath 1.4s ease-in-out infinite;
+}
+
+@keyframes pulseBreath {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(2); opacity: 0.4; }
+}
+
+/* CAPTION (main speech area) */
+.caption {
+  min-height: 76px;
+  max-width: 310px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16.5px;
+  line-height: 1.55;
+  font-weight: 600;
   color: var(--c-navy);
-  border-top-left-radius: 4px;
+  padding: 4px 0;
 }
 
-.t-line.me .t-bubble {
+html[lang="ar"] .caption {
+  font-family: var(--f-ar);
+  font-size: 17.5px;
+}
+
+.caption.me {
+  color: var(--c-primary-dark);
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* MEMORY CARD */
+.mem-card {
+  display: none;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px 12px 12px;
+  background: #fff;
+  border-radius: 20px;
+  border: 1.5px solid var(--c-border);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+  max-width: 310px;
+  transition: all 0.3s ease;
+}
+
+html[lang="ar"] .mem-card {
+  padding: 12px 12px 12px 18px;
+}
+
+.mem-card.show {
+  display: flex;
+  animation: cardIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.mem-card.correct {
+  border-color: var(--c-success);
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15), 0 10px 26px rgba(34, 197, 94, 0.2);
+}
+
+.mem-card.revealed {
+  border-color: var(--c-warning);
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.15), 0 10px 26px rgba(251, 191, 36, 0.2);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.92); }
+}
+
+.mem-photo {
+  width: 110px; height: 110px;
+  border-radius: 16px;
+  overflow: hidden;
   background: var(--g-brand);
   color: #fff;
-  border-top-right-radius: 4px;
-  box-shadow: 0 6px 16px rgba(14, 148, 135, 0.22);
+  font-weight: 700;
+  font-size: 44px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative;
 }
 
-/* ============================================
-   BOTTOM CONTROLS
-============================================ */
-.controls {
+.mem-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.mem-photo.hidden {
+  background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
+  color: rgba(100, 116, 139, 0.5);
+}
+
+.mem-photo .hint-letter {
+  position: absolute;
+  bottom: 4px; right: 4px;
+  background: rgba(14, 148, 135, 0.9);
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.mem-info {
+  text-align: start;
+  min-width: 60px;
+  flex: 1;
+}
+
+.mem-name {
+  font-weight: 700;
+  color: var(--c-navy);
+  font-size: 17px;
+  letter-spacing: -0.2px;
+}
+
+.mem-meta {
+  font-size: 12.5px;
+  color: var(--c-slate);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+html[lang="ar"] .mem-name,
+html[lang="ar"] .mem-meta {
+  font-family: var(--f-ar);
+}
+
+/* ACTION ROW */
+.action-area {
   position: relative;
   z-index: 10;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 28px;
-  padding: 20px 24px 50px;
+  gap: 10px;
+  padding: 14px 22px 40px;
   flex-shrink: 0;
 }
 
-.ctrl-btn {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
+.action-row {
   display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+}
+
+.talk-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--g-brand);
+  color: #fff;
+  border-radius: var(--r-pill);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  box-shadow: 0 10px 24px rgba(14, 148, 135, 0.35);
+  transition: all 0.25s ease;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.talk-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.7s ease;
+}
+
+.talk-btn:hover::before { left: 100%; }
+
+.talk-btn:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(14, 148, 135, 0.45);
+}
+
+.talk-btn:active:not(.disabled) { transform: scale(0.97); }
+
+.talk-btn svg {
+  width: 18px; height: 18px;
+  stroke: #fff; stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.talk-btn.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.talk-btn.listening {
+  background: linear-gradient(135deg, #EF4444, #F87171);
+  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.4);
+  animation: talkPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes talkPulse {
+  0%, 100% { box-shadow: 0 10px 24px rgba(239, 68, 68, 0.4), 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 10px 24px rgba(239, 68, 68, 0.5), 0 0 0 12px rgba(239, 68, 68, 0); }
+}
+
+html[lang="ar"] .talk-btn { font-family: var(--f-ar); font-size: 15.5px; }
+
+.forgot-btn {
+  padding: 13px 20px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid var(--c-border);
+  color: var(--c-slate);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
   transition: all 0.25s ease;
   flex-shrink: 0;
-  position: relative;
-}
-
-.ctrl-btn:active { transform: scale(0.92); }
-
-/* Mute + Speaker — خفيف رمادي */
-.ctrl-btn.small {
-  background: #fff;
-  border: 1.5px solid var(--c-border);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
-}
-
-.ctrl-btn.small:hover {
-  border-color: rgba(14, 148, 135, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
-}
-
-.ctrl-btn.small svg {
-  width: 22px; height: 22px;
-  stroke: var(--c-navy); stroke-width: 2.2; fill: none;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-
-.ctrl-btn.small.active {
-  background: var(--g-brand);
-  border-color: transparent;
-}
-
-.ctrl-btn.small.active svg { stroke: #fff; }
-
-/* Mic — الكبير في النص */
-.ctrl-btn.mic {
-  width: 74px;
-  height: 74px;
-  background: var(--g-brand);
-  box-shadow:
-    0 12px 28px rgba(14, 148, 135, 0.35),
-    0 0 0 0 rgba(14, 148, 135, 0.4);
-  position: relative;
-}
-
-.ctrl-btn.mic:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 34px rgba(14, 148, 135, 0.45);
-}
-
-.ctrl-btn.mic svg {
-  width: 30px; height: 30px;
-  stroke: #fff; stroke-width: 2.2; fill: none;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-
-/* Mic listening state */
-.ctrl-btn.mic.listening {
-  background: linear-gradient(135deg, #EF4444, #F87171);
-  animation: micPulse 1.4s ease-in-out infinite;
-}
-
-@keyframes micPulse {
-  0%, 100% { box-shadow: 0 12px 28px rgba(239, 68, 68, 0.4), 0 0 0 0 rgba(239, 68, 68, 0.5); }
-  50%      { box-shadow: 0 12px 28px rgba(239, 68, 68, 0.5), 0 0 0 16px rgba(239, 68, 68, 0); }
-}
-
-.ctrl-btn.mic.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* End call */
-.ctrl-btn.end {
-  background: linear-gradient(135deg, #EF4444, #DC2626);
-  box-shadow: 0 12px 28px rgba(239, 68, 68, 0.4);
-}
-
-.ctrl-btn.end:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(239, 68, 68, 0.5);
-}
-
-.ctrl-btn.end svg {
-  width: 24px; height: 24px;
-  stroke: #fff; stroke-width: 2.2; fill: none;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-
-/* Labels */
-.ctrl-label {
-  position: absolute;
-  bottom: -24px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10.5px;
-  font-weight: 600;
-  color: var(--c-slate);
   white-space: nowrap;
-  letter-spacing: 0.3px;
 }
 
-html[lang="ar"] .ctrl-label { font-family: var(--f-ar); font-size: 11.5px; letter-spacing: 0; }
+.forgot-btn:hover {
+  border-color: var(--c-warning);
+  color: #B45309;
+  background: rgba(251, 191, 36, 0.08);
+}
 
-/* ============================================
-   TEXT INPUT FALLBACK
-============================================ */
+.forgot-btn:active { transform: scale(0.96); }
+
+.forgot-btn.hidden { display: none; }
+
+html[lang="ar"] .forgot-btn { font-family: var(--f-ar); font-size: 13.5px; }
+
+/* TRANSCRIPT LINK */
+.transcript-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--c-slate);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--r-pill);
+  transition: all 0.2s ease;
+}
+
+.transcript-btn:hover {
+  color: var(--c-primary);
+  background: rgba(14, 148, 135, 0.06);
+}
+
+.transcript-btn svg {
+  width: 13px; height: 13px;
+  stroke: currentColor;
+  stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+html[lang="ar"] .transcript-btn { font-family: var(--f-ar); font-size: 12.5px; }
+
+/* TEXT INPUT (fallback for no speech) */
 .text-input-wrap {
-  position: absolute;
-  left: 16px; right: 16px;
-  bottom: 120px;
+  width: 100%;
+  max-width: 320px;
   display: none;
   align-items: center;
   gap: 8px;
-  padding: 8px 8px 8px 16px;
+  padding: 6px 6px 6px 16px;
   background: #fff;
-  border: 1.5px solid rgba(14, 148, 135, 0.15);
+  border: 1.5px solid rgba(14, 148, 135, 0.2);
   border-radius: var(--r-pill);
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
-  z-index: 20;
-  animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .text-input-wrap.show { display: flex; }
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 
 .text-input-wrap input {
   flex: 1;
@@ -671,13 +639,15 @@ html[lang="ar"] .ctrl-label { font-family: var(--f-ar); font-size: 11.5px; lette
   font-size: 14px;
   font-weight: 500;
   color: var(--c-navy);
-  font-family: inherit;
-  padding: 6px 0;
+  padding: 8px 0;
 }
 
 .text-input-wrap input::placeholder { color: #94A3B8; font-weight: 400; }
 
-html[lang="ar"] .text-input-wrap input { font-family: var(--f-ar); font-size: 15px; }
+html[lang="ar"] .text-input-wrap input {
+  font-family: var(--f-ar);
+  font-size: 15px;
+}
 
 .text-send {
   width: 38px; height: 38px;
@@ -700,9 +670,290 @@ html[lang="ar"] .text-input-wrap input { font-family: var(--f-ar); font-size: 15
 
 html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
 
-/* ============================================
-   END CALL OVERLAY
-============================================ */
+/* SHEET (shared style for transcript + persona) */
+.sheet-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.sheet-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: #fff;
+  border-radius: 28px 28px 0 0;
+  max-height: 70%;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+  box-shadow: 0 -20px 60px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+}
+
+.sheet.show { transform: translateY(0); }
+
+.sheet-handle {
+  width: 44px; height: 5px;
+  background: var(--c-border);
+  border-radius: var(--r-pill);
+  margin: 12px auto 6px;
+  flex-shrink: 0;
+}
+
+.sheet-header {
+  padding: 4px 22px 12px;
+  border-bottom: 1px solid var(--c-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.sheet-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.sheet-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.3px;
+}
+
+html[lang="ar"] .sheet-title {
+  font-family: var(--f-ar);
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.sheet-sub {
+  font-size: 11.5px;
+  color: var(--c-slate);
+  font-weight: 500;
+}
+
+html[lang="ar"] .sheet-sub {
+  font-family: var(--f-ar);
+  font-size: 12.5px;
+}
+
+.sheet-close {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(14, 148, 135, 0.08);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sheet-close:hover {
+  background: rgba(14, 148, 135, 0.15);
+  transform: rotate(90deg);
+}
+
+.sheet-close svg {
+  width: 13px; height: 13px;
+  stroke: var(--c-slate); stroke-width: 2.4; fill: none;
+  stroke-linecap: round;
+}
+
+/* TRANSCRIPT BODY */
+.transcript-body {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 14px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.transcript-body::-webkit-scrollbar { display: none; }
+
+.t-line {
+  display: flex;
+  gap: 8px;
+  animation: lineIn 0.35s ease;
+}
+
+@keyframes lineIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.t-line.ai { align-items: flex-start; }
+.t-line.me { align-items: flex-start; flex-direction: row-reverse; }
+
+.t-bubble {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.1px;
+}
+
+html[lang="ar"] .t-bubble {
+  font-family: var(--f-ar);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.t-line.ai .t-bubble {
+  background: linear-gradient(135deg, rgba(14, 148, 135, 0.08), rgba(46, 196, 182, 0.06));
+  border: 1px solid rgba(14, 148, 135, 0.15);
+  color: var(--c-navy);
+  border-top-left-radius: 4px;
+}
+
+.t-line.me .t-bubble {
+  background: var(--g-brand);
+  color: #fff;
+  border-top-right-radius: 4px;
+  box-shadow: 0 6px 16px rgba(14, 148, 135, 0.22);
+}
+
+/* PERSONA GRID */
+.persona-grid {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 16px 18px 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  min-height: 0;
+}
+
+.persona-grid::-webkit-scrollbar { display: none; }
+
+.persona-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px 12px;
+  background: #FFFBF5;
+  border: 2px solid var(--c-border);
+  border-radius: var(--r-lg);
+  transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.persona-card:hover {
+  border-color: rgba(14, 148, 135, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.persona-card.active {
+  border-color: transparent;
+  background:
+    linear-gradient(#FFFBF5, #FFFBF5) padding-box,
+    var(--g-brand) border-box;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 26px rgba(14, 148, 135, 0.2);
+}
+
+.persona-card-avatar {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, #fff, #DFF7F2 72%);
+  flex-shrink: 0;
+}
+
+.persona-card-avatar svg { width: 100%; height: 100%; display: block; }
+
+.persona-card.active .persona-card-avatar {
+  box-shadow: 0 0 0 3px rgba(14, 148, 135, 0.25);
+}
+
+.persona-card-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: -0.1px;
+}
+
+html[lang="ar"] .persona-card-name {
+  font-family: var(--f-ar);
+  font-size: 14.5px;
+  letter-spacing: 0;
+}
+
+.persona-card-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--c-slate);
+  padding: 2px 9px;
+  background: rgba(14, 148, 135, 0.08);
+  border-radius: var(--r-pill);
+}
+
+.persona-card.active .persona-card-label {
+  background: var(--g-brand);
+  color: #fff;
+}
+
+html[lang="ar"] .persona-card-label {
+  font-family: var(--f-ar);
+  font-size: 11.5px;
+}
+
+.persona-card-check {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--c-success);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.4);
+  animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html[dir="rtl"] .persona-card-check {
+  right: auto;
+  left: 8px;
+}
+
+.persona-card.active .persona-card-check { display: flex; }
+
+@keyframes checkPop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+.persona-card-check svg {
+  width: 13px; height: 13px;
+  stroke: #fff; stroke-width: 3.5; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* END OVERLAY */
 .end-overlay {
   position: absolute;
   inset: 0;
@@ -719,7 +970,10 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
 
 .end-overlay.show { display: flex; }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 .end-card {
   background: #fff;
@@ -736,8 +990,8 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
 }
 
 @keyframes cardPop {
-  0%   { transform: scale(0.85); opacity: 0; }
-  60%  { transform: scale(1.04); opacity: 1; }
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.04); opacity: 1; }
   100% { transform: scale(1); }
 }
 
@@ -763,7 +1017,11 @@ html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
   letter-spacing: -0.3px;
 }
 
-html[lang="ar"] .end-title { font-family: var(--f-ar); font-size: 18px; letter-spacing: 0; }
+html[lang="ar"] .end-title {
+  font-family: var(--f-ar);
+  font-size: 18px;
+  letter-spacing: 0;
+}
 
 .end-desc {
   font-size: 12.5px;
@@ -772,7 +1030,10 @@ html[lang="ar"] .end-title { font-family: var(--f-ar); font-size: 18px; letter-s
   font-weight: 500;
 }
 
-html[lang="ar"] .end-desc { font-family: var(--f-ar); font-size: 13.5px; }
+html[lang="ar"] .end-desc {
+  font-family: var(--f-ar);
+  font-size: 13.5px;
+}
 
 .end-stats {
   display: flex;
@@ -813,7 +1074,8 @@ html[lang="ar"] .end-desc { font-family: var(--f-ar); font-size: 13.5px; }
 
 html[lang="ar"] .end-stat-label {
   font-family: var(--f-ar);
-  text-transform: none; letter-spacing: 0;
+  text-transform: none;
+  letter-spacing: 0;
   font-size: 10.5px;
 }
 
@@ -827,10 +1089,15 @@ html[lang="ar"] .end-stat-label {
   border-radius: var(--r-md);
   box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3);
   transition: transform 0.2s ease, box-shadow 0.25s ease;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
 }
 
-.end-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(14, 148, 135, 0.4); }
+.end-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(14, 148, 135, 0.4);
+}
+
 .end-btn:active { transform: scale(0.97); }
 
 .end-btn svg {
@@ -841,9 +1108,7 @@ html[lang="ar"] .end-stat-label {
 
 html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 
-/* ============================================
-   REDUCED MOTION
-============================================ */
+/* REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -851,51 +1116,6 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
     transition-duration: 0.01ms !important;
   }
 }
-/* ============================================
-   COMPANION (avatar session)
-============================================ */
-.topbar { justify-content: center; }
-.persona-btn { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 999px;
-  background: rgba(255,255,255,.85); border: 1px solid var(--c-border); font-size: 12.5px; font-weight: 600;
-  color: var(--c-navy); box-shadow: 0 4px 12px rgba(15,23,42,.06); }
-html[lang="ar"] .persona-btn { font-family: var(--f-ar); font-size: 13px; padding: 6px 6px 6px 14px; }
-.persona-btn .mini { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; background: #E0F7F4; flex-shrink: 0; }
-.persona-btn .mini svg { width: 100%; height: 100%; display: block; }
-.main-call { justify-content: flex-start; gap: 10px; padding: 14px 22px 0; }
-.companion { position: relative; width: 190px; height: 190px; border-radius: 50%; flex-shrink: 0; overflow: hidden;
-  background: radial-gradient(circle at 50% 35%, #fff, #DFF7F2 72%);
-  box-shadow: 0 18px 40px rgba(14,148,135,.16), 0 0 0 6px rgba(255,255,255,.75); transition: box-shadow .4s ease; }
-.companion.speaking { box-shadow: 0 18px 40px rgba(14,148,135,.26), 0 0 0 6px rgba(46,196,182,.4), 0 0 0 15px rgba(46,196,182,.12); }
-.companion > svg { width: 100%; height: 100%; display: block; animation: breathe 4.5s ease-in-out infinite; }
-@keyframes breathe { 50% { transform: translateY(3px) scale(1.012); } }
-.eyes { transform-box: fill-box; transform-origin: center; animation: blink 5s infinite; }
-@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96.5% { transform: scaleY(.08); } }
-.m-open { opacity: 0; transform-box: fill-box; transform-origin: center; }
-.companion.speaking .m-open { opacity: 1; animation: talk .34s ease-in-out infinite alternate; }
-.companion.speaking .m-smile { opacity: 0; }
-@keyframes talk { from { transform: scale(.8, .3); } to { transform: scale(1, 1); } }
-.waveform { margin-top: 0; height: 16px; }
-.caption { min-height: 78px; max-width: 306px; display: flex; align-items: center; justify-content: center; text-align: center;
-  font-size: 17px; line-height: 1.55; font-weight: 600; color: var(--c-navy); }
-html[lang="ar"] .caption { font-family: var(--f-ar); font-size: 18px; }
-.caption.me { color: var(--c-primary-dark); font-weight: 500; font-size: 15px; }
-.mem-card { display: none; align-items: center; gap: 12px; padding: 10px 18px 10px 10px; background: #fff; border-radius: 18px;
-  border: 1px solid var(--c-border); box-shadow: 0 10px 26px rgba(15,23,42,.08); max-width: 300px; }
-html[lang="ar"] .mem-card { padding: 10px 10px 10px 18px; }
-.mem-card.show { display: flex; animation: cardIn .45s cubic-bezier(.2,.9,.3,1.2); }
-@keyframes cardIn { from { opacity: 0; transform: translateY(14px) scale(.92); } }
-.mem-photo { width: 64px; height: 64px; border-radius: 14px; overflow: hidden; background: var(--g-brand); color: #fff;
-  font-weight: 700; font-size: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.mem-photo img { width: 100%; height: 100%; object-fit: cover; }
-.mem-info { text-align: start; min-width: 60px; }
-.mem-name { font-weight: 700; color: var(--c-navy); font-size: 16px; }
-.mem-meta { font-size: 12.5px; color: var(--c-slate); }
-html[lang="ar"] .mem-name, html[lang="ar"] .mem-meta { font-family: var(--f-ar); }
-.ctrl-btn.end { background: #fff; border: 1.5px solid var(--c-border); box-shadow: 0 8px 20px rgba(15,23,42,.08); }
-.ctrl-btn.end:hover { box-shadow: 0 12px 26px rgba(15,23,42,.12); }
-.ctrl-btn.end svg { stroke: var(--c-slate); }
-.controls { padding-top: 12px; }
-
 </style>
 </head>
 
@@ -905,77 +1125,77 @@ html[lang="ar"] .mem-name, html[lang="ar"] .mem-meta { font-family: var(--f-ar);
   <div class="phone">
     <div class="screen">
 
-      <!-- Top Bar -->
+      <!-- TOP BAR -->
       <div class="topbar">
+        <button class="close-btn" id="closeBtn" aria-label="Close">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
         <button class="persona-btn" id="personaBtn" aria-label="Change companion">
           <span class="mini" id="personaMini"></span>
-          <span id="personaLabel">Change companion</span>
+          <span class="label">
+            <span id="personaLabel"></span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
         </button>
-        <span id="liveText" hidden></span><span id="callTimer" hidden>00:00</span>
+        <div class="progress-dots" id="progressDots"></div>
       </div>
 
-      <!-- Main -->
+      <!-- MAIN -->
       <div class="main-call">
         <div class="companion" id="avatarWrap"></div>
         <div>
           <div class="call-name" id="callName"></div>
           <div class="call-status-text"><span id="statusText">…</span></div>
         </div>
-        <div class="waveform" id="waveform"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="pulse" id="pulse"><span class="pulse-inner"></span></div>
         <div class="caption" id="caption"></div>
         <div class="mem-card" id="memCard">
           <div class="mem-photo" id="memPhoto"></div>
-          <div class="mem-info"><div class="mem-name" id="memName"></div><div class="mem-meta" id="memMeta"></div></div>
+          <div class="mem-info">
+            <div class="mem-name" id="memName"></div>
+            <div class="mem-meta" id="memMeta"></div>
+          </div>
         </div>
       </div>
 
-      <!-- Transcript Button -->
-      <button class="transcript-btn" id="transcriptBtn">
-        <svg viewBox="0 0 24 24">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span id="transcriptLabel">Show Transcript</span>
-      </button>
-
-      <!-- Text input fallback -->
-      <div class="text-input-wrap" id="textInputWrap">
-        <input type="text" id="textInput" placeholder="Type your answer..." />
-        <button class="text-send" id="textSend">
-          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-        </button>
-      </div>
-
-      <!-- Controls -->
-      <div class="controls">
-        <button class="ctrl-btn small" id="muteBtn" aria-label="Mute">
-          <svg id="muteIcon" viewBox="0 0 24 24">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-          </svg>
-          <span class="ctrl-label" id="muteLabel">Mute</span>
-        </button>
-
-        <button class="ctrl-btn mic" id="micBtn" aria-label="Talk">
+      <!-- ACTIONS -->
+      <div class="action-area">
+        <div class="action-row">
+          <button class="talk-btn" id="talkBtn">
+            <svg id="talkIcon" viewBox="0 0 24 24">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span id="talkLabel">Talk</span>
+          </button>
+          <button class="forgot-btn" id="forgotBtn">
+            <span id="forgotLabel">I don't remember</span>
+          </button>
+        </div>
+        <div class="text-input-wrap" id="textInputWrap">
+          <input type="text" id="textInput" />
+          <button class="text-send" id="textSend">
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </div>
+        <button class="transcript-btn" id="transcriptBtn">
           <svg viewBox="0 0 24 24">
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-            <line x1="12" y1="19" x2="12" y2="23"></line>
-            <line x1="8" y1="23" x2="16" y2="23"></line>
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
-          <span class="ctrl-label" id="micLabel">Tap to talk</span>
-        </button>
-
-        <button class="ctrl-btn end" id="endBtn" aria-label="Later">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
-          <span class="ctrl-label" id="endLabel">Later</span>
+          <span id="transcriptLabel">See what we said</span>
         </button>
       </div>
 
-      <!-- Transcript Sheet -->
-      <div class="transcript-sheet" id="transcriptSheet">
+      <!-- TRANSCRIPT SHEET -->
+      <div class="sheet-overlay" id="transcriptOverlay"></div>
+      <div class="sheet" id="transcriptSheet">
         <div class="sheet-handle"></div>
         <div class="sheet-header">
-          <div class="sheet-title" id="sheetTitle">Conversation</div>
+          <div class="sheet-title-wrap">
+            <div class="sheet-title" id="sheetTitle">Our conversation</div>
+          </div>
           <button class="sheet-close" id="sheetClose">
             <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
@@ -983,22 +1203,38 @@ html[lang="ar"] .mem-name, html[lang="ar"] .mem-meta { font-family: var(--f-ar);
         <div class="transcript-body" id="transcriptBody"></div>
       </div>
 
-      <!-- End Call Overlay -->
+      <!-- PERSONA SHEET -->
+      <div class="sheet-overlay" id="personaOverlay"></div>
+      <div class="sheet" id="personaSheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-header">
+          <div class="sheet-title-wrap">
+            <div class="sheet-title" id="personaSheetTitle">Change companion</div>
+            <div class="sheet-sub" id="personaSheetSub">Pick who you want to talk with today</div>
+          </div>
+          <button class="sheet-close" id="personaClose">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="persona-grid" id="personaGrid"></div>
+      </div>
+
+      <!-- END OVERLAY -->
       <div class="end-overlay" id="endOverlay">
         <div class="end-card">
           <div class="end-icon">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
-          <div class="end-title" id="endTitle">Call Ended</div>
-          <div class="end-desc" id="endDesc">Great session! You practiced your memory today.</div>
+          <div class="end-title" id="endTitle">Well done!</div>
+          <div class="end-desc" id="endDesc">Your memory worked nicely today. See you soon.</div>
           <div class="end-stats">
             <div class="end-stat">
               <div class="end-stat-value" id="statDuration">0:00</div>
-              <div class="end-stat-label" id="statDurationLabel">Duration</div>
+              <div class="end-stat-label" id="statDurationLabel">Time</div>
             </div>
             <div class="end-stat">
               <div class="end-stat-value" id="statTurns">0</div>
-              <div class="end-stat-label" id="statTurnsLabel">Questions</div>
+              <div class="end-stat-label" id="statTurnsLabel">Remembered</div>
             </div>
           </div>
           <button class="end-btn" id="endDoneBtn">
@@ -1018,45 +1254,87 @@ html[lang="ar"] .mem-name, html[lang="ar"] .mem-meta { font-family: var(--f-ar);
 ============================================ */
 const I18N = {
   en: {
-    connecting: 'One moment…', aiSpeaking: 'Talking with you', yourTurn: 'Your turn — tap the mic', listening: 'Listening…',
-    mute: 'Mute', unmute: 'Sound on', tapToTalk: 'Tap and talk', stopTalk: 'Tap to stop', end: 'Later',
-    transcriptLabel: 'See what we said', sheetTitle: 'Our conversation', inputPlaceholder: 'Type your answer…',
-    endTitle: 'Well done!', endDesc: 'Your memory worked nicely today. See you soon.',
-    durationLabel: 'Time', turnsLabel: 'Remembered', backHome: 'Back to Home',
-    noSpeechSupport: 'Voice is not available here — type your answer', change: 'Change companion',
-    greetM: 'Good morning', greetE: 'Good evening',
+    connecting: 'One moment…',
+    aiSpeaking: 'Talking with you',
+    yourTurn: 'Your turn — say the name',
+    listening: 'I\'m listening…',
+    tapToTalk: 'Talk',
+    stopTalk: 'Stop',
+    typeAnswer: 'Type your answer',
+    forgot: 'I don\'t remember',
+    end: 'Later',
+    transcriptLabel: 'See what we said',
+    sheetTitle: 'Our conversation',
+    inputPlaceholder: 'Type your answer…',
+    endTitle: 'Well done!',
+    endDesc: 'Your memory worked nicely today. See you soon.',
+    durationLabel: 'Time',
+    turnsLabel: 'Remembered',
+    backHome: 'Back to Home',
+    noSpeechSupport: 'Type your answer below',
+    change: 'Change',
+    personaSheetTitle: 'Change companion',
+    personaSheetSub: 'Pick who you want to talk with today',
+    labelKid: 'Child',
+    labelAdult: 'Adult',
+    labelElder: 'Older',
+    greetM: 'Good morning',
+    greetE: 'Good evening',
     intro: "{g}, {name}! I'm {ai}, and I'll be with you today. Let's remember the people and places you love, together.",
     noMemoryBank: 'Your Memory Bank is still empty. Add your first person and I will be right here.',
     qWho: 'Look at this photo. Do you remember who this is?',
-    qWhere: 'What do you remember about {n}? Tell me.', qWhen: 'What do you remember about {n}? Tell me.',
+    qPlace: 'Do you remember this place? What is it called?',
+    qEvent: 'Do you remember this moment? What is it?',
     good: ['Well done! Yes, this is {n}.', "That's right! This is {n}. Your memory is working well."],
-    close: 'Very close! {mh}the name starts with “{h}”.',
-    hint: 'Try once more, take your time. {mh}the name starts with “{h}”.',
-    unsure: 'No problem at all, take your time. {mh}the name starts with “{h}”.',
-    reveal: 'This is {n}{meta}. That is okay, we will remember together next time.',
+    close: 'Very close! The name starts with "{h}".',
+    hint: 'Try once more, take your time. The name starts with "{h}".',
+    unsure: 'No problem at all, take your time. The name starts with "{h}".',
+    reveal: 'This is {n}. That is okay, we will remember together next time.',
     nice: ['I love that you remember. {n} clearly means a lot to you.', 'Thank you for telling me about {n}.'],
     skip: "That's okay, we'll come back to it together.",
+    skipBtn: 'No problem, we\'ll skip this one for now.',
     bye: 'That was a lovely time with you, {name}. See you later.'
   },
   ar: {
-    connecting: 'لحظة…', aiSpeaking: 'بكلمك دلوقتي', yourTurn: 'دورك، اضغط على المايك', listening: 'سامعك…',
-    mute: 'كتم', unmute: 'تشغيل الصوت', tapToTalk: 'اضغط وكلمني', stopTalk: 'اضغط للإيقاف', end: 'نكمل بعدين',
-    transcriptLabel: 'شوف الكلام', sheetTitle: 'كلامنا', inputPlaceholder: 'اكتب ردك هنا…',
-    endTitle: 'برافو عليك!', endDesc: 'ذاكرتك اشتغلت حلو النهاردة. أشوفك قريب.',
-    durationLabel: 'المدة', turnsLabel: 'افتكرت', backHome: 'رجوع للرئيسية',
-    noSpeechSupport: 'الصوت مش متاح هنا، اكتب ردك', change: 'غيّر الشخصية',
-    greetM: 'صباح الخير', greetE: 'مساء الخير',
+    connecting: 'لحظة…',
+    aiSpeaking: 'بكلمك دلوقتي',
+    yourTurn: 'دورك — قول الاسم',
+    listening: 'سامعك…',
+    tapToTalk: 'اتكلم',
+    stopTalk: 'إيقاف',
+    typeAnswer: 'اكتب ردك',
+    forgot: 'مش فاكر',
+    end: 'نكمل بعدين',
+    transcriptLabel: 'شوف الكلام',
+    sheetTitle: 'كلامنا',
+    inputPlaceholder: 'اكتب ردك هنا…',
+    endTitle: 'برافو عليك!',
+    endDesc: 'ذاكرتك اشتغلت حلو النهاردة. أشوفك قريب.',
+    durationLabel: 'المدة',
+    turnsLabel: 'افتكرت',
+    backHome: 'رجوع للرئيسية',
+    noSpeechSupport: 'اكتب ردك تحت',
+    change: 'تغيير',
+    personaSheetTitle: 'غيّر صاحبك',
+    personaSheetSub: 'اختار اللي تحب تكلمه النهاردة',
+    labelKid: 'طفل',
+    labelAdult: 'بالغ',
+    labelElder: 'كبير',
+    greetM: 'صباح الخير',
+    greetE: 'مساء الخير',
     intro: '{g} يا {name}! أنا {ai}، وهكون معاك النهاردة. تعالى نفتكر سوا الناس والأماكن اللي بتحبها.',
     noMemoryBank: 'بنك الذكريات لسه فاضي. ضيف أول شخص وأنا معاك.',
     qWho: 'بص على الصورة دي. فاكر دي مين؟',
-    qWhere: 'فاكر إيه عن {n}؟ احكيلي.', qWhen: 'فاكر إيه عن {n}؟ احكيلي.',
+    qPlace: 'فاكر المكان ده؟ اسمه إيه؟',
+    qEvent: 'فاكر اللحظة دي؟ إيه هي؟',
     good: ['برافو عليك! فعلًا ده {n}.', 'صح! ده {n}. ذاكرتك شغالة حلو.'],
-    close: 'قريب جدًا! {mh}واسمه بيبدأ بحرف «{h}».',
-    hint: 'جرب تاني، خد وقتك. {mh}واسمه بيبدأ بحرف «{h}».',
-    unsure: 'مفيش مشكلة خالص، خد وقتك. {mh}واسمه بيبدأ بحرف «{h}».',
-    reveal: 'ده {n}{meta}. مش مشكلة، هنفتكره سوا المرة الجاية.',
+    close: 'قريب جدًا! الاسم بيبدأ بحرف «{h}».',
+    hint: 'جرب تاني، خد وقتك. الاسم بيبدأ بحرف «{h}».',
+    unsure: 'مفيش مشكلة خالص، خد وقتك. الاسم بيبدأ بحرف «{h}».',
+    reveal: 'ده {n}. مش مشكلة، هنفتكره سوا المرة الجاية.',
     nice: ['حلو أوي إنك فاكر. واضح إن {n} ليه مكان كبير عندك.', 'شكرًا إنك حكيتلي عن {n}.'],
     skip: 'مفيش مشكلة، هنرجعله مع بعض.',
+    skipBtn: 'ولا يهمك، هنعدي دي دلوقتي.',
     bye: 'كان وقت حلو معاك يا {name}. نكمل بعدين.'
   }
 };
@@ -1091,11 +1369,11 @@ const state = {
   userAge: 0
 };
 
+const $ = id => document.getElementById(id);
+
 /* ============================================
    HELPERS
 ============================================ */
-const $ = id => document.getElementById(id);
-
 function getRandomUnused(items, key) {
   const available = items.filter((_, i) => !state.usedIndices.has(key + i));
   if (available.length === 0) {
@@ -1139,50 +1417,13 @@ function loadMemoryBank() {
 }
 
 /* ============================================
-   LANGUAGE APPLY
-============================================ */
-function applyLanguage(lang) {
-  currentLang = lang;
-  localStorage.setItem(STORAGE_KEY, lang);
-  htmlEl.lang = lang;
-  htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-  const t = I18N[lang];
-  $('muteLabel').textContent = state.isMuted ? t.unmute : t.mute;
-  $('micLabel').textContent = t.tapToTalk;
-  $('endLabel').textContent = t.end;
-  $('personaLabel').textContent = t.change;
-  if (state.persona) $('callName').textContent = FACES[state.persona].n[lang];
-  $('transcriptLabel').textContent = t.transcriptLabel;
-  $('sheetTitle').textContent = t.sheetTitle;
-  $('textInput').placeholder = t.inputPlaceholder;
-  $('endTitle').textContent = t.endTitle;
-  $('endDesc').textContent = t.endDesc;
-  $('statDurationLabel').textContent = t.durationLabel;
-  $('statTurnsLabel').textContent = t.turnsLabel;
-  $('endDoneLabel').textContent = t.backHome;
-
-  if (!state.isEnded) {
-    if (state.isAISpeaking) $('statusText').textContent = t.aiSpeaking;
-    else if (state.isListening) $('statusText').textContent = t.listening;
-    else if (state.currentQuestion) $('statusText').textContent = t.yourTurn;
-    else $('statusText').textContent = t.connecting;
-  }
-}
-
-/* ============================================
-   TIMER
+   TIMER (internal, not shown)
 ============================================ */
 function startTimer() {
   state.callStartTime = Date.now();
-  state.timerInterval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - state.callStartTime) / 1000);
-    $('callTimer').textContent = formatTime(elapsed);
-  }, 1000);
 }
 
 function stopTimer() {
-  if (state.timerInterval) clearInterval(state.timerInterval);
   return Math.floor((Date.now() - state.callStartTime) / 1000);
 }
 
@@ -1201,7 +1442,7 @@ function addTranscriptLine(role, text) {
 }
 
 /* ============================================
-   SPEECH SYNTHESIS (AI voice)
+   SPEECH SYNTHESIS
 ============================================ */
 function speak(text, callback) {
   if (!('speechSynthesis' in window) || state.isMuted) {
@@ -1225,7 +1466,9 @@ function speak(text, callback) {
 
   const voices = window.speechSynthesis.getVoices();
   const langVoices = voices.filter(v => v.lang.startsWith(currentLang === 'ar' ? 'ar' : 'en'));
-  const gRe = F.g === 'f' ? /salma|hoda|zira|female|samantha|susan|sara|laila|amira|fiona|karen/i : /shakir|maged|tarik|david|mark|male|daniel|alex/i;
+  const gRe = F.g === 'f'
+    ? /salma|hoda|zira|female|samantha|susan|sara|laila|amira|fiona|karen/i
+    : /shakir|maged|tarik|david|mark|male|daniel|alex/i;
   utter.voice = langVoices.find(v => gRe.test(v.name)) || langVoices[0] || null;
 
   state.isAISpeaking = true;
@@ -1247,28 +1490,29 @@ function speak(text, callback) {
 
 function setAISpeakingUI(isSpeaking) {
   const wrap = $('avatarWrap');
-  const wave = $('waveform');
+  const pulse = $('pulse');
   const status = $('statusText');
 
   if (isSpeaking) {
     wrap.classList.add('speaking');
-    wave.classList.add('active');
+    pulse.classList.add('active');
     status.textContent = I18N[currentLang].aiSpeaking;
+    disableTalkBtn();
   } else {
     wrap.classList.remove('speaking');
-    wave.classList.remove('active');
+    pulse.classList.remove('active');
   }
 }
 
 /* ============================================
-   SPEECH RECOGNITION (User voice)
+   SPEECH RECOGNITION
 ============================================ */
 function initSpeechRecognition() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
     state.speechSupported = false;
     $('textInputWrap').classList.add('show');
-    $('micBtn').classList.add('disabled');
+    $('talkBtn').style.display = 'none';
     return;
   }
 
@@ -1320,69 +1564,159 @@ function stopListening() {
 }
 
 function setListeningUI(isOn) {
-  const mic = $('micBtn');
-  const wave = $('waveform');
+  const btn = $('talkBtn');
+  const pulse = $('pulse');
   const status = $('statusText');
   const wrap = $('avatarWrap');
 
   if (isOn) {
-    mic.classList.add('listening');
-    wave.classList.add('active');
+    btn.classList.add('listening');
+    pulse.classList.add('active');
     wrap.classList.add('speaking');
     status.textContent = I18N[currentLang].listening;
-    $('micLabel').textContent = I18N[currentLang].stopTalk;
+    $('talkLabel').textContent = I18N[currentLang].stopTalk;
+    $('talkIcon').innerHTML = '<rect x="6" y="6" width="12" height="12" rx="2"></rect>';
   } else {
-    mic.classList.remove('listening');
-    wave.classList.remove('active');
+    btn.classList.remove('listening');
+    pulse.classList.remove('active');
     wrap.classList.remove('speaking');
     if (state.currentQuestion) status.textContent = I18N[currentLang].yourTurn;
-    $('micLabel').textContent = I18N[currentLang].tapToTalk;
+    $('talkLabel').textContent = I18N[currentLang].tapToTalk;
+    $('talkIcon').innerHTML = '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>';
   }
 }
 
+function enableTalkBtn() {
+  const btn = $('talkBtn');
+  if (btn) btn.classList.remove('disabled');
+}
+
+function disableTalkBtn() {
+  const btn = $('talkBtn');
+  if (btn) btn.classList.add('disabled');
+}
+
 /* ============================================
-   COMPANION — faces, personas
+   COMPANION FACES
 ============================================ */
 const FACES = {
-  kid_m:   { n: { en: 'Adam', ar: 'آدم' },   g: 'm', kid: 1, skin: '#F1C7A0', hair: '#3A2A22', style: 'short',    shirt: '#3B82F6', pitch: 1.4,  rate: 1.05 },
-  kid_f:   { n: { en: 'Lina', ar: 'لينا' },  g: 'f', kid: 1, skin: '#F3CBA8', hair: '#4A2E22', style: 'pigtails', shirt: '#F472B6', pitch: 1.55, rate: 1.05 },
-  adult_m: { n: { en: 'Karim', ar: 'كريم' }, g: 'm',         skin: '#E8B88E', hair: '#2A1D18', style: 'short',    shirt: '#0E9487', pitch: 0.9,  rate: 0.95 },
-  adult_f: { n: { en: 'Laila', ar: 'ليلى' }, g: 'f',         skin: '#EDBE96', hair: '#7C6FD6', style: 'hijab',    shirt: '#5B4BB5', pitch: 1.12, rate: 0.95 },
-  elder_m: { n: { en: 'Sami', ar: 'سامي' },  g: 'm', old: 1, skin: '#E3B38A', hair: '#E5E7EB', style: 'sides',    shirt: '#64748B', glasses: 1, pitch: 0.8,  rate: 0.88 },
-  elder_f: { n: { en: 'Mona', ar: 'منى' },   g: 'f', old: 1, skin: '#E8B991', hair: '#E9D8C0', style: 'hijab',    shirt: '#0E9487', glasses: 1, pitch: 1.05, rate: 0.88 }
+  kid_m:   { n: { en: 'Adam', ar: 'آدم' },   g: 'm', kid: 1, skin: '#F5D0B0', hair: '#3A2A22', style: 'short',    shirt: '#3B82F6', pitch: 1.5,  rate: 1.05,  labelKey: 'labelKid' },
+  kid_f:   { n: { en: 'Lina', ar: 'لينا' },  g: 'f', kid: 1, skin: '#F8D5B8', hair: '#5C3A28', style: 'pigtails', shirt: '#F472B6', pitch: 1.6,  rate: 1.05,  labelKey: 'labelKid' },
+  adult_m: { n: { en: 'Karim', ar: 'كريم' }, g: 'm',         skin: '#E8B88E', hair: '#2A1D18', style: 'short',    shirt: '#0E9487', pitch: 0.9,  rate: 0.95,  labelKey: 'labelAdult' },
+  adult_f: { n: { en: 'Laila', ar: 'ليلى' }, g: 'f',         skin: '#EDBE96', hair: '#3B2A1F', style: 'long',     shirt: '#5B4BB5', pitch: 1.15, rate: 0.95,  labelKey: 'labelAdult' },
+  elder_m: { n: { en: 'Sami', ar: 'سامي' },  g: 'm', old: 1, skin: '#E3B38A', hair: '#E5E7EB', style: 'sides',    shirt: '#64748B', glasses: 1, pitch: 0.8,  rate: 0.88,  labelKey: 'labelElder' },
+  elder_f: { n: { en: 'Mona', ar: 'منى' },   g: 'f', old: 1, skin: '#E8B991', hair: '#D4C5B0', style: 'hijab',    shirt: '#0E9487', glasses: 1, pitch: 1.05, rate: 0.88,  labelKey: 'labelElder' }
 };
 const ORDER = ['kid_m', 'kid_f', 'adult_m', 'adult_f', 'elder_m', 'elder_f'];
 
+function browColor(f) {
+  if (f.old) return '#9CA3AF';
+  return f.hair;
+}
+
 function buildFace(f) {
-  const k = f.kid, hy = k ? 100 : 94, ey = k ? 102 : 96, er = k ? 6.5 : 4.6, ex = k ? 19 : 18, rx = k ? 50 : 46;
-  const dk = '#1F2937', base = k ? 92 : 88, ctl = k ? 30 : 22;
-  const brow = f.old ? '#9CA3AF' : (f.style === 'hijab' ? '#4B3B30' : f.hair);
+  const isKid = !!f.kid;
+  const isOld = !!f.old;
+  const isHijab = f.style === 'hijab';
+
+  // Head proportions
+  const headY = isKid ? 96 : 92;
+  const headRx = isKid ? 54 : 46;
+  const headRy = isKid ? 52 : 50;
+
+  // Eyes
+  const eyeY = headY + (isKid ? 8 : 4);
+  const eyeR = isKid ? 8 : 5;
+  const eyeX = isKid ? 21 : 18;
+
+  // Mouth
+  const mouthY = eyeY + (isKid ? 26 : 30);
+
+  // Blush
+  const blushR = isKid ? 13 : 9;
+  const blushOp = isKid ? 0.32 : 0.22;
+
   let back = '', front = '';
-  if (f.style === 'pigtails') back = `<circle cx="44" cy="100" r="17" fill="${f.hair}"/><circle cx="156" cy="100" r="17" fill="${f.hair}"/>`;
-  if (f.style === 'hijab') back = `<path d="M44 104C36 34 164 34 156 104C158 142 152 168 142 182H58C48 168 42 142 44 104Z" fill="${f.hair}"/>`;
-  if (f.style === 'short' || f.style === 'pigtails') front = `<path d="M52 ${base}C50 ${ctl} 150 ${ctl} 148 ${base}C136 72 114 64 100 64C86 64 64 72 52 ${base}Z" fill="${f.hair}"/>`;
-  if (f.style === 'sides') front = `<path d="M54 92C50 70 60 62 70 62C62 72 60 82 60 96ZM146 92C150 70 140 62 130 62C138 72 140 82 140 96Z" fill="${f.hair}"/>`;
-  if (f.style === 'hijab') front = `<path d="M54 90C52 28 148 28 146 90C132 68 68 68 54 90Z" fill="${f.hair}"/>`;
-  const hij = f.style === 'hijab';
-  const neck = hij ? '' : `<rect x="87" y="128" width="26" height="30" rx="11" fill="${f.skin}"/>`;
-  const ears = hij ? '' : `<circle cx="54" cy="${hy + 4}" r="8" fill="${f.skin}"/><circle cx="146" cy="${hy + 4}" r="8" fill="${f.skin}"/>`;
-  const m = ey + (k ? 27 : 30);
-  const glasses = f.glasses ? `<g fill="none" stroke="#475569" stroke-width="2.8"><circle cx="${100 - ex}" cy="${ey}" r="14"/><circle cx="${100 + ex}" cy="${ey}" r="14"/><path d="M${100 - ex + 14} ${ey}H${100 + ex - 14}"/></g>` : '';
-  const wr = f.old ? `<path d="M62 ${ey - 2}q-5 4-5 10M138 ${ey - 2}q5 4 5 10M84 ${ey - 24}q16-5 32 0" stroke="#A9795A" stroke-width="2" fill="none" opacity=".35" stroke-linecap="round"/>` : '';
+
+  // BACK HAIR
+  if (f.style === 'pigtails') {
+    back = `<circle cx="40" cy="${headY + 8}" r="18" fill="${f.hair}"/>
+            <circle cx="160" cy="${headY + 8}" r="18" fill="${f.hair}"/>`;
+  } else if (f.style === 'long') {
+    back = `<path d="M48 ${headY - 18} Q36 ${headY + 50} 44 ${headY + 95} L156 ${headY + 95} Q164 ${headY + 50} 152 ${headY - 18} Z" fill="${f.hair}"/>`;
+  } else if (f.style === 'hijab') {
+    back = `<path d="M46 ${headY + 8} C38 ${headY - 60} 162 ${headY - 60} 154 ${headY + 8} C156 ${headY + 56} 150 ${headY + 82} 138 ${headY + 96} L62 ${headY + 96} C50 ${headY + 82} 44 ${headY + 56} 46 ${headY + 8}Z" fill="${f.hair}"/>`;
+  }
+
+  // FRONT HAIR
+  if (f.style === 'short') {
+    const hairH = isOld ? 46 : 58;
+    front = `<path d="M${100 - headRx + 8} ${headY - 18} Q${100 - headRx + 4} ${headY - hairH} 100 ${headY - hairH} Q${100 + headRx - 4} ${headY - hairH} ${100 + headRx - 8} ${headY - 18} Q100 ${headY - (isOld ? 30 : 28)} ${100 - headRx + 8} ${headY - 18}Z" fill="${f.hair}"/>`;
+  } else if (f.style === 'pigtails') {
+    front = `<path d="M${100 - headRx + 6} ${headY - 14} Q${100 - headRx + 4} ${headY - 56} 100 ${headY - 56} Q${100 + headRx - 4} ${headY - 56} ${100 + headRx - 6} ${headY - 14} Q100 ${headY - 28} ${100 - headRx + 6} ${headY - 14}Z" fill="${f.hair}"/>`;
+  } else if (f.style === 'long') {
+    front = `<path d="M${100 - headRx + 6} ${headY - 16} Q${100 - headRx + 4} ${headY - 58} 100 ${headY - 58} Q${100 + headRx - 4} ${headY - 58} ${100 + headRx - 6} ${headY - 16} Q100 ${headY - 32} ${100 - headRx + 6} ${headY - 16}Z" fill="${f.hair}"/>`;
+  } else if (f.style === 'sides') {
+    front = `<path d="M52 ${headY - 16} C50 ${headY - 30} 60 ${headY - 36} 70 ${headY - 34} C62 ${headY - 22} 60 ${headY - 10} 60 ${headY + 2}Z" fill="${f.hair}"/>
+             <path d="M148 ${headY - 16} C150 ${headY - 30} 140 ${headY - 36} 130 ${headY - 34} C138 ${headY - 22} 140 ${headY - 10} 140 ${headY + 2}Z" fill="${f.hair}"/>`;
+  } else if (f.style === 'hijab') {
+    front = `<path d="M${100 - headRx + 8} ${headY - 14} Q50 ${headY - 58} 100 ${headY - 58} Q150 ${headY - 58} ${100 + headRx - 8} ${headY - 14} C${100 + headRx - 16} ${headY - 24} ${100 - headRx + 16} ${headY - 24} ${100 - headRx + 8} ${headY - 14}Z" fill="${f.hair}"/>`;
+  }
+
+  // WRINKLES (elders)
+  let wrinkles = '';
+  if (isOld) {
+    wrinkles = `
+      <path d="M${100 - eyeX - 14} ${eyeY} q-6 2 -8 8" stroke="#A9795A" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+      <path d="M${100 + eyeX + 14} ${eyeY} q6 2 8 8" stroke="#A9795A" stroke-width="1.5" fill="none" opacity=".35" stroke-linecap="round"/>
+      <path d="M${100 - 12} ${headY - 32} q12 3 24 0" stroke="#A9795A" stroke-width="1.2" fill="none" opacity=".3" stroke-linecap="round"/>
+      <path d="M${100 - 14} ${headY - 26} q14 3 28 0" stroke="#A9795A" stroke-width="1.2" fill="none" opacity=".25" stroke-linecap="round"/>
+      <path d="M${100 - 10} ${mouthY + 18} q10 4 20 0" stroke="#A9795A" stroke-width="1.2" fill="none" opacity=".3" stroke-linecap="round"/>
+    `;
+  }
+
+  // GLASSES
+  const glasses = f.glasses ? `
+    <g fill="none" stroke="#475569" stroke-width="${isOld ? 3 : 2.5}">
+      <circle cx="${100 - eyeX}" cy="${eyeY}" r="${isOld ? 15 : 13}"/>
+      <circle cx="${100 + eyeX}" cy="${eyeY}" r="${isOld ? 15 : 13}"/>
+      <path d="M${100 - eyeX + 15} ${eyeY}H${100 + eyeX - 15}"/>
+      <path d="M${100 - eyeX - 15} ${eyeY}H30" opacity=".6"/>
+      <path d="M${100 + eyeX + 15} ${eyeY}H170" opacity=".6"/>
+    </g>
+  ` : '';
+
+  // EARS
+  const ears = isHijab ? '' : `
+    <circle cx="${100 - headRx + 4}" cy="${headY + 6}" r="8" fill="${f.skin}"/>
+    <circle cx="${100 + headRx - 4}" cy="${headY + 6}" r="8" fill="${f.skin}"/>
+  `;
+
+  // NECK
+  const neck = isHijab ? '' : `
+    <rect x="${100 - 13}" y="${headY + 40}" width="26" height="30" rx="11" fill="${f.skin}"/>
+  `;
+
   return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M26 200C26 164 62 150 100 150C138 150 174 164 174 200Z" fill="${f.shirt}"/>
     ${back}${neck}${ears}
-    <ellipse cx="100" cy="${hy}" rx="${rx}" ry="50" fill="${f.skin}"/>
-    ${front}${wr}
-    <ellipse cx="${100 - 30}" cy="${ey + 16}" rx="9" ry="6" fill="#F87171" opacity=".22"/><ellipse cx="${100 + 30}" cy="${ey + 16}" rx="9" ry="6" fill="#F87171" opacity=".22"/>
-    <path d="M${100 - ex - 9} ${ey - 12}Q${100 - ex} ${ey - 17} ${100 - ex + 9} ${ey - 12}M${100 + ex - 9} ${ey - 12}Q${100 + ex} ${ey - 17} ${100 + ex + 9} ${ey - 12}" stroke="${brow}" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <g class="eyes"><circle cx="${100 - ex}" cy="${ey}" r="${er}" fill="${dk}"/><circle cx="${100 + ex}" cy="${ey}" r="${er}" fill="${dk}"/>
-      <circle cx="${100 - ex + 1.8}" cy="${ey - 1.8}" r="${er * 0.3}" fill="#fff"/><circle cx="${100 + ex + 1.8}" cy="${ey - 1.8}" r="${er * 0.3}" fill="#fff"/></g>
+    <ellipse cx="100" cy="${headY}" rx="${headRx}" ry="${headRy}" fill="${f.skin}"/>
+    ${front}${wrinkles}
+    <ellipse cx="${100 - 30}" cy="${eyeY + 18}" rx="${blushR}" ry="${blushR * 0.7}" fill="#F87171" opacity="${blushOp}"/>
+    <ellipse cx="${100 + 30}" cy="${eyeY + 18}" rx="${blushR}" ry="${blushR * 0.7}" fill="#F87171" opacity="${blushOp}"/>
+    <path d="M${100 - eyeX - 10} ${eyeY - 14}Q${100 - eyeX} ${eyeY - 20} ${100 - eyeX + 10} ${eyeY - 14}" stroke="${browColor(f)}" stroke-width="${isKid ? 2.5 : 3}" fill="none" stroke-linecap="round"/>
+    <path d="M${100 + eyeX - 10} ${eyeY - 14}Q${100 + eyeX} ${eyeY - 20} ${100 + eyeX + 10} ${eyeY - 14}" stroke="${browColor(f)}" stroke-width="${isKid ? 2.5 : 3}" fill="none" stroke-linecap="round"/>
+    <g class="eyes">
+      <circle cx="${100 - eyeX}" cy="${eyeY}" r="${eyeR}" fill="#1F2937"/>
+      <circle cx="${100 + eyeX}" cy="${eyeY}" r="${eyeR}" fill="#1F2937"/>
+      <circle cx="${100 - eyeX + 2}" cy="${eyeY - 2}" r="${eyeR * 0.3}" fill="#fff"/>
+      <circle cx="${100 + eyeX + 2}" cy="${eyeY - 2}" r="${eyeR * 0.3}" fill="#fff"/>
+    </g>
     ${glasses}
-    <path d="M97 ${ey + 14}Q100 ${ey + 20} 104 ${ey + 14}" stroke="#B4795A" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/>
-    <path class="m-smile" d="M87 ${m}Q100 ${m + 13} 113 ${m}" stroke="#9B3B3B" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-    <ellipse class="m-open" cx="100" cy="${m + 4}" rx="10" ry="8" fill="#7F1D1D"/>
-    <ellipse class="m-open" cx="100" cy="${m + 9}" rx="5" ry="3" fill="#F87171"/>
+    <path d="M${100 - 3} ${eyeY + 16}Q100 ${eyeY + 22} ${100 + 4} ${eyeY + 16}" stroke="#B4795A" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/>
+    <path class="m-smile" d="M${100 - 13} ${mouthY}Q100 ${mouthY + 13} ${100 + 13} ${mouthY}" stroke="#9B3B3B" stroke-width="${isKid ? 3.8 : 3.4}" fill="none" stroke-linecap="round"/>
+    <ellipse class="m-open" cx="100" cy="${mouthY + 4}" rx="10" ry="8" fill="#7F1D1D"/>
+    <ellipse class="m-open" cx="100" cy="${mouthY + 9}" rx="5" ry="3" fill="#F87171"/>
   </svg>`;
 }
 
@@ -1393,7 +1727,8 @@ function pickPersona() {
       const arr = JSON.parse(localStorage.getItem('omega_care_persons') || '[]');
       const id = localStorage.getItem('omega_current_person_id');
       const p = arr.find(x => String(x.id) === String(id)) || arr[0] || {};
-      age = parseInt(p.age) || 0; g = String(p.gender || '');
+      age = parseInt(p.age) || 0;
+      g = String(p.gender || '');
     } catch (e) {}
   } else {
     age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
@@ -1402,8 +1737,10 @@ function pickPersona() {
   state.userAge = age;
   const saved = localStorage.getItem('omega_avatar_persona');
   if (FACES[saved]) return saved;
-  // companion matches the user's gender; kids get a kid-like friend, everyone else a warm adult
-  return (age && age < 13 ? 'kid_' : 'adult_') + (g.toLowerCase().startsWith('m') ? 'm' : 'f');
+
+  // Kids get a kid-like friend; everyone else a warm adult
+  const gender = g.toLowerCase().startsWith('m') ? 'm' : 'f';
+  return (age && age < 13 ? 'kid_' : 'adult_') + gender;
 }
 
 function setPersona(key, save) {
@@ -1412,7 +1749,10 @@ function setPersona(key, save) {
   $('avatarWrap').innerHTML = buildFace(f);
   $('personaMini').innerHTML = buildFace(f);
   $('callName').textContent = f.n[currentLang];
-  if (save) { try { localStorage.setItem('omega_avatar_persona', key); } catch (e) {} }
+  $('personaLabel').textContent = f.n[currentLang];
+  if (save) {
+    try { localStorage.setItem('omega_avatar_persona', key); } catch (e) {}
+  }
 }
 
 function setCaption(role, text) {
@@ -1422,87 +1762,241 @@ function setCaption(role, text) {
 }
 
 /* ============================================
-   CONVERSATION FLOW — answers are actually checked
+   MEMORY CARD
 ============================================ */
-const norm = s => String(s || '').toLowerCase()
-  .replace(/[\u064B-\u0652\u0640]/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه')
-  .replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim();
-const UNSURE = /(مش فاكر|مش عارف|معرفش|ما اعرفش|نسيت|مش متاكد|dont know|don t know|do not know|not sure|no idea|forgot|cant remember|can t remember)/;
-const fmt = (str, v) => str.replace(/\{(\w+)\}/g, (_, k) => (v[k] == null ? '' : v[k]));
-const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-function say(text, cb) { addTranscriptLine('ai', text); speak(text, cb); }
-
-function showCard(item, reveal) {
-  const hide = item.type === 'person' && !reveal;
+function showCard(item, reveal, hint) {
+  const hide = !reveal;
   const ph = $('memPhoto');
   ph.innerHTML = '';
-  if (item.photo) { const img = new Image(); img.src = item.photo; img.alt = ''; ph.appendChild(img); }
-  else ph.textContent = hide ? '؟' : (item.name || '?').charAt(0);
-  $('memName').textContent = hide ? '؟' : item.name;
+  ph.classList.toggle('hidden', hide);
+
+  const typeIcon = { person: '؟', place: '📍', event: '🎉' }[item.type] || '?';
+
+  if (item.photo && !hide) {
+    const img = new Image();
+    img.src = item.photo;
+    img.alt = '';
+    ph.appendChild(img);
+  } else if (item.photo && hide) {
+    // Show a blurred/darkened photo for hidden person
+    const img = new Image();
+    img.src = item.photo;
+    img.alt = '';
+    img.style.filter = 'blur(8px) brightness(0.6)';
+    ph.appendChild(img);
+    if (hint) {
+      const h = document.createElement('div');
+      h.className = 'hint-letter';
+      h.textContent = item.name.charAt(0);
+      ph.appendChild(h);
+    }
+  } else {
+    ph.textContent = hide ? typeIcon : (item.name || '?').charAt(0);
+    if (hide && hint) {
+      const h = document.createElement('div');
+      h.className = 'hint-letter';
+      h.textContent = item.name.charAt(0);
+      ph.appendChild(h);
+    }
+  }
+
+  $('memName').textContent = hide ? '?' : item.name;
   $('memMeta').textContent = hide ? '' : (item.meta || '');
   $('memCard').classList.add('show');
+  $('memCard').classList.remove('correct', 'revealed');
+}
+
+function markCardCorrect() {
+  $('memCard').classList.remove('revealed');
+  $('memCard').classList.add('correct');
+}
+
+function markCardRevealed() {
+  $('memCard').classList.remove('correct');
+  $('memCard').classList.add('revealed');
+}
+
+/* ============================================
+   PROGRESS DOTS
+============================================ */
+function renderProgress() {
+  const container = $('progressDots');
+  container.innerHTML = '';
+  for (let i = 0; i < state.maxQ; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'progress-dot';
+    if (i < state.turns - 1) dot.classList.add('done');
+    else if (i === state.turns - 1) dot.classList.add('current');
+    container.appendChild(dot);
+  }
+}
+
+/* ============================================
+   CONVERSATION FLOW
+============================================ */
+const norm = s => String(s || '').toLowerCase()
+  .replace(/[\u064B-\u0652\u0640]/g, '')
+  .replace(/[أإآ]/g, 'ا')
+  .replace(/ى/g, 'ي')
+  .replace(/ة/g, 'ه')
+  .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const UNSURE = /(مش فاكر|مش عارف|معرفش|ما اعرفش|نسيت|مش متاكد|dont know|don t know|do not know|not sure|no idea|forgot|cant remember|can t remember)/;
+
+const fmt = (str, v) => str.replace(/\{(\w+)\}/g, (_, k) => (v[k] == null ? '' : v[k]));
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+function say(text, cb) {
+  addTranscriptLine('ai', text);
+  speak(text, cb);
 }
 
 function openMic() {
   if (state.isEnded) return;
+  enableTalkBtn();
+  $('forgotBtn').classList.remove('hidden');
   $('statusText').textContent = I18N[currentLang].yourTurn;
-  if (state.speechSupported && !state.isMuted) setTimeout(startListening, 400);
+}
+
+function closeMic() {
+  disableTalkBtn();
+  $('forgotBtn').classList.add('hidden');
 }
 
 function startConversation() {
   const t = I18N[currentLang];
-  const userName = localStorage.getItem('omega_user_name') || (currentLang === 'ar' ? 'يا صديقي' : 'friend');
+  const userName = localStorage.getItem('omega_user_name')
+    || (currentLang === 'ar' ? 'يا صديقي' : 'friend');
+
   if (state.memoryItems.length === 0) {
     say(t.noMemoryBank, () => setTimeout(endCall, 800));
     return;
   }
+
   state.maxQ = Math.min(5, state.memoryItems.length);
   const g = new Date().getHours() < 12 ? t.greetM : t.greetE;
-  say(fmt(t.intro, { g, name: userName, ai: FACES[state.persona].n[currentLang] }), () => setTimeout(askNextQuestion, 600));
+  say(fmt(t.intro, { g, name: userName, ai: FACES[state.persona].n[currentLang] }), () => {
+    setTimeout(askNextQuestion, 600);
+  });
 }
 
 function askNextQuestion() {
   if (state.isEnded) return;
-  if (state.turns >= state.maxQ) { finishSession(); return; }
+  if (state.turns >= state.maxQ) {
+    finishSession();
+    return;
+  }
+
   const t = I18N[currentLang];
   const item = getRandomUnused(state.memoryItems, 'item');
-  const text = item.type === 'person' ? t.qWho : fmt(item.type === 'place' ? t.qWhere : t.qWhen, { n: item.name });
+
+  // Build question text based on type — ALL test name recall
+  let text;
+  if (item.type === 'person') text = t.qWho;
+  else if (item.type === 'place') text = t.qPlace;
+  else if (item.type === 'event') text = t.qEvent;
+  else text = t.qWho;
+
   state.currentQuestion = { text, item, tries: 0 };
   state.turns++;
-  showCard(item, false);
-  say(text, openMic);
+  renderProgress();
+  showCard(item, false, false);
+  closeMic();
+
+  say(text, () => {
+    openMic();
+    if (state.speechSupported && !state.isMuted) {
+      setTimeout(startListening, 400);
+    }
+  });
 }
 
 function handleUserAnswer(text) {
   if (state.isEnded || !state.currentQuestion) return;
   state.isListening = false;
   setListeningUI(false);
+
   const q = state.currentQuestion;
   state.currentQuestion = null;
   addTranscriptLine('me', text);
+  closeMic();
 
-  const t = I18N[currentLang], item = q.item, a = norm(text);
-  const v = { n: item.name, meta: item.meta ? ' (' + item.meta + ')' : '', mh: item.meta ? item.meta + (currentLang === 'ar' ? '، ' : ', ') : '', h: [...item.name][0] };
+  const t = I18N[currentLang];
+  const item = q.item;
+  const a = norm(text);
+  const v = { n: item.name, h: [...item.name][0] };
+
   const unsure = UNSURE.test(a) || a.length < 2;
+
+  // Split name into tokens for matching
+  const nameTokens = norm(item.name).split(' ').filter(x => x.length > 1);
+  const ok = nameTokens.some(k => a.includes(k));
+
   let reply, next = true;
 
-  if (item.type !== 'person') {
-    if (unsure) reply = t.skip; else { state.recalled++; reply = fmt(pick(t.nice), v); }
+  if (unsure) {
+    if (q.tries < 1) {
+      q.tries++;
+      state.currentQuestion = q;
+      showCard(item, false, true);
+      reply = fmt(t.unsure, v);
+      next = false;
+    } else {
+      showCard(item, true, false);
+      markCardRevealed();
+      reply = fmt(t.reveal, v);
+    }
+  } else if (ok) {
+    state.recalled++;
+    showCard(item, true, false);
+    markCardCorrect();
+    reply = fmt(pick(t.good), v);
   } else {
-    const toks = norm(item.name).split(' ').filter(x => x.length > 1);
-    const mt = norm(item.meta || '').split(' ').filter(x => x.length > 1);
-    const ok = toks.some(k => a.includes(k));
-    const part = !ok && mt.some(k => a.includes(k));
-    if (ok) { state.recalled++; reply = fmt(pick(t.good), v); showCard(item, true); }
-    else if (q.tries < 1) { q.tries++; state.currentQuestion = q; next = false; reply = fmt(part ? t.close : (unsure ? t.unsure : t.hint), v); }
-    else { reply = fmt(t.reveal, v); showCard(item, true); }
+    if (q.tries < 1) {
+      q.tries++;
+      state.currentQuestion = q;
+      showCard(item, false, true);
+      reply = fmt(t.hint, v);
+      next = false;
+    } else {
+      showCard(item, true, false);
+      markCardRevealed();
+      reply = fmt(t.reveal, v);
+    }
   }
 
-  setTimeout(() => say(reply, () => { if (next) setTimeout(askNextQuestion, 800); else openMic(); }), 500);
+  setTimeout(() => {
+    say(reply, () => {
+      if (next) setTimeout(askNextQuestion, 800);
+      else openMic();
+    });
+  }, 500);
+}
+
+function handleForgot() {
+  if (state.isEnded || !state.currentQuestion) return;
+  stopListening();
+
+  const q = state.currentQuestion;
+  state.currentQuestion = null;
+  const t = I18N[currentLang];
+  const item = q.item;
+
+  closeMic();
+  addTranscriptLine('me', t.forgot);
+  showCard(item, true, false);
+  markCardRevealed();
+
+  setTimeout(() => {
+    say(t.skip, () => setTimeout(askNextQuestion, 800));
+  }, 500);
 }
 
 function finishSession() {
-  const name = localStorage.getItem('omega_user_name') || (currentLang === 'ar' ? 'يا صديقي' : 'friend');
+  const name = localStorage.getItem('omega_user_name')
+    || (currentLang === 'ar' ? 'يا صديقي' : 'friend');
   say(fmt(I18N[currentLang].bye, { name }), () => setTimeout(endCall, 700));
 }
 
@@ -1534,10 +2028,111 @@ function endCall() {
 }
 
 /* ============================================
-   UI BINDINGS
+   LANGUAGE APPLY
 ============================================ */
-$('micBtn').addEventListener('click', () => {
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  htmlEl.lang = lang;
+  htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  const t = I18N[lang];
+  $('talkLabel').textContent = t.tapToTalk;
+  $('forgotLabel').textContent = t.forgot;
+  $('personaSheetTitle').textContent = t.personaSheetTitle;
+  $('personaSheetSub').textContent = t.personaSheetSub;
+  $('transcriptLabel').textContent = t.transcriptLabel;
+  $('sheetTitle').textContent = t.sheetTitle;
+  $('textInput').placeholder = t.inputPlaceholder;
+  $('endTitle').textContent = t.endTitle;
+  $('endDesc').textContent = t.endDesc;
+  $('statDurationLabel').textContent = t.durationLabel;
+  $('statTurnsLabel').textContent = t.turnsLabel;
+  $('endDoneLabel').textContent = t.backHome;
+
+  if (state.persona) {
+    $('callName').textContent = FACES[state.persona].n[lang];
+    $('personaLabel').textContent = FACES[state.persona].n[lang];
+  }
+
+  if (!state.isEnded) {
+    if (state.isAISpeaking) $('statusText').textContent = t.aiSpeaking;
+    else if (state.isListening) $('statusText').textContent = t.listening;
+    else if (state.currentQuestion) $('statusText').textContent = t.yourTurn;
+    else $('statusText').textContent = t.connecting;
+  }
+
+  // Rebuild persona grid if open
+  if ($('personaSheet').classList.contains('show')) {
+    renderPersonaGrid();
+  }
+}
+
+/* ============================================
+   PERSONA GRID
+============================================ */
+function renderPersonaGrid() {
+  const grid = $('personaGrid');
+  grid.innerHTML = '';
+  const t = I18N[currentLang];
+
+  ORDER.forEach(key => {
+    const f = FACES[key];
+    const card = document.createElement('button');
+    card.className = 'persona-card' + (key === state.persona ? ' active' : '');
+    card.dataset.key = key;
+
+    card.innerHTML = `
+      <div class="persona-card-avatar">${buildFace(f)}</div>
+      <div class="persona-card-name">${f.n[currentLang]}</div>
+      <div class="persona-card-label">${t[f.labelKey]}</div>
+      <div class="persona-card-check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      setPersona(key, true);
+      closePersonaSheet();
+      // Re-render grid to update active state
+      setTimeout(renderPersonaGrid, 200);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function openPersonaSheet() {
+  renderPersonaGrid();
+  $('personaOverlay').classList.add('show');
+  setTimeout(() => $('personaSheet').classList.add('show'), 50);
+}
+
+function closePersonaSheet() {
+  $('personaSheet').classList.remove('show');
+  $('personaOverlay').classList.remove('show');
+}
+
+/* ============================================
+   TRANSCRIPT SHEET
+============================================ */
+function openTranscriptSheet() {
+  $('transcriptOverlay').classList.add('show');
+  setTimeout(() => $('transcriptSheet').classList.add('show'), 50);
+}
+
+function closeTranscriptSheet() {
+  $('transcriptSheet').classList.remove('show');
+  $('transcriptOverlay').classList.remove('show');
+}
+
+/* ============================================
+   EVENT BINDINGS
+============================================ */
+$('talkBtn').addEventListener('click', () => {
   if (state.isEnded) return;
+  if (!state.currentQuestion) return;
+
   if (state.isListening) {
     stopListening();
   } else {
@@ -1545,46 +2140,21 @@ $('micBtn').addEventListener('click', () => {
   }
 });
 
-$('muteBtn').addEventListener('click', () => {
-  state.isMuted = !state.isMuted;
-  const t = I18N[currentLang];
+$('forgotBtn').addEventListener('click', handleForgot);
 
-  $('muteBtn').classList.toggle('active', state.isMuted);
-
-  if (state.isMuted) {
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    state.isAISpeaking = false;
-    setAISpeakingUI(false);
-    $('muteIcon').innerHTML = `
-      <line x1="1" y1="1" x2="23" y2="23"></line>
-      <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
-      <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
-      <line x1="12" y1="19" x2="12" y2="23"></line>
-      <line x1="8" y1="23" x2="16" y2="23"></line>
-    `;
-  } else {
-    $('muteIcon').innerHTML = `
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-    `;
-  }
-
-  $('muteLabel').textContent = state.isMuted ? t.unmute : t.mute;
-});
-
-$('endBtn').addEventListener('click', endCall);
+$('closeBtn').addEventListener('click', endCall);
 
 $('endDoneBtn').addEventListener('click', () => {
   window.location.href = 'home.html';
 });
 
-$('transcriptBtn').addEventListener('click', () => {
-  $('transcriptSheet').classList.add('show');
-});
+$('personaBtn').addEventListener('click', openPersonaSheet);
+$('personaClose').addEventListener('click', closePersonaSheet);
+$('personaOverlay').addEventListener('click', closePersonaSheet);
 
-$('sheetClose').addEventListener('click', () => {
-  $('transcriptSheet').classList.remove('show');
-});
+$('transcriptBtn').addEventListener('click', openTranscriptSheet);
+$('sheetClose').addEventListener('click', closeTranscriptSheet);
+$('transcriptOverlay').addEventListener('click', closeTranscriptSheet);
 
 // Text input fallback
 $('textSend').addEventListener('click', () => {
@@ -1602,13 +2172,8 @@ $('textInput').addEventListener('keydown', (e) => {
   }
 });
 
-$('personaBtn').addEventListener('click', () => {
-  const i = (ORDER.indexOf(state.persona) + 1) % ORDER.length;
-  setPersona(ORDER[i], true);
-});
-
 /* ============================================
-   VOICES LOADED (async)
+   VOICES LOADED
 ============================================ */
 if ('speechSynthesis' in window) {
   window.speechSynthesis.onvoiceschanged = () => {};
@@ -1622,6 +2187,7 @@ function init() {
   applyLanguage(currentLang);
   loadMemoryBank();
   initSpeechRecognition();
+  startTimer();
 
   if (!state.speechSupported) {
     setTimeout(() => {
@@ -1629,16 +2195,11 @@ function init() {
     }, 500);
   }
 
-  startTimer();
-
-  setTimeout(() => {
-    startConversation();
-  }, 900);
+  setTimeout(startConversation, 900);
 }
 
 init();
 
-/* Clean up on leave */
 window.addEventListener('beforeunload', () => {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   stopListening();
