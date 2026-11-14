@@ -52,7 +52,6 @@ html[lang="ar"] body { font-family: var(--f-ar); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 input { font-family: inherit; }
 
-/* PHONE FRAME */
 .stage {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
@@ -92,7 +91,7 @@ input { font-family: inherit; }
   .phone::before { display: none; }
 }
 
-/* SCREEN — Warm cream background (not tech-y) */
+/* SCREEN — Warm cream */
 .screen {
   position: absolute;
   inset: 0;
@@ -233,8 +232,8 @@ html[lang="ar"] .persona-btn {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
-  padding: 16px 22px 0;
+  gap: 8px;
+  padding: 14px 20px 0;
   min-height: 0;
   text-align: center;
   overflow-y: auto;
@@ -246,17 +245,30 @@ html[lang="ar"] .persona-btn {
 /* AVATAR */
 .companion {
   position: relative;
-  width: 170px; height: 170px;
+  width: 110px; height: 110px;
   border-radius: 50%;
   flex-shrink: 0;
   overflow: hidden;
   background: radial-gradient(circle at 50% 35%, #fff, #DFF7F2 72%);
-  box-shadow: 0 18px 40px rgba(14, 148, 135, 0.16), 0 0 0 6px rgba(255, 255, 255, 0.75);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.16), 0 0 0 5px rgba(255, 255, 255, 0.75);
   transition: box-shadow 0.4s ease;
 }
 
 .companion.speaking {
-  box-shadow: 0 18px 40px rgba(14, 148, 135, 0.26), 0 0 0 6px rgba(46, 196, 182, 0.4), 0 0 0 15px rgba(46, 196, 182, 0.12);
+  box-shadow: 0 12px 28px rgba(14, 148, 135, 0.26), 0 0 0 5px rgba(46, 196, 182, 0.4), 0 0 0 12px rgba(46, 196, 182, 0.12);
+}
+
+.companion.listening {
+  animation: listenRing 1.6s ease-in-out infinite;
+}
+
+@keyframes listenRing {
+  0%, 100% {
+    box-shadow: 0 12px 28px rgba(14, 148, 135, 0.2), 0 0 0 5px rgba(255, 255, 255, 0.85), 0 0 0 12px rgba(46, 196, 182, 0.2);
+  }
+  50% {
+    box-shadow: 0 14px 32px rgba(14, 148, 135, 0.3), 0 0 0 5px rgba(255, 255, 255, 0.95), 0 0 0 20px rgba(46, 196, 182, 0.08);
+  }
 }
 
 .companion > svg {
@@ -266,7 +278,7 @@ html[lang="ar"] .persona-btn {
 }
 
 @keyframes breathe {
-  50% { transform: translateY(3px) scale(1.012); }
+  50% { transform: translateY(2px) scale(1.012); }
 }
 
 .eyes {
@@ -300,41 +312,40 @@ html[lang="ar"] .persona-btn {
 
 /* NAME + STATUS */
 .call-name {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--c-navy);
   letter-spacing: -0.3px;
   line-height: 1.2;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 html[lang="ar"] .call-name {
   font-family: var(--f-ar);
-  font-size: 19px;
+  font-size: 17px;
   letter-spacing: 0;
 }
 
 .call-status-text {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--c-slate);
   letter-spacing: 0.2px;
-  min-height: 18px;
-  margin-top: 2px;
+  min-height: 16px;
 }
 
 html[lang="ar"] .call-status-text {
   font-family: var(--f-ar);
-  font-size: 13.5px;
+  font-size: 13px;
 }
 
-/* SINGLE PULSE (replaces waveform) */
+/* SINGLE PULSE */
 .pulse {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 20px;
-  margin-top: 4px;
+  height: 16px;
+  margin-top: 2px;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -355,130 +366,166 @@ html[lang="ar"] .call-status-text {
   50% { transform: scale(2); opacity: 0.4; }
 }
 
-/* CAPTION (main speech area) */
+/* QUESTION CARD (BIG PHOTO) */
+.question-card {
+  width: 100%;
+  max-width: 320px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 12px;
+  border: 2px solid var(--c-border);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+  overflow: hidden;
+}
+
+.question-card.show {
+  display: flex;
+  animation: cardIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.94); }
+}
+
+.question-card.correct {
+  border-color: var(--c-success);
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.18), 0 12px 30px rgba(34, 197, 94, 0.2);
+}
+
+.question-card.revealed {
+  border-color: var(--c-warning);
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.18), 0 12px 30px rgba(251, 191, 36, 0.2);
+}
+
+.q-photo {
+  width: 100%;
+  height: 220px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--g-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 88px;
+  color: #fff;
+  font-weight: 700;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.q-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.q-photo.hidden-photo {
+  background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
+  color: rgba(100, 116, 139, 0.35);
+}
+
+.q-hint-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(251, 191, 36, 0.95);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.4);
+  animation: hintPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html[dir="rtl"] .q-hint-badge {
+  left: auto;
+  right: 10px;
+}
+
+@keyframes hintPop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+.q-name-area {
+  text-align: center;
+  padding: 10px 6px 4px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.q-name-area.show {
+  opacity: 1;
+  max-height: 80px;
+}
+
+.q-name {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--c-navy);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+html[lang="ar"] .q-name {
+  font-family: var(--f-ar);
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.q-meta {
+  font-size: 12.5px;
+  color: var(--c-slate);
+  font-weight: 500;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+html[lang="ar"] .q-meta {
+  font-family: var(--f-ar);
+  font-size: 13.5px;
+}
+
+/* CAPTION */
 .caption {
-  min-height: 76px;
+  min-height: 56px;
   max-width: 310px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 16.5px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
   font-weight: 600;
   color: var(--c-navy);
   padding: 4px 0;
+  transition: color 0.3s ease;
 }
 
 html[lang="ar"] .caption {
   font-family: var(--f-ar);
-  font-size: 17.5px;
+  font-size: 17px;
 }
 
 .caption.me {
   color: var(--c-primary-dark);
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14.5px;
 }
 
-/* MEMORY CARD */
-.mem-card {
-  display: none;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 18px 12px 12px;
-  background: #fff;
-  border-radius: 20px;
-  border: 1.5px solid var(--c-border);
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
-  max-width: 310px;
-  transition: all 0.3s ease;
-}
-
-html[lang="ar"] .mem-card {
-  padding: 12px 12px 12px 18px;
-}
-
-.mem-card.show {
-  display: flex;
-  animation: cardIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2);
-}
-
-.mem-card.correct {
-  border-color: var(--c-success);
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15), 0 10px 26px rgba(34, 197, 94, 0.2);
-}
-
-.mem-card.revealed {
-  border-color: var(--c-warning);
-  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.15), 0 10px 26px rgba(251, 191, 36, 0.2);
-}
-
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(14px) scale(0.92); }
-}
-
-.mem-photo {
-  width: 110px; height: 110px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: var(--g-brand);
-  color: #fff;
-  font-weight: 700;
-  font-size: 44px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  position: relative;
-}
-
-.mem-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-
-.mem-photo.hidden {
-  background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
-  color: rgba(100, 116, 139, 0.5);
-}
-
-.mem-photo .hint-letter {
-  position: absolute;
-  bottom: 4px; right: 4px;
-  background: rgba(14, 148, 135, 0.9);
-  color: #fff;
-  font-size: 12px;
-  padding: 2px 7px;
-  border-radius: 8px;
-  font-weight: 800;
-  letter-spacing: 0;
-}
-
-.mem-info {
-  text-align: start;
-  min-width: 60px;
-  flex: 1;
-}
-
-.mem-name {
-  font-weight: 700;
-  color: var(--c-navy);
-  font-size: 17px;
-  letter-spacing: -0.2px;
-}
-
-.mem-meta {
-  font-size: 12.5px;
-  color: var(--c-slate);
-  margin-top: 3px;
-  line-height: 1.4;
-}
-
-html[lang="ar"] .mem-name,
-html[lang="ar"] .mem-meta {
-  font-family: var(--f-ar);
-}
-
-/* ACTION ROW */
+/* ACTION AREA */
 .action-area {
   position: relative;
   z-index: 10;
@@ -486,136 +533,84 @@ html[lang="ar"] .mem-meta {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 14px 22px 40px;
+  padding: 10px 20px 36px;
   flex-shrink: 0;
 }
 
-.action-row {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 320px;
-}
-
-.talk-btn {
-  display: inline-flex;
+/* LISTEN INDICATOR */
+.listen-indicator {
+  display: none;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 28px;
-  background: var(--g-brand);
-  color: #fff;
+  padding: 8px 18px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1.5px solid rgba(34, 197, 94, 0.3);
   border-radius: var(--r-pill);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.2px;
-  box-shadow: 0 10px 24px rgba(14, 148, 135, 0.35);
-  transition: all 0.25s ease;
-  flex: 1;
-  position: relative;
-  overflow: hidden;
+  color: var(--c-success);
+  animation: listenIn 0.35s ease;
 }
 
-.talk-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.7s ease;
+.listen-indicator.show { display: inline-flex; }
+
+@keyframes listenIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.talk-btn:hover::before { left: 100%; }
-
-.talk-btn:hover:not(.disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(14, 148, 135, 0.45);
+.listen-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-success);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  animation: dotPulse 1.2s ease-in-out infinite;
 }
 
-.talk-btn:active:not(.disabled) { transform: scale(0.97); }
-
-.talk-btn svg {
-  width: 18px; height: 18px;
-  stroke: #fff; stroke-width: 2.2; fill: none;
-  stroke-linecap: round; stroke-linejoin: round;
-  flex-shrink: 0;
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
 }
 
-.talk-btn.disabled {
-  opacity: 0.45;
-  pointer-events: none;
+html[lang="ar"] .listen-indicator {
+  font-family: var(--f-ar);
+  font-size: 14px;
 }
 
-.talk-btn.listening {
-  background: linear-gradient(135deg, #EF4444, #F87171);
-  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.4);
-  animation: talkPulse 1.4s ease-in-out infinite;
-}
-
-@keyframes talkPulse {
-  0%, 100% { box-shadow: 0 10px 24px rgba(239, 68, 68, 0.4), 0 0 0 0 rgba(239, 68, 68, 0.5); }
-  50% { box-shadow: 0 10px 24px rgba(239, 68, 68, 0.5), 0 0 0 12px rgba(239, 68, 68, 0); }
-}
-
-html[lang="ar"] .talk-btn { font-family: var(--f-ar); font-size: 15.5px; }
-
+/* FORGOT BUTTON */
 .forgot-btn {
-  padding: 13px 20px;
+  display: none;
+  padding: 12px 24px;
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.9);
+  background: #fff;
   border: 1.5px solid var(--c-border);
   color: var(--c-slate);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: 0.1px;
   transition: all 0.25s ease;
-  flex-shrink: 0;
-  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
+
+.forgot-btn.show { display: inline-flex; }
 
 .forgot-btn:hover {
   border-color: var(--c-warning);
   color: #B45309;
   background: rgba(251, 191, 36, 0.08);
+  transform: translateY(-1px);
 }
 
 .forgot-btn:active { transform: scale(0.96); }
 
-.forgot-btn.hidden { display: none; }
-
-html[lang="ar"] .forgot-btn { font-family: var(--f-ar); font-size: 13.5px; }
-
-/* TRANSCRIPT LINK */
-.transcript-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  background: transparent;
-  color: var(--c-slate);
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: var(--r-pill);
-  transition: all 0.2s ease;
+html[lang="ar"] .forgot-btn {
+  font-family: var(--f-ar);
+  font-size: 14px;
 }
 
-.transcript-btn:hover {
-  color: var(--c-primary);
-  background: rgba(14, 148, 135, 0.06);
-}
-
-.transcript-btn svg {
-  width: 13px; height: 13px;
-  stroke: currentColor;
-  stroke-width: 2.2; fill: none;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-
-html[lang="ar"] .transcript-btn { font-family: var(--f-ar); font-size: 12.5px; }
-
-/* TEXT INPUT (fallback for no speech) */
+/* TEXT INPUT (no speech support) */
 .text-input-wrap {
   width: 100%;
   max-width: 320px;
@@ -670,7 +665,36 @@ html[lang="ar"] .text-input-wrap input {
 
 html[dir="rtl"] .text-send svg { transform: scaleX(-1); }
 
-/* SHEET (shared style for transcript + persona) */
+/* TRANSCRIPT LINK */
+.transcript-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: transparent;
+  color: var(--c-slate);
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: var(--r-pill);
+  transition: all 0.2s ease;
+  margin-top: 2px;
+}
+
+.transcript-btn:hover {
+  color: var(--c-primary);
+  background: rgba(14, 148, 135, 0.06);
+}
+
+.transcript-btn svg {
+  width: 12px; height: 12px;
+  stroke: currentColor;
+  stroke-width: 2.2; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+html[lang="ar"] .transcript-btn { font-family: var(--f-ar); font-size: 12px; }
+
+/* SHEET (shared) */
 .sheet-overlay {
   position: absolute;
   inset: 0;
@@ -774,7 +798,7 @@ html[lang="ar"] .sheet-sub {
   stroke-linecap: round;
 }
 
-/* TRANSCRIPT BODY */
+/* TRANSCRIPT */
 .transcript-body {
   flex: 1;
   overflow-y: auto;
@@ -1108,7 +1132,6 @@ html[lang="ar"] .end-stat-label {
 
 html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
 
-/* REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -1151,35 +1174,37 @@ html[lang="ar"] .end-btn { font-family: var(--f-ar); font-size: 15.5px; }
           <div class="call-status-text"><span id="statusText">…</span></div>
         </div>
         <div class="pulse" id="pulse"><span class="pulse-inner"></span></div>
-        <div class="caption" id="caption"></div>
-        <div class="mem-card" id="memCard">
-          <div class="mem-photo" id="memPhoto"></div>
-          <div class="mem-info">
-            <div class="mem-name" id="memName"></div>
-            <div class="mem-meta" id="memMeta"></div>
+
+        <!-- QUESTION CARD -->
+        <div class="question-card" id="questionCard">
+          <div class="q-photo" id="qPhoto"></div>
+          <div class="q-name-area" id="qNameArea">
+            <div class="q-name" id="qName"></div>
+            <div class="q-meta" id="qMeta"></div>
           </div>
         </div>
+
+        <div class="caption" id="caption"></div>
       </div>
 
       <!-- ACTIONS -->
       <div class="action-area">
-        <div class="action-row">
-          <button class="talk-btn" id="talkBtn">
-            <svg id="talkIcon" viewBox="0 0 24 24">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            <span id="talkLabel">Talk</span>
-          </button>
-          <button class="forgot-btn" id="forgotBtn">
-            <span id="forgotLabel">I don't remember</span>
-          </button>
+        <div class="listen-indicator" id="listenIndicator">
+          <span class="listen-dot"></span>
+          <span id="listenText">Listening...</span>
         </div>
+
+        <button class="forgot-btn" id="forgotBtn">
+          <span id="forgotLabel">I don't remember</span>
+        </button>
+
         <div class="text-input-wrap" id="textInputWrap">
           <input type="text" id="textInput" />
           <button class="text-send" id="textSend">
             <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
         </div>
+
         <button class="transcript-btn" id="transcriptBtn">
           <svg viewBox="0 0 24 24">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -1257,12 +1282,9 @@ const I18N = {
     connecting: 'One moment…',
     aiSpeaking: 'Talking with you',
     yourTurn: 'Your turn — say the name',
-    listening: 'I\'m listening…',
-    tapToTalk: 'Talk',
-    stopTalk: 'Stop',
+    listening: 'Listening…',
     typeAnswer: 'Type your answer',
-    forgot: 'I don\'t remember',
-    end: 'Later',
+    forgot: "I don't remember",
     transcriptLabel: 'See what we said',
     sheetTitle: 'Our conversation',
     inputPlaceholder: 'Type your answer…',
@@ -1282,7 +1304,7 @@ const I18N = {
     greetE: 'Good evening',
     intro: "{g}, {name}! I'm {ai}, and I'll be with you today. Let's remember the people and places you love, together.",
     noMemoryBank: 'Your Memory Bank is still empty. Add your first person and I will be right here.',
-    qWho: 'Look at this photo. Do you remember who this is?',
+    qWho: 'Do you remember who this is?',
     qPlace: 'Do you remember this place? What is it called?',
     qEvent: 'Do you remember this moment? What is it?',
     good: ['Well done! Yes, this is {n}.', "That's right! This is {n}. Your memory is working well."],
@@ -1292,7 +1314,6 @@ const I18N = {
     reveal: 'This is {n}. That is okay, we will remember together next time.',
     nice: ['I love that you remember. {n} clearly means a lot to you.', 'Thank you for telling me about {n}.'],
     skip: "That's okay, we'll come back to it together.",
-    skipBtn: 'No problem, we\'ll skip this one for now.',
     bye: 'That was a lovely time with you, {name}. See you later.'
   },
   ar: {
@@ -1300,11 +1321,7 @@ const I18N = {
     aiSpeaking: 'بكلمك دلوقتي',
     yourTurn: 'دورك — قول الاسم',
     listening: 'سامعك…',
-    tapToTalk: 'اتكلم',
-    stopTalk: 'إيقاف',
-    typeAnswer: 'اكتب ردك',
     forgot: 'مش فاكر',
-    end: 'نكمل بعدين',
     transcriptLabel: 'شوف الكلام',
     sheetTitle: 'كلامنا',
     inputPlaceholder: 'اكتب ردك هنا…',
@@ -1324,7 +1341,7 @@ const I18N = {
     greetE: 'مساء الخير',
     intro: '{g} يا {name}! أنا {ai}، وهكون معاك النهاردة. تعالى نفتكر سوا الناس والأماكن اللي بتحبها.',
     noMemoryBank: 'بنك الذكريات لسه فاضي. ضيف أول شخص وأنا معاك.',
-    qWho: 'بص على الصورة دي. فاكر دي مين؟',
+    qWho: 'فاكر دي مين؟',
     qPlace: 'فاكر المكان ده؟ اسمه إيه؟',
     qEvent: 'فاكر اللحظة دي؟ إيه هي؟',
     good: ['برافو عليك! فعلًا ده {n}.', 'صح! ده {n}. ذاكرتك شغالة حلو.'],
@@ -1334,7 +1351,6 @@ const I18N = {
     reveal: 'ده {n}. مش مشكلة، هنفتكره سوا المرة الجاية.',
     nice: ['حلو أوي إنك فاكر. واضح إن {n} ليه مكان كبير عندك.', 'شكرًا إنك حكيتلي عن {n}.'],
     skip: 'مفيش مشكلة، هنرجعله مع بعض.',
-    skipBtn: 'ولا يهمك، هنعدي دي دلوقتي.',
     bye: 'كان وقت حلو معاك يا {name}. نكمل بعدين.'
   }
 };
@@ -1350,11 +1366,9 @@ const htmlEl = document.documentElement;
    STATE
 ============================================ */
 const state = {
-  isMuted: false,
   isListening: false,
   isAISpeaking: false,
   callStartTime: null,
-  timerInterval: null,
   turns: 0,
   transcript: [],
   memoryItems: [],
@@ -1366,7 +1380,8 @@ const state = {
   recalled: 0,
   maxQ: 5,
   persona: null,
-  userAge: 0
+  userAge: 0,
+  autoListenEnabled: true
 };
 
 const $ = id => document.getElementById(id);
@@ -1417,7 +1432,7 @@ function loadMemoryBank() {
 }
 
 /* ============================================
-   TIMER (internal, not shown)
+   TIMER
 ============================================ */
 function startTimer() {
   state.callStartTime = Date.now();
@@ -1445,7 +1460,7 @@ function addTranscriptLine(role, text) {
    SPEECH SYNTHESIS
 ============================================ */
 function speak(text, callback) {
-  if (!('speechSynthesis' in window) || state.isMuted) {
+  if (!('speechSynthesis' in window)) {
     const delay = Math.max(1200, text.length * 45);
     state.isAISpeaking = true;
     setAISpeakingUI(true);
@@ -1495,9 +1510,11 @@ function setAISpeakingUI(isSpeaking) {
 
   if (isSpeaking) {
     wrap.classList.add('speaking');
+    wrap.classList.remove('listening');
     pulse.classList.add('active');
     status.textContent = I18N[currentLang].aiSpeaking;
-    disableTalkBtn();
+    $('listenIndicator').classList.remove('show');
+    $('forgotBtn').classList.remove('show');
   } else {
     wrap.classList.remove('speaking');
     pulse.classList.remove('active');
@@ -1512,7 +1529,6 @@ function initSpeechRecognition() {
   if (!SR) {
     state.speechSupported = false;
     $('textInputWrap').classList.add('show');
-    $('talkBtn').style.display = 'none';
     return;
   }
 
@@ -1524,13 +1540,27 @@ function initSpeechRecognition() {
 
   rec.onresult = (e) => {
     const text = e.results[0][0].transcript.trim();
-    if (text) handleUserAnswer(text);
+    if (text) {
+      state.isListening = false;
+      setListeningUI(false);
+      handleUserAnswer(text);
+    }
   };
 
   rec.onerror = (e) => {
     console.warn('Speech error:', e.error);
     state.isListening = false;
     setListeningUI(false);
+
+    // Auto-retry on common errors (no-speech, aborted)
+    if ((e.error === 'no-speech' || e.error === 'aborted') &&
+        state.currentQuestion && !state.isEnded && state.autoListenEnabled) {
+      setTimeout(() => {
+        if (state.currentQuestion && !state.isListening && !state.isAISpeaking && !state.isEnded) {
+          startListening();
+        }
+      }, 1000);
+    }
   };
 
   rec.onend = () => {
@@ -1551,7 +1581,18 @@ function startListening() {
     state.isListening = true;
     setListeningUI(true);
   } catch (e) {
-    console.warn(e);
+    console.warn('Recognition start failed:', e);
+    setTimeout(() => {
+      if (state.currentQuestion && !state.isListening && !state.isEnded) {
+        try {
+          state.recognition.start();
+          state.isListening = true;
+          setListeningUI(true);
+        } catch (e2) {
+          console.warn('Recognition retry failed:', e2);
+        }
+      }
+    }, 800);
   }
 }
 
@@ -1564,36 +1605,44 @@ function stopListening() {
 }
 
 function setListeningUI(isOn) {
-  const btn = $('talkBtn');
+  const wrap = $('avatarWrap');
   const pulse = $('pulse');
   const status = $('statusText');
-  const wrap = $('avatarWrap');
+  const listenInd = $('listenIndicator');
+  const forgotBtn = $('forgotBtn');
 
   if (isOn) {
-    btn.classList.add('listening');
-    pulse.classList.add('active');
-    wrap.classList.add('speaking');
-    status.textContent = I18N[currentLang].listening;
-    $('talkLabel').textContent = I18N[currentLang].stopTalk;
-    $('talkIcon').innerHTML = '<rect x="6" y="6" width="12" height="12" rx="2"></rect>';
-  } else {
-    btn.classList.remove('listening');
-    pulse.classList.remove('active');
+    wrap.classList.add('listening');
     wrap.classList.remove('speaking');
-    if (state.currentQuestion) status.textContent = I18N[currentLang].yourTurn;
-    $('talkLabel').textContent = I18N[currentLang].tapToTalk;
-    $('talkIcon').innerHTML = '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>';
+    pulse.classList.add('active');
+    status.textContent = I18N[currentLang].listening;
+    listenInd.classList.add('show');
+    forgotBtn.classList.add('show');
+    $('listenText').textContent = I18N[currentLang].listening;
+  } else {
+    wrap.classList.remove('listening');
+    pulse.classList.remove('active');
+    listenInd.classList.remove('show');
+    forgotBtn.classList.remove('show');
+    if (state.currentQuestion && !state.isAISpeaking) {
+      status.textContent = I18N[currentLang].yourTurn;
+    }
   }
 }
 
-function enableTalkBtn() {
-  const btn = $('talkBtn');
-  if (btn) btn.classList.remove('disabled');
-}
+/* ============================================
+   AUTO-LISTEN: after AI finishes, start mic
+============================================ */
+function autoListenAfterAI() {
+  if (!state.speechSupported || !state.autoListenEnabled) return;
+  if (!state.currentQuestion || state.isEnded) return;
 
-function disableTalkBtn() {
-  const btn = $('talkBtn');
-  if (btn) btn.classList.add('disabled');
+  // Small delay to let the recognition session fully end
+  setTimeout(() => {
+    if (state.currentQuestion && !state.isListening && !state.isAISpeaking && !state.isEnded) {
+      startListening();
+    }
+  }, 500);
 }
 
 /* ============================================
@@ -1619,26 +1668,21 @@ function buildFace(f) {
   const isOld = !!f.old;
   const isHijab = f.style === 'hijab';
 
-  // Head proportions
   const headY = isKid ? 96 : 92;
   const headRx = isKid ? 54 : 46;
   const headRy = isKid ? 52 : 50;
 
-  // Eyes
   const eyeY = headY + (isKid ? 8 : 4);
   const eyeR = isKid ? 8 : 5;
   const eyeX = isKid ? 21 : 18;
 
-  // Mouth
   const mouthY = eyeY + (isKid ? 26 : 30);
 
-  // Blush
   const blushR = isKid ? 13 : 9;
   const blushOp = isKid ? 0.32 : 0.22;
 
   let back = '', front = '';
 
-  // BACK HAIR
   if (f.style === 'pigtails') {
     back = `<circle cx="40" cy="${headY + 8}" r="18" fill="${f.hair}"/>
             <circle cx="160" cy="${headY + 8}" r="18" fill="${f.hair}"/>`;
@@ -1648,7 +1692,6 @@ function buildFace(f) {
     back = `<path d="M46 ${headY + 8} C38 ${headY - 60} 162 ${headY - 60} 154 ${headY + 8} C156 ${headY + 56} 150 ${headY + 82} 138 ${headY + 96} L62 ${headY + 96} C50 ${headY + 82} 44 ${headY + 56} 46 ${headY + 8}Z" fill="${f.hair}"/>`;
   }
 
-  // FRONT HAIR
   if (f.style === 'short') {
     const hairH = isOld ? 46 : 58;
     front = `<path d="M${100 - headRx + 8} ${headY - 18} Q${100 - headRx + 4} ${headY - hairH} 100 ${headY - hairH} Q${100 + headRx - 4} ${headY - hairH} ${100 + headRx - 8} ${headY - 18} Q100 ${headY - (isOld ? 30 : 28)} ${100 - headRx + 8} ${headY - 18}Z" fill="${f.hair}"/>`;
@@ -1663,7 +1706,6 @@ function buildFace(f) {
     front = `<path d="M${100 - headRx + 8} ${headY - 14} Q50 ${headY - 58} 100 ${headY - 58} Q150 ${headY - 58} ${100 + headRx - 8} ${headY - 14} C${100 + headRx - 16} ${headY - 24} ${100 - headRx + 16} ${headY - 24} ${100 - headRx + 8} ${headY - 14}Z" fill="${f.hair}"/>`;
   }
 
-  // WRINKLES (elders)
   let wrinkles = '';
   if (isOld) {
     wrinkles = `
@@ -1675,7 +1717,6 @@ function buildFace(f) {
     `;
   }
 
-  // GLASSES
   const glasses = f.glasses ? `
     <g fill="none" stroke="#475569" stroke-width="${isOld ? 3 : 2.5}">
       <circle cx="${100 - eyeX}" cy="${eyeY}" r="${isOld ? 15 : 13}"/>
@@ -1686,13 +1727,11 @@ function buildFace(f) {
     </g>
   ` : '';
 
-  // EARS
   const ears = isHijab ? '' : `
     <circle cx="${100 - headRx + 4}" cy="${headY + 6}" r="8" fill="${f.skin}"/>
     <circle cx="${100 + headRx - 4}" cy="${headY + 6}" r="8" fill="${f.skin}"/>
   `;
 
-  // NECK
   const neck = isHijab ? '' : `
     <rect x="${100 - 13}" y="${headY + 40}" width="26" height="30" rx="11" fill="${f.skin}"/>
   `;
@@ -1738,7 +1777,6 @@ function pickPersona() {
   const saved = localStorage.getItem('omega_avatar_persona');
   if (FACES[saved]) return saved;
 
-  // Kids get a kid-like friend; everyone else a warm adult
   const gender = g.toLowerCase().startsWith('m') ? 'm' : 'f';
   return (age && age < 13 ? 'kid_' : 'adult_') + gender;
 }
@@ -1762,58 +1800,64 @@ function setCaption(role, text) {
 }
 
 /* ============================================
-   MEMORY CARD
+   QUESTION CARD
 ============================================ */
 function showCard(item, reveal, hint) {
-  const hide = !reveal;
-  const ph = $('memPhoto');
+  const card = $('questionCard');
+  const ph = $('qPhoto');
+  const nameArea = $('qNameArea');
+
+  card.classList.remove('correct', 'revealed');
   ph.innerHTML = '';
-  ph.classList.toggle('hidden', hide);
+  ph.classList.remove('hidden-photo');
 
-  const typeIcon = { person: '؟', place: '📍', event: '🎉' }[item.type] || '?';
+  const typeIcon = { person: '👤', place: '📍', event: '🎉' }[item.type] || '👤';
 
-  if (item.photo && !hide) {
+  if (item.photo) {
+    // Photo is CLEARLY shown (no blur) - the test is about recalling the name
     const img = new Image();
     img.src = item.photo;
     img.alt = '';
     ph.appendChild(img);
-  } else if (item.photo && hide) {
-    // Show a blurred/darkened photo for hidden person
-    const img = new Image();
-    img.src = item.photo;
-    img.alt = '';
-    img.style.filter = 'blur(8px) brightness(0.6)';
-    ph.appendChild(img);
-    if (hint) {
-      const h = document.createElement('div');
-      h.className = 'hint-letter';
-      h.textContent = item.name.charAt(0);
-      ph.appendChild(h);
-    }
   } else {
-    ph.textContent = hide ? typeIcon : (item.name || '?').charAt(0);
-    if (hide && hint) {
-      const h = document.createElement('div');
-      h.className = 'hint-letter';
-      h.textContent = item.name.charAt(0);
-      ph.appendChild(h);
-    }
+    ph.textContent = typeIcon;
   }
 
-  $('memName').textContent = hide ? '?' : item.name;
-  $('memMeta').textContent = hide ? '' : (item.meta || '');
-  $('memCard').classList.add('show');
-  $('memCard').classList.remove('correct', 'revealed');
+  // Hint badge (first letter after 1st wrong attempt)
+  if (hint && !reveal) {
+    const badge = document.createElement('div');
+    badge.className = 'q-hint-badge';
+    badge.textContent = item.name.charAt(0);
+    ph.appendChild(badge);
+  }
+
+  // Name area (revealed after correct answer)
+  $('qName').textContent = item.name;
+  $('qMeta').textContent = item.meta || '';
+
+  if (reveal) {
+    nameArea.classList.add('show');
+  } else {
+    nameArea.classList.remove('show');
+  }
+
+  card.classList.add('show');
 }
 
 function markCardCorrect() {
-  $('memCard').classList.remove('revealed');
-  $('memCard').classList.add('correct');
+  const card = $('questionCard');
+  card.classList.remove('revealed');
+  card.classList.add('correct');
 }
 
 function markCardRevealed() {
-  $('memCard').classList.remove('correct');
-  $('memCard').classList.add('revealed');
+  const card = $('questionCard');
+  card.classList.remove('correct');
+  card.classList.add('revealed');
+}
+
+function hideCard() {
+  $('questionCard').classList.remove('show');
 }
 
 /* ============================================
@@ -1853,18 +1897,6 @@ function say(text, cb) {
   speak(text, cb);
 }
 
-function openMic() {
-  if (state.isEnded) return;
-  enableTalkBtn();
-  $('forgotBtn').classList.remove('hidden');
-  $('statusText').textContent = I18N[currentLang].yourTurn;
-}
-
-function closeMic() {
-  disableTalkBtn();
-  $('forgotBtn').classList.add('hidden');
-}
-
 function startConversation() {
   const t = I18N[currentLang];
   const userName = localStorage.getItem('omega_user_name')
@@ -1892,7 +1924,6 @@ function askNextQuestion() {
   const t = I18N[currentLang];
   const item = getRandomUnused(state.memoryItems, 'item');
 
-  // Build question text based on type — ALL test name recall
   let text;
   if (item.type === 'person') text = t.qWho;
   else if (item.type === 'place') text = t.qPlace;
@@ -1903,13 +1934,10 @@ function askNextQuestion() {
   state.turns++;
   renderProgress();
   showCard(item, false, false);
-  closeMic();
 
   say(text, () => {
-    openMic();
-    if (state.speechSupported && !state.isMuted) {
-      setTimeout(startListening, 400);
-    }
+    // AUTO-LISTEN — mic opens automatically
+    autoListenAfterAI();
   });
 }
 
@@ -1921,7 +1949,6 @@ function handleUserAnswer(text) {
   const q = state.currentQuestion;
   state.currentQuestion = null;
   addTranscriptLine('me', text);
-  closeMic();
 
   const t = I18N[currentLang];
   const item = q.item;
@@ -1930,7 +1957,6 @@ function handleUserAnswer(text) {
 
   const unsure = UNSURE.test(a) || a.length < 2;
 
-  // Split name into tokens for matching
   const nameTokens = norm(item.name).split(' ').filter(x => x.length > 1);
   const ok = nameTokens.some(k => a.includes(k));
 
@@ -1969,8 +1995,11 @@ function handleUserAnswer(text) {
 
   setTimeout(() => {
     say(reply, () => {
-      if (next) setTimeout(askNextQuestion, 800);
-      else openMic();
+      if (next) {
+        setTimeout(askNextQuestion, 800);
+      } else {
+        autoListenAfterAI();
+      }
     });
   }, 500);
 }
@@ -1984,7 +2013,6 @@ function handleForgot() {
   const t = I18N[currentLang];
   const item = q.item;
 
-  closeMic();
   addTranscriptLine('me', t.forgot);
   showCard(item, true, false);
   markCardRevealed();
@@ -2037,7 +2065,6 @@ function applyLanguage(lang) {
   htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
   const t = I18N[lang];
-  $('talkLabel').textContent = t.tapToTalk;
   $('forgotLabel').textContent = t.forgot;
   $('personaSheetTitle').textContent = t.personaSheetTitle;
   $('personaSheetSub').textContent = t.personaSheetSub;
@@ -2049,6 +2076,7 @@ function applyLanguage(lang) {
   $('statDurationLabel').textContent = t.durationLabel;
   $('statTurnsLabel').textContent = t.turnsLabel;
   $('endDoneLabel').textContent = t.backHome;
+  $('listenText').textContent = t.listening;
 
   if (state.persona) {
     $('callName').textContent = FACES[state.persona].n[lang];
@@ -2062,7 +2090,6 @@ function applyLanguage(lang) {
     else $('statusText').textContent = t.connecting;
   }
 
-  // Rebuild persona grid if open
   if ($('personaSheet').classList.contains('show')) {
     renderPersonaGrid();
   }
@@ -2094,7 +2121,6 @@ function renderPersonaGrid() {
     card.addEventListener('click', () => {
       setPersona(key, true);
       closePersonaSheet();
-      // Re-render grid to update active state
       setTimeout(renderPersonaGrid, 200);
     });
 
@@ -2129,17 +2155,6 @@ function closeTranscriptSheet() {
 /* ============================================
    EVENT BINDINGS
 ============================================ */
-$('talkBtn').addEventListener('click', () => {
-  if (state.isEnded) return;
-  if (!state.currentQuestion) return;
-
-  if (state.isListening) {
-    stopListening();
-  } else {
-    startListening();
-  }
-});
-
 $('forgotBtn').addEventListener('click', handleForgot);
 
 $('closeBtn').addEventListener('click', endCall);
@@ -2156,7 +2171,6 @@ $('transcriptBtn').addEventListener('click', openTranscriptSheet);
 $('sheetClose').addEventListener('click', closeTranscriptSheet);
 $('transcriptOverlay').addEventListener('click', closeTranscriptSheet);
 
-// Text input fallback
 $('textSend').addEventListener('click', () => {
   const v = $('textInput').value.trim();
   if (v) {
@@ -2192,6 +2206,7 @@ function init() {
   if (!state.speechSupported) {
     setTimeout(() => {
       $('statusText').textContent = I18N[currentLang].noSpeechSupport;
+      setTimeout(() => $('textInput').focus(), 500);
     }, 500);
   }
 
