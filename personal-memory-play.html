@@ -39,18 +39,25 @@ html[lang=ar] .persona-btn{padding:5px 5px 5px 14px;font-size:13px}
 .main-call{position:relative;z-index:5;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 20px 0;text-align:center;overflow-y:auto;scrollbar-width:none}
 .main-call::-webkit-scrollbar{display:none}
 
-/* 🟢 Avatar Dynamic Layout (ضخم جداً) */
+/* 🟢 Avatar Dynamic Layout (دائرة كبيرة في النص) */
 .companion-wrap{
-  display:flex;justify-content:center;align-items:center;width:100%;height:400px; /* أطول */
+  display:flex;justify-content:center;align-items:center;width:100%;
+  height:320px; /* مساحة الدايرة الكبيرة */
   transition:all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);flex-shrink:0;margin-top:10px;
 }
 .companion-wrap.shrunk{height:160px;margin-bottom:10px;margin-top:0}
+
 .companion{
-  width:100%;max-width:320px;height:400px;border-radius:30px;overflow:hidden;
+  width:260px;height:260px; /* كبيرة زي الفيديو كول */
+  border-radius:50%; /* دائرة دايماً */
+  overflow:hidden;
   box-shadow:0 15px 40px rgba(15,23,42,0.15);background:#fff;border:4px solid #fff;
   transition:all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);position:relative;
 }
-.companion.shrunk{width:150px;height:150px;max-width:150px;border-radius:50%;box-shadow:0 8px 24px rgba(15,23,42,0.15)}
+.companion.shrunk{
+  width:140px;height:140px; /* تصغر شوية عشان تسيب مكان للسؤال */
+  box-shadow:0 8px 24px rgba(15,23,42,0.15);
+}
 .companion img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:all 0.3s}
 .companion.shrunk img{object-position:center 15%}
 .companion.speaking{box-shadow:0 0 0 6px rgba(46,196,182,.3),0 12px 30px rgba(14,148,135,0.2)}
@@ -147,6 +154,7 @@ html[lang=ar] .end-btn{font-size:15.5px}
   </div>
 
   <div class="main-call">
+    <!-- 🟢 Dynamic Avatar Wrap -->
     <div class="companion-wrap" id="avatarWrap">
       <div class="companion" id="companionBox">
         <img id="mainAvatarImg" src="" alt="Avatar">
@@ -269,6 +277,7 @@ let speakIndex = 0;
 let reactInterval = null;
 let reactTimeout = null;
 
+// دالة تغيير حجم الأفاتار (دايرة كبيرة <-> دايرة صغيرة)
 function setAvatarSize(isLarge) {
   const wrap = $('avatarWrap');
   const box = $('companionBox');
@@ -299,13 +308,13 @@ function updateAvatarImage(state, index = 0) {
 
 function startTalkingAnimation() {
   if (speakInterval) clearInterval(speakInterval);
-  if (S.isReacting) return;
+  if (S.isReacting) return; // لو في رياكشن، متغيرش الصور
   speakIndex = 0;
   setAvatarSize(false); 
   speakInterval = setInterval(() => {
     speakIndex = (speakIndex + 1) % 3;
     updateAvatarImage('speaking', speakIndex);
-  }, 1000);
+  }, 1000); // سرعة الكلام
 }
 
 function stopTalkingAnimation() {
@@ -316,12 +325,12 @@ function stopTalkingAnimation() {
   }
 }
 
-function triggerReaction(type, duration = 2500) {
+function triggerReaction(type, duration = 2000) {
   if (reactInterval) clearInterval(reactInterval);
   if (reactTimeout) clearTimeout(reactTimeout);
   
   S.isReacting = true;
-  setAvatarSize(false); // تصغير وقت الرياكشن
+  setAvatarSize(false); // تصغير وقت الرياكشن عشان السؤال يبان
   
   if (type === 'happy') {
     let idx = 0;
@@ -329,7 +338,7 @@ function triggerReaction(type, duration = 2500) {
     reactInterval = setInterval(() => {
       idx = (idx + 1) % 2;
       updateAvatarImage('happy', idx);
-    }, 250); 
+    }, 250); // تبديل سريع للتسقيفة
   } else if (type === 'sad') {
     updateAvatarImage('sad');
   }
@@ -339,7 +348,7 @@ function triggerReaction(type, duration = 2500) {
     S.isReacting = false;
     if (!S.speaking) {
       updateAvatarImage('listen');
-      setAvatarSize(true); 
+      setAvatarSize(true); // رجوع للحجم الكبير
     }
   }, duration);
 }
@@ -554,7 +563,7 @@ function askNext(){
     // تصغير الأفاتار والبدء في السؤال
     setAvatarSize(false);
     say(text, autoListen);
-  }, 3500); // زودنا وقت التفكير
+  }, 3500); 
 }
 
 function answer(text){
@@ -571,10 +580,10 @@ function answer(text){
     showCard(item,true,false);
     markCard('correct');
     
-    // 1. التسقيفة
-    triggerReaction('happy', 2500); 
+    // التسقيفة بتشتغل لمدة 2 ثانية
+    triggerReaction('happy', 2000); 
     
-    // 2. استنى ثانيتين وبعدين اتكلم عشان التسقيفة تبان
+    // استنى بالظبط 2 ثانية عشان التسقيفة تخلص، وبعدين اتكلم
     setTimeout(()=>{
       reply=fmt(pick(t.good),v);
       say(reply, ()=>next?setTimeout(askNext,800):autoListen());
@@ -592,10 +601,10 @@ function answer(text){
     showCard(item,true,false);
     markCard('revealed');
     
-    // 1. الزعل
-    triggerReaction('sad', 2500);
+    // الزعل بيشتغل لمدة 2 ثانية
+    triggerReaction('sad', 2000);
     
-    // 2. استنى ثانيتين وبعدين اتكلم
+    // استنى 2 ثانية وبعدين اتكلم
     setTimeout(()=>{
       reply=fmt(t.reveal,v);
       say(reply, ()=>next?setTimeout(askNext,800):autoListen());
@@ -607,7 +616,7 @@ function forgot(){
   if(S.ended||!S.q)return;
   stopListen();const item=S.q.item;S.q=null;
   showCard(item,true,false);markCard('revealed');
-  triggerReaction('sad', 2500); 
+  triggerReaction('sad', 2000); 
   setTimeout(()=>say(I18N[lang].skip,()=>setTimeout(askNext,800)), 2000);
 }
 
