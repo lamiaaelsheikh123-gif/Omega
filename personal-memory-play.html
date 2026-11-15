@@ -29,7 +29,7 @@ input{font-family:inherit}
 .persona-btn{flex:1;min-width:0;display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;border-radius:999px;background:rgba(255,255,255,.92);border:1px solid var(--c-border);font-size:12.5px;font-weight:600;color:var(--c-navy);box-shadow:0 4px 12px rgba(15,23,42,.05)}
 html[lang=ar] .persona-btn{padding:5px 5px 5px 14px;font-size:13px}
 .persona-btn .mini{width:30px;height:30px;border-radius:50%;overflow:hidden;background:#E0F7F4;flex-shrink:0}
-.persona-btn .mini svg{width:100%;height:100%;display:block}
+.persona-btn .mini img{width:100%;height:100%;object-fit:cover}
 .persona-btn .lbl{flex:1;text-align:start;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dots{display:flex;gap:5px;align-items:center;padding:8px;background:rgba(255,255,255,.9);border-radius:999px;border:1px solid var(--c-border);flex-shrink:0}
 .dot{width:6px;height:6px;border-radius:50%;background:rgba(14,148,135,.2);transition:.3s}
@@ -38,8 +38,10 @@ html[lang=ar] .persona-btn{padding:5px 5px 5px 14px;font-size:13px}
 /* main */
 .main-call{position:relative;z-index:5;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 20px 0;text-align:center;overflow-y:auto;scrollbar-width:none}
 .main-call::-webkit-scrollbar{display:none}
-.companion{flex-shrink:0}
-.call-name{font-size:18px;font-weight:800;color:var(--c-navy);line-height:1.2}
+.companion{width:180px;height:180px;flex-shrink:0;border-radius:50%;overflow:hidden;box-shadow:0 12px 30px rgba(15,23,42,0.1);background:#fff;border:4px solid #fff;transition:box-shadow .3s}
+.companion img{width:100%;height:100%;object-fit:cover}
+.companion.speaking{box-shadow:0 0 0 6px rgba(46,196,182,.3),0 12px 30px rgba(14,148,135,0.2)}
+.call-name{font-size:18px;font-weight:800;color:var(--c-navy);line-height:1.2;margin-top:4px}
 html[lang=ar] .call-name{font-size:17px}
 .status{font-size:12px;font-weight:500;color:var(--c-slate);min-height:16px}
 html[lang=ar] .status{font-size:13px}
@@ -53,7 +55,7 @@ html[lang=ar] .status{font-size:13px}
 @keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.94)}}
 .qcard.correct{border-color:var(--c-success);box-shadow:0 0 0 4px rgba(34,197,94,.18),0 12px 30px rgba(34,197,94,.2)}
 .qcard.revealed{border-color:var(--c-warning);box-shadow:0 0 0 4px rgba(251,191,36,.18),0 12px 30px rgba(251,191,36,.2)}
-.q-photo{position:relative;width:100%;border-radius:14px;overflow:hidden;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:72px;color:#fff;font-weight:700}
+.q-photo{position:relative;width:100%;border-radius:14px;overflow:hidden;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:72px;color:#fff;font-weight:700;height:170px}
 .q-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .hint-badge{position:absolute;top:10px;left:10px;width:34px;height:34px;border-radius:50%;background:rgba(251,191,36,.95);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;box-shadow:0 4px 10px rgba(251,191,36,.4);animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
 html[dir=rtl] .hint-badge{left:auto;right:10px}
@@ -94,7 +96,7 @@ html[lang=ar] .sh-title{font-size:16px}html[lang=ar] .sh-sub{font-size:12.5px}
 .pcard:hover{border-color:rgba(14,148,135,.35);transform:translateY(-2px)}
 .pcard.active{background:linear-gradient(#FFFBF5,#FFFBF5) padding-box,var(--g) border-box;border:2px solid transparent;box-shadow:0 10px 26px rgba(14,148,135,.2)}
 .persona-card-avatar{width:84px;height:84px;border-radius:50%;overflow:hidden;background:#E0F7F4;flex-shrink:0}
-.persona-card-avatar svg{width:100%;height:100%;display:block}
+.persona-card-avatar img{width:100%;height:100%;object-fit:cover}
 .pname{font-size:13.5px;font-weight:700;color:var(--c-navy)}html[lang=ar] .pname{font-size:14.5px}
 .plabel{font-size:10.5px;font-weight:600;color:var(--c-slate);padding:2px 9px;background:rgba(14,148,135,.08);border-radius:999px}
 .pcard.active .plabel{background:var(--g);color:#fff}
@@ -161,248 +163,50 @@ html[lang=ar] .end-btn{font-size:15.5px}
 
 </div></div></div>
 
-<script>/* ============================================================
-   Omega Avatar — cute cartoon companions with real reactions
-   - mouth moves while the companion speaks (auto, via .speaking)
-   - reactions: think / happy (clapping) / sad / listen
-   Usage: include omega-avatar.js
-          OmegaAvatar.react(document.getElementById('avatarWrap'), 'happy', 3000)
-============================================================ */
-(function () {
-  let uid = 0;
-
-  const FACES = {
-    kid_f:   { n: { en: 'Lina',  ar: 'لينا' },  g: 'f', age: 'kid',   skin: '#F7CDAE', hair: '#5B3427', hl: '#8E5B47', eye: '#4A2C20', hood: '#8E6FE0', hood2: '#6D4FC6', bg1: '#EEE7FF', bg2: '#C9BBFF', style: 'wavyMid',  clip: 1, freckle: 2, pitch: 1.55, rate: 1.05, labelKey: 'labelKid' },
-    kid_m:   { n: { en: 'Adam',  ar: 'آدم' },   g: 'm', age: 'kid',   skin: '#F0C19B', hair: '#3A2A22', hl: '#6B4A3A', eye: '#3A2418', hood: '#4F8CF7', hood2: '#3A6FD0', bg1: '#E0F5FF', bg2: '#B7E3FA', style: 'messy',    freckle: 1,         pitch: 1.4,  rate: 1.05, labelKey: 'labelKid' },
-    adult_f: { n: { en: 'Laila', ar: 'ليلى' },  g: 'f', age: 'adult', skin: '#F4C8A6', hair: '#4A2A22', hl: '#8A5848', eye: '#4A2C20', hood: '#2D2A6E', hood2: '#1D1B52', bg1: '#E3EAFF', bg2: '#BCCBFF', style: 'wavyLong', earring: 1, freckle: 1, pitch: 1.15, rate: 0.95, labelKey: 'labelAdult' },
-    adult_m: { n: { en: 'Karim', ar: 'كريم' },  g: 'm', age: 'adult', skin: '#E9B88F', hair: '#2B1C17', hl: '#5B3E31', eye: '#3A2418', hood: '#27306B', hood2: '#1A2050', bg1: '#DDF5EF', bg2: '#A9E4D8', style: 'short',                 pitch: 0.9,  rate: 0.95, labelKey: 'labelAdult' },
-    elder_m: { n: { en: 'Sami',  ar: 'سامي' },  g: 'm', age: 'elder', skin: '#E6B58F', hair: '#D5D9E0', brow: '#9CA3AF', eye: '#3A2418', hood: '#0E9487', hood2: '#0A6F66', bg1: '#E6F7F4', bg2: '#BDE9E2', style: 'grayshort', glasses: 1, pitch: 0.8, rate: 0.88, labelKey: 'labelElder' },
-    elder_f: { n: { en: 'Mona',  ar: 'منى' },   g: 'f', age: 'elder', skin: '#EBBE98', hair: '#E9D8C0', brow: '#8B6B52', eye: '#4A2C20', hood: '#0E9487', hood2: '#0A6F66', bg1: '#FFF1E0', bg2: '#F8D9B5', style: 'scarf',     glasses: 1, pitch: 1.05, rate: 0.88, labelKey: 'labelElder' }
-  };
-  const ORDER = ['kid_f', 'kid_m', 'adult_f', 'adult_m', 'elder_f', 'elder_m'];
-
-  /* ---------- hair shapes ---------- */
-  const HAIR = {
-    wavyLong: {
-      back:  'M60 104C40 134 32 176 44 218C50 236 38 242 46 256L96 256L96 190L144 190L144 256L194 256C202 242 190 236 196 218C208 176 200 134 180 104C176 52 150 28 120 28C90 28 64 52 60 104Z',
-      lockL: 'M64 118C48 150 44 184 52 210C57 226 49 232 54 248C72 242 78 218 74 192C71 168 75 142 82 120Z',
-      lockR: 'M176 118C192 150 196 184 188 210C183 226 191 232 186 248C168 242 162 218 166 192C169 168 165 142 158 120Z',
-      front: 'M58 108C54 54 90 30 120 30C150 30 186 54 182 108C172 80 150 62 120 60C90 62 68 80 58 108Z', wave: 1
-    },
-    wavyMid: {
-      back:  'M52 112C36 140 34 182 48 214C56 230 46 236 54 246L96 246L96 196L144 196L144 246L186 246C194 236 184 230 192 214C206 182 204 140 188 112C186 54 154 26 120 26C86 26 54 54 52 112Z',
-      lockL: 'M56 124C44 154 44 186 54 208C60 220 54 228 60 238C78 232 82 212 78 192C75 170 78 148 84 126Z',
-      lockR: 'M184 124C196 154 196 186 186 208C180 220 186 228 180 238C162 232 158 212 162 192C165 170 162 148 156 126Z',
-      front: 'M52 116C48 52 88 28 120 28C152 28 192 52 188 116C178 82 154 62 120 60C86 62 62 82 52 116Z', wave: 1
-    },
-    short:  { front: 'M60 104C56 58 86 34 120 34C154 34 184 58 180 104C176 84 166 74 150 70C130 78 100 72 84 66C70 74 62 88 60 104Z' },
-    messy:  { front: 'M54 112C48 56 84 30 120 30C156 30 192 56 186 112C182 92 172 80 160 76L152 56L138 74L124 52L112 74L96 54L88 76C74 82 60 92 54 112Z' },
-    grayshort: { front: 'M60 112C56 80 66 60 84 52C72 66 70 90 70 112ZM180 112C184 80 174 60 156 52C168 66 170 90 170 112Z' },
-    scarf: {
-      back:  'M56 112C46 50 94 22 120 22C146 22 194 50 184 112C190 150 184 180 172 206L68 206C56 180 50 150 56 112Z',
-      front: 'M64 104C66 62 92 46 120 46C148 46 174 62 176 104C160 80 144 72 120 72C96 72 80 80 64 104Z'
-    }
-  };
-
-  function star(cx, cy, r, fill) {
-    const p = [];
-    for (let i = 0; i < 10; i++) {
-      const a = Math.PI / 5 * i - Math.PI / 2, rr = i % 2 ? r * 0.45 : r;
-      p.push((cx + Math.cos(a) * rr).toFixed(1) + ',' + (cy + Math.sin(a) * rr).toFixed(1));
-    }
-    return `<polygon points="${p.join(' ')}" fill="${fill}"/>`;
-  }
-
-  /* ---------- build ---------- */
-  function build(f) {
-    const id = 'oa' + (++uid);
-    const kid = f.age === 'kid';
-    const ey = kid ? 124 : 120, ex = kid ? 22 : 20, rx = kid ? 14.5 : 12.5, ry = kid ? 16 : 14;
-    const my = kid ? 154 : 150, ny = kid ? 146 : 142;
-    const H = HAIR[f.style] || {};
-    const hairC = f.hair, brow = f.brow || f.hair;
-    const head = kid
-      ? 'M54 112C54 64 84 38 120 38C156 38 186 64 186 112C186 152 156 176 120 176C84 176 54 152 54 112Z'
-      : 'M62 108C62 62 88 40 120 40C152 40 178 62 178 108C178 146 152 174 120 174C88 174 62 146 62 108Z';
-    const lx = 120 - ex, rxp = 120 + ex;
-    const hw = kid ? 66 : 58;
-
-    const eye = (cx, flip) => `
-      <g class="eyeo">
-        <ellipse cx="${cx}" cy="${ey}" rx="${rx}" ry="${ry}" fill="#fff"/>
-        <g class="gz">
-          <circle cx="${cx}" cy="${ey + 1}" r="${(rx * 0.8).toFixed(1)}" fill="${f.eye}"/>
-          <circle cx="${cx}" cy="${ey + 1}" r="${(rx * 0.42).toFixed(1)}" fill="#1B0F0C"/>
-          <circle cx="${(cx - rx * 0.3).toFixed(1)}" cy="${(ey - ry * 0.35).toFixed(1)}" r="${(rx * 0.28).toFixed(1)}" fill="#fff"/>
-          <circle cx="${(cx + rx * 0.32).toFixed(1)}" cy="${(ey + ry * 0.3).toFixed(1)}" r="${(rx * 0.13).toFixed(1)}" fill="#fff" opacity=".9"/>
-        </g>
-        <path d="M${cx - rx - 1} ${ey - 2}Q${cx} ${ey - ry - 7} ${cx + rx + 1} ${ey - 2}" stroke="#2A1712" stroke-width="3.8" fill="none" stroke-linecap="round"/>
-        <path d="M${flip ? cx + rx + 1 : cx - rx - 1} ${ey - 2}l${flip ? 5 : -5} -4" stroke="#2A1712" stroke-width="2.6" stroke-linecap="round"/>
-      </g>
-      <path class="ehap" d="M${cx - rx} ${ey + 3}Q${cx} ${ey - rx - 2} ${cx + rx} ${ey + 3}" stroke="#2A1712" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-
-    const brows = `
-      <path class="brow l" d="M${lx - rx} ${ey - ry - 4}Q${lx} ${ey - ry - 11} ${lx + rx} ${ey - ry - 5}" stroke="${brow}" stroke-width="4.4" fill="none" stroke-linecap="round"/>
-      <path class="brow r" d="M${rxp - rx} ${ey - ry - 5}Q${rxp} ${ey - ry - 11} ${rxp + rx} ${ey - ry - 4}" stroke="${brow}" stroke-width="4.4" fill="none" stroke-linecap="round"/>`;
-
-    const fr = [[88, 138], [94, 143], [101, 137], [139, 137], [146, 143], [152, 138], [116, 135], [125, 135], [90, 131], [150, 131]]
-      .slice(0, f.freckle === 2 ? 10 : f.freckle === 1 ? 6 : 0)
-      .map(p => `<circle cx="${p[0]}" cy="${p[1] + (kid ? 6 : 2)}" r="1.4" fill="#B9785A" opacity=".5"/>`).join('');
-
-    const glasses = f.glasses ? `<g fill="none" stroke="#475569" stroke-width="2.6">
-        <circle cx="${lx}" cy="${ey}" r="18"/><circle cx="${rxp}" cy="${ey}" r="18"/><path d="M${lx + 18} ${ey}H${rxp - 18}"/></g>` : '';
-
-    const waveLines = H.wave ? `<path d="M84 52C100 42 132 40 152 50" stroke="${f.hl}" stroke-width="3.2" fill="none" stroke-linecap="round" opacity=".55"/>
-      <path d="M58 150C64 160 54 172 60 186M182 150C176 160 186 172 180 186" stroke="${f.hl}" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".5"/>` : '';
-
-    const mouth = `
-      <path class="mm mm-idle" d="M108 ${my}Q120 ${my + 10} 132 ${my}" stroke="#B04A4F" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-      <g class="mm mm-open"><path d="M106 ${my - 2}Q120 ${my - 6} 134 ${my - 2}Q132 ${my + 20} 120 ${my + 20}Q108 ${my + 20} 106 ${my - 2}Z" fill="#7A2630"/>
-        <ellipse cx="120" cy="${my + 14}" rx="8" ry="4.5" fill="#E8737F"/></g>
-      <g class="mm mm-happy"><path d="M103 ${my - 4}Q120 ${my + 2} 137 ${my - 4}Q135 ${my + 22} 120 ${my + 22}Q105 ${my + 22} 103 ${my - 4}Z" fill="#7A2630"/>
-        <path d="M106 ${my - 3}Q120 ${my + 2} 134 ${my - 3}L133 ${my + 4}Q120 ${my + 8} 107 ${my + 4}Z" fill="#fff"/>
-        <ellipse cx="120" cy="${my + 16}" rx="9" ry="4.5" fill="#E8737F"/></g>
-      <path class="mm mm-sad" d="M108 ${my + 8}Q120 ${my - 2} 132 ${my + 8}" stroke="#B04A4F" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-      <ellipse class="mm mm-think" cx="126" cy="${my + 3}" rx="5" ry="4.5" fill="#7A2630"/>`;
-
-    const omega = `<g transform="translate(120 228) scale(.95)" style="filter:drop-shadow(0 0 4px #A5B4FC)">
-      <path d="M-11 10H-3C-9 6-12 1-12-4A12 12 0 0 1 12-4C12 1 9 6 3 10H11" stroke="#D5DBFF" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`;
-
-    return `<svg class="av ex-idle" viewBox="0 0 240 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs><radialGradient id="${id}b" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="${f.bg1}"/><stop offset="1" stop-color="${f.bg2}"/></radialGradient></defs>
-  <circle cx="120" cy="128" r="108" fill="url(#${id}b)"/>
-  <g class="spk" style="animation-delay:0s">${star(34, 72, 9, '#FDE68A')}</g><g class="spk" style="animation-delay:.35s">${star(206, 88, 8, '#FDE68A')}</g><g class="spk" style="animation-delay:.7s">${star(196, 34, 7, '#FBCFE8')}</g>
-  <g class="td"><circle cx="190" cy="44" r="4" fill="#fff" stroke="#C4B5FD"/></g><g class="td" style="animation-delay:.25s"><circle cx="204" cy="30" r="5" fill="#fff" stroke="#C4B5FD"/></g><g class="td" style="animation-delay:.5s"><circle cx="220" cy="16" r="6.5" fill="#fff" stroke="#C4B5FD"/></g>
-  <g class="hd">${H.back ? `<path d="${H.back}" fill="${hairC}"/>` : ''}</g>
-  <g class="bd">
-    <path d="M20 262C22 207 60 190 120 190C180 190 218 207 220 262Z" fill="${f.hood}"/>
-    <path d="M66 202C70 170 170 170 174 202C150 216 90 216 66 202Z" fill="${f.hood2}"/>
-    <path d="M104 206L101 240M136 206L139 240" stroke="#EDEBFF" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="101" cy="242" r="3" fill="#EDEBFF"/><circle cx="139" cy="242" r="3" fill="#EDEBFF"/>
-    ${omega}
-  </g>
-  <g class="hd">
-    <rect x="106" y="158" width="28" height="38" rx="12" fill="${f.skin}"/>
-    <path d="M90 190C100 208 140 208 150 190" stroke="${f.hood2}" stroke-width="7" fill="none" stroke-linecap="round"/>
-    ${H.lockL ? `<path d="${H.lockL}" fill="${hairC}"/><path d="${H.lockR}" fill="${hairC}"/>` : ''}
-    <ellipse cx="${120 - hw + 2}" cy="${ey + 6}" rx="8" ry="11" fill="${f.skin}"/><ellipse cx="${120 + hw - 2}" cy="${ey + 6}" rx="8" ry="11" fill="${f.skin}"/>
-    ${f.earring ? `<circle cx="${120 - hw}" cy="${ey + 22}" r="5.5" fill="none" stroke="#CBD5E1" stroke-width="2"/>` : ''}
-    <path d="${head}" fill="${f.skin}"/>
-    <ellipse cx="120" cy="${ey - 14}" rx="34" ry="22" fill="#fff" opacity=".12"/>
-    ${H.front ? `<path d="${H.front}" fill="${hairC}"/>` : ''}${waveLines}
-    ${f.clip ? star(162, 62, 11, '#B794F6') : ''}
-    <ellipse class="blush" cx="${lx - 8}" cy="${ey + 22}" rx="13" ry="8" fill="#F59BA0" opacity=".4"/><ellipse class="blush" cx="${rxp + 8}" cy="${ey + 22}" rx="13" ry="8" fill="#F59BA0" opacity=".4"/>
-    ${fr}${brows}${eye(lx, false)}${eye(rxp, true)}${glasses}
-    <path d="M118 ${ny}Q121 ${ny + 4} 124 ${ny}" stroke="#C4856A" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".7"/>
-    ${mouth}
-    <path class="drop" d="M${120 + hw - 6} 84Q${120 + hw} 96 ${120 + hw - 6} 102Q${120 + hw - 12} 96 ${120 + hw - 6} 84Z" fill="#93C5FD"/>
-  </g>
-  <g class="hand" transform="translate(98 226)"><g class="hl"><ellipse rx="12" ry="16" fill="${f.skin}"/></g></g>
-  <g class="hand" transform="translate(142 226)"><g class="hr"><ellipse rx="12" ry="16" fill="${f.skin}"/></g></g>
-</svg>`;
-  }
-
-  /* ---------- styles ---------- */
-  const css = `
-.av{width:100%;height:100%;display:block}
-.av .hd{transform-origin:120px 190px;transition:transform .45s ease}
-.av.ex-idle .hd,.av.ex-listen .hd{animation:avBreath 4.5s ease-in-out infinite}
-@keyframes avBreath{50%{transform:translateY(2px)}}
-.av.ex-listen .hd{transform:rotate(3deg)}
-.av.talking .hd{animation:avNod 1.3s ease-in-out infinite}
-@keyframes avNod{0%,100%{transform:rotate(0)}30%{transform:rotate(1.6deg) translateY(1px)}70%{transform:rotate(-1.6deg)}}
-.av.ex-think .hd{transform:rotate(-5deg) translateX(-3px)}
-.av.ex-sad .hd{transform:translateY(6px) rotate(2deg)}
-.av .eyeo{transform-box:fill-box;transform-origin:center;animation:avBlink 5s infinite}
-@keyframes avBlink{0%,94%,100%{transform:scaleY(1)}96.5%{transform:scaleY(.08)}}
-.av .gz{transition:transform .35s ease;transform:translate(var(--gx,0px),var(--gy,0px))}
-.av.ex-think{--gx:3.5px;--gy:-3.5px}.av.ex-sad{--gy:3px}
-.av .ehap{display:none}
-.av.ex-happy .eyeo{display:none}.av.ex-happy .ehap{display:block}
-.av .brow{transition:transform .3s;transform-box:fill-box;transform-origin:center}
-.av.ex-happy .brow{transform:translateY(-3px)}
-.av.ex-sad .brow.l{transform:rotate(-14deg) translateY(2px)}.av.ex-sad .brow.r{transform:rotate(14deg) translateY(2px)}
-.av.ex-think .brow.r{transform:translateY(-6px) rotate(-6deg)}
-.av.ex-listen .brow{transform:translateY(-2px)}
-.av .blush{transition:opacity .3s}.av.ex-happy .blush{opacity:.75!important}
-.av .mm{display:none}
-.av.ex-idle .mm-idle,.av.ex-listen .mm-idle{display:block}
-.av.ex-happy .mm-happy{display:block}.av.ex-sad .mm-sad{display:block}.av.ex-think .mm-think{display:block}
-.av.talking .mm{display:none}
-.av.talking .mm-open{display:block;transform-box:fill-box;transform-origin:50% 0;transform:scale(var(--mw,1),var(--mo,.4));transition:transform .09s}
-.av .hand{opacity:0;transition:opacity .2s}.av.ex-happy .hand{opacity:1}
-.av.ex-happy .hl{animation:avClapL .36s ease-in-out infinite alternate}
-.av.ex-happy .hr{animation:avClapR .36s ease-in-out infinite alternate}
-@keyframes avClapL{to{transform:translateX(15px)}}@keyframes avClapR{to{transform:translateX(-15px)}}
-.av .spk,.av .td,.av .drop{opacity:0}
-.av.ex-happy .spk{animation:avSpark 1.2s ease-out infinite}
-@keyframes avSpark{0%{opacity:0;transform:scale(.3)}40%{opacity:1}100%{opacity:0;transform:scale(1.3) translateY(-8px)}}
-.av .spk,.av .td{transform-box:fill-box;transform-origin:center}
-.av.ex-think .td{animation:avDot 1.2s ease-in-out infinite}
-@keyframes avDot{0%,100%{opacity:.2}50%{opacity:1}}
-.av.ex-sad .drop{opacity:.9}
-/* layout overrides for the session page */
-.companion{width:200px!important;height:232px!important;border-radius:0!important;background:none!important;box-shadow:none!important;overflow:visible!important;animation:none!important}
-.caption{display:none!important}
-.q-photo{height:170px!important}
-.persona-btn .mini svg,.persona-card-avatar svg{transform:scale(1.8);transform-origin:50% 46%}
-`;
-  const st = document.createElement('style');
-  st.id = 'omega-avatar-css';
-  st.textContent = css;
-  document.head.appendChild(st);
-
-  /* ---------- behaviour ---------- */
-  const S = new WeakMap();
-  const get = w => { let s = S.get(w); if (!s) { s = { ex: 'idle', talk: false, rt: 0, lt: 0 }; S.set(w, s); } return s; };
-  const svg = w => w.querySelector('svg.av');
-
-  function paint(w) {
-    const r = svg(w); if (!r) return;
-    const s = get(w);
-    const ex = s.ex === 'idle' && w.classList.contains('listening') ? 'listen' : s.ex;
-    r.setAttribute('class', 'av ex-' + ex + (s.talk ? ' talking' : ''));
-  }
-
-  function lipTick(w) {
-    paint(w);
-    const r = svg(w); if (!r) return;
-    r.style.setProperty('--mo', (0.18 + Math.random() * 0.82).toFixed(2));
-    r.style.setProperty('--mw', (0.82 + Math.random() * 0.22).toFixed(2));
-  }
-
-  function sync(w) {
-    const s = get(w), speaking = w.classList.contains('speaking');
-    if (speaking && !s.lt) { s.talk = true; s.lt = setInterval(() => lipTick(w), 120); }
-    if (!speaking && s.lt) { clearInterval(s.lt); s.lt = 0; s.talk = false; }
-    paint(w);
-  }
-
-  function attach(w) {
-    if (!w || w._oa) return;
-    w._oa = true;
-    new MutationObserver(() => sync(w)).observe(w, { attributes: true, attributeFilter: ['class'], childList: true });
-    sync(w);
-  }
-
-  function react(w, name, ms) {
-    if (typeof w === 'string') w = document.getElementById(w);
-    if (!w) return;
-    attach(w);
-    const s = get(w);
-    s.ex = name; clearTimeout(s.rt); paint(w);
-    if (ms) s.rt = setTimeout(() => { s.ex = 'idle'; paint(w); }, ms);
-  }
-
-  document.addEventListener('DOMContentLoaded', () => attach(document.getElementById('avatarWrap')));
-  window.OmegaAvatar = { FACES, ORDER, buildFace: build, react, attach };
-})();
-</script>
 <script>
+/* ============================================================
+   ⚠️⚠️⚠️ مكان الصور بتاعتك (الصور الجديدة اللي طلبتيها) ⚠️⚠️⚠️
+============================================================ */
+const AVATAR_IMAGES = {
+  // 👨 الأفاتار الكبير
+  adult: {
+    listen: 'الافاتار الكبير واليوزر بيتكلم .jpg',
+    speak: [
+      'image.png',
+      'image copy.png',
+      'photo_2026-11-15_01-53-33.jpg'
+    ],
+    // 👇 [حطي هنا صورتين الأفاتار الكبير للتسقيفة]
+    clap: [
+      'الكبار تسقيفه 1.jpg', // 👈 (صورة الأفاتار الكبير وإيدها مقفولة)
+      'الكبار تسقيفه 2.jpg'    // 👈 (صورة الأفاتار الكبير وإيدها مفتوحة)
+    ],
+    // 👇 [حطي هنا صورة الأفاتار الكبير لما يجاوب غلط]
+    sad: 'الكبار جاوب غلط.jpg' 
+  },
+  // 👧 أفاتار الطفل/الطفلة
+  kid: {
+    listen: 'الصغير واليوزر بيتكلم.jpg',
+    speak: [
+      'اول بيتكلم.jpg',
+      'ثاني بتتكلم.jpg',
+      'ثالث بيتكلم.jpg'
+    ],
+    // 👇 [حطي هنا صورتين أفاتار الطفل للتسقيفة]
+    clap: [
+      'اطفال تسقيفه مقفوله.jpg', // 👈 (صورة الطفل وإيدها مقفولة)
+      'اطفال تسقيفه 1.jpg'    // 👈 (صورة الطفل وإيدها مفتوحة)
+    ],
+    // 👇 [حطي هنا صورة الطفل لما يجاوب غلط]
+    sad: 'الصغير جاوب غبط.jpg' 
+  }
+};
+/* ============================================================ */
+
 const I18N={
 en:{connecting:'One moment…',speaking:'Talking with you',yourTurn:'Your turn — say the name',listening:'Listening…',forgot:"I don't remember",
  placeholder:'Type your answer…',endTitle:'Well done!',endDesc:'Your memory worked nicely today. See you soon.',time:'Time',rec:'Remembered',home:'Back to Home',
- typeBelow:'Type your answer below',pTitle:'Change companion',pSub:'Pick who you want to talk with today',kid:'Child',adult:'Adult',elder:'Older',
+ typeBelow:'Type your answer below',pTitle:'Change companion',pSub:'Pick who you want to talk with today',kid:'Child',adult:'Adult',
  greetM:'Good morning',greetE:'Good evening',
  intro:"{g}, {name}! I'm {ai}, and I'll be with you today. Let's remember the people and places you love, together.",
  empty:'Your Memory Bank is still empty. Add your first person and I will be right here.',
@@ -413,7 +217,7 @@ en:{connecting:'One moment…',speaking:'Talking with you',yourTurn:'Your turn �
  bye:'That was a lovely time with you, {name}. See you later.',friend:'friend',hello:'Hi!'},
 ar:{connecting:'لحظة…',speaking:'بكلمك دلوقتي',yourTurn:'دورك — قول الاسم',listening:'سامعك…',forgot:'مش فاكر',
  placeholder:'اكتب ردك هنا…',endTitle:'برافو عليك!',endDesc:'ذاكرتك اشتغلت حلو النهاردة. أشوفك قريب.',time:'المدة',rec:'افتكرت',home:'رجوع للرئيسية',
- typeBelow:'اكتب ردك تحت',pTitle:'غيّر صاحبك',pSub:'اختار اللي تحب تكلمه النهاردة',kid:'طفل',adult:'بالغ',elder:'كبير',
+ typeBelow:'اكتب ردك تحت',pTitle:'غيّر صاحبك',pSub:'اختار اللي تحب تكلمه النهاردة',kid:'طفل',adult:'بالغ',
  greetM:'صباح الخير',greetE:'مساء الخير',
  intro:'{g} يا {name}! أنا {ai}، وهكون معاك النهاردة. تعالى نفتكر سوا الناس والأماكن اللي بتحبها.',
  empty:'بنك الذكريات لسه فاضي. ضيف أول شخص وأنا معاك.',
@@ -425,14 +229,142 @@ ar:{connecting:'لحظة…',speaking:'بكلمك دلوقتي',yourTurn:'دور
 };
 const $=id=>document.getElementById(id);
 let lang=localStorage.getItem('omega_lang')==='ar'?'ar':'en';
-const FACES=OmegaAvatar.FACES,ORDER=OmegaAvatar.ORDER,buildFace=OmegaAvatar.buildFace;
-const S={listening:false,speaking:false,start:Date.now(),turns:0,items:[],used:new Set(),ended:false,sr:false,rec:null,q:null,recalled:0,maxQ:5,persona:null,age:0};
-const react=(n,ms)=>OmegaAvatar.react($('avatarWrap'),n,ms);
+
+const S={listening:false,speaking:false,start:Date.now(),turns:0,items:[],used:new Set(),ended:false,sr:false,rec:null,q:null,recalled:0,maxQ:5,persona:'adult',age:0};
+
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const fmt=(s,v)=>s.replace(/\{(\w+)\}/g,(_,k)=>v[k]==null?'':v[k]);
 const norm=s=>String(s||'').toLowerCase().replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[^\p{L}\p{N}\s]/gu,' ').replace(/\s+/g,' ').trim();
 const UNSURE=/(مش فاكر|مش عارف|معرفش|ما اعرفش|نسيت|مش متاكد|dont know|don t know|do not know|not sure|no idea|forgot|cant remember|can t remember)/;
 const userName=()=>localStorage.getItem('omega_user_name')||I18N[lang].friend;
+
+/* ---------- Avatar Image Logic (المنطق الجديد للتفاعل) ---------- */
+let speakInterval = null;
+let speakIndex = 0;
+
+let isReacting = false;
+let reactInterval = null;
+let reactTimeout = null;
+
+function updateAvatarImage(state, index = 0) {
+  const imgs = AVATAR_IMAGES[S.persona];
+  const imgEl = document.getElementById('mainAvatarImg');
+  if (!imgEl) return;
+
+  if (state === 'speaking') {
+    imgEl.src = imgs.speak[index];
+  } else if (state === 'happy') {
+    imgEl.src = imgs.clap[index];
+  } else if (state === 'sad') {
+    imgEl.src = imgs.sad;
+  } else {
+    imgEl.src = imgs.listen;
+  }
+}
+
+function startTalkingAnimation() {
+  if (speakInterval) clearInterval(speakInterval);
+  if (isReacting) return; // لو في تسقيفة أو زعل شغال، الكلام ميقطعوش
+  speakIndex = 0;
+  speakInterval = setInterval(() => {
+    speakIndex = (speakIndex + 1) % 3;
+    updateAvatarImage('speaking', speakIndex);
+  }, 1000); // سرعة الكلام (ثانية كاملة)
+}
+
+function stopTalkingAnimation() {
+  if (speakInterval) clearInterval(speakInterval);
+  speakInterval = null;
+  if (!isReacting) {
+    updateAvatarImage('listen');
+  }
+}
+
+function triggerReaction(type, duration = 2500) {
+  // إيقاف أي رياكشن شغال حالياً
+  if (reactInterval) clearInterval(reactInterval);
+  if (reactTimeout) clearTimeout(reactTimeout);
+  
+  isReacting = true;
+  const imgs = AVATAR_IMAGES[S.persona];
+  
+  if (type === 'happy') {
+    let idx = 0;
+    updateAvatarImage('happy', idx);
+    // التبديل بين إيد مقفولة وإيد مفتوحة كل 250 مللي ثانية
+    reactInterval = setInterval(() => {
+      idx = (idx + 1) % 2;
+      updateAvatarImage('happy', idx);
+    }, 250); 
+  } else if (type === 'sad') {
+    updateAvatarImage('sad');
+  }
+  
+  // إنهاء الرياكشن والرجوع لصورة السكون
+  reactTimeout = setTimeout(() => {
+    if (reactInterval) clearInterval(reactInterval);
+    isReacting = false;
+    if (!S.speaking) {
+      updateAvatarImage('listen');
+    }
+  }, duration);
+}
+
+function setPersona(key, save) {
+  S.persona = key;
+  $('avatarWrap').innerHTML = `<img src="${AVATAR_IMAGES[key].listen}" id="mainAvatarImg" alt="Avatar">`;
+  $('personaMini').innerHTML = `<img src="${AVATAR_IMAGES[key].listen}" alt="Mini">`;
+  
+  const name = 'Omega';
+  $('callName').textContent = name;
+  $('personaLabel').textContent = name;
+  
+  if (save) {
+    try { localStorage.setItem('omega_avatar_persona', key); } catch(e) {}
+  }
+}
+
+function pickPersona() {
+  let age = 0;
+  if (localStorage.getItem('omega_account_type') === 'caregiver') {
+    try {
+      const arr = JSON.parse(localStorage.getItem('omega_care_persons') || '[]');
+      const id = localStorage.getItem('omega_current_person_id');
+      const p = arr.find(x => String(x.id) === String(id)) || arr[0] || {};
+      age = parseInt(p.age) || 0;
+    } catch(e) {}
+  } else {
+    age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+  }
+  S.age = age;
+
+  const saved = localStorage.getItem('omega_avatar_persona');
+  if (saved === 'kid' || saved === 'adult') return saved;
+
+  return (age > 0 && age <= 12) ? 'kid' : 'adult';
+}
+
+function renderGrid() {
+  const g = $('pgrid'), t = I18N[lang];
+  g.innerHTML = '';
+  
+  ['adult', 'kid'].forEach(k => {
+    const isActive = k === S.persona;
+    const name = 'Omega';
+    const label = k === 'kid' ? t.kid : t.adult;
+    
+    const c = document.createElement('button');
+    c.className = 'pcard' + (isActive ? ' active' : '');
+    c.innerHTML = `
+      <div class="persona-card-avatar"><img src="${AVATAR_IMAGES[k].listen}" alt=""></div>
+      <div class="pname">${name}</div>
+      <div class="plabel">${label}</div>
+      <div class="pcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    `;
+    c.onclick = () => { setPersona(k, true); closeSheet(); };
+    g.appendChild(c);
+  });
+}
 
 /* ---------- memory bank ---------- */
 function loadBank(){
@@ -450,20 +382,28 @@ function setSpeakingUI(on){
   S.speaking=on;
   $('avatarWrap').classList.toggle('speaking',on);
   $('pulse').classList.toggle('on',on);
-  if(on){$('avatarWrap').classList.remove('listening');$('statusText').textContent=I18N[lang].speaking;$('listen').classList.remove('show');$('forgotBtn').classList.remove('show')}
+  
+  if(on){
+    startTalkingAnimation();
+    $('avatarWrap').classList.remove('listening');
+    $('statusText').textContent=I18N[lang].speaking;
+    $('listen').classList.remove('show');
+    $('forgotBtn').classList.remove('show');
+  } else {
+    stopTalkingAnimation();
+  }
 }
+
 function speak(text,cb){
   if(!('speechSynthesis' in window)){
     setSpeakingUI(true);
     setTimeout(()=>{setSpeakingUI(false);cb&&cb()},Math.max(1200,text.length*45));return;
   }
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text),F=FACES[S.persona]||{};
+  const u=new SpeechSynthesisUtterance(text);
   u.lang=lang==='ar'?'ar-EG':'en-US';
-  u.rate=(F.rate||.95)*(S.age>=60?.92:1);u.pitch=F.pitch||1;
-  const vs=speechSynthesis.getVoices().filter(v=>v.lang.startsWith(lang==='ar'?'ar':'en'));
-  const re=F.g==='f'?/salma|hoda|zira|female|samantha|susan|sara|laila|amira|fiona|karen/i:/shakir|maged|tarik|david|mark|male|daniel|alex/i;
-  u.voice=vs.find(v=>re.test(v.name))||vs[0]||null;
+  u.rate=(S.age>=60?.88:1); u.pitch=S.persona==='kid'?1.5:1.1;
+  
   setSpeakingUI(true);
   const done=()=>{setSpeakingUI(false);cb&&cb()};
   u.onend=done;u.onerror=done;
@@ -476,9 +416,14 @@ function setListeningUI(on){
   $('pulse').classList.toggle('on',on);
   $('listen').classList.toggle('show',on);
   $('forgotBtn').classList.toggle('show',on);
-  if(on){$('avatarWrap').classList.remove('speaking');$('statusText').textContent=I18N[lang].listening}
+  
+  if(on){
+    $('avatarWrap').classList.remove('speaking');
+    $('statusText').textContent=I18N[lang].listening;
+  }
   else if(S.q&&!S.speaking)$('statusText').textContent=I18N[lang].yourTurn;
 }
+
 function initRec(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){S.sr=false;$('tin').classList.add('show');return}
@@ -491,48 +436,20 @@ function initRec(){
   r.onend=()=>{S.listening=false;setListeningUI(false)};
   S.rec=r;
 }
+
 function listen(){
   if(!S.sr||S.listening||S.speaking||S.ended||!S.q)return;
   try{S.rec.lang=lang==='ar'?'ar-EG':'en-US';S.rec.start();S.listening=true;setListeningUI(true)}
   catch(e){setTimeout(()=>{if(S.q&&!S.listening&&!S.ended){try{S.rec.start();S.listening=true;setListeningUI(true)}catch(x){}}},800)}
 }
+
 function stopListen(){if(S.rec&&S.listening){try{S.rec.stop()}catch(e){}S.listening=false;setListeningUI(false)}}
 const autoListen=()=>{if(S.sr&&S.q&&!S.ended)setTimeout(()=>{if(S.q&&!S.listening&&!S.speaking&&!S.ended)listen()},500)};
 
-/* ---------- persona ---------- */
-function pickPersona(){
-  let age=0,g='';
-  if(localStorage.getItem('omega_account_type')==='caregiver'){
-    try{const arr=JSON.parse(localStorage.getItem('omega_care_persons')||'[]'),id=localStorage.getItem('omega_current_person_id');
-      const p=arr.find(x=>String(x.id)===String(id))||arr[0]||{};age=parseInt(p.age)||0;g=String(p.gender||'')}catch(e){}
-  }else{
-    age=parseInt(localStorage.getItem('omega_user_age')||localStorage.getItem('omega_age'))||0;
-    g=localStorage.getItem('omega_gender')||localStorage.getItem('omega_user_gender')||'';
-  }
-  S.age=age;
-  const saved=localStorage.getItem('omega_avatar_persona');if(FACES[saved])return saved;
-  return(age&&age<13?'kid_':'adult_')+(g.toLowerCase().startsWith('m')?'m':'f');
-}
-function setPersona(key,save){
-  S.persona=key;const f=FACES[key];
-  $('avatarWrap').innerHTML=buildFace(f);$('personaMini').innerHTML=buildFace(f);
-  $('callName').textContent=f.n[lang];$('personaLabel').textContent=f.n[lang];
-  if(save){try{localStorage.setItem('omega_avatar_persona',key)}catch(e){}}
-}
-function renderGrid(){
-  const g=$('pgrid'),t=I18N[lang];g.innerHTML='';
-  ORDER.forEach(k=>{
-    const f=FACES[k],c=document.createElement('button');
-    c.className='pcard'+(k===S.persona?' active':'');
-    c.innerHTML=`<div class="persona-card-avatar">${buildFace(f)}</div><div class="pname">${f.n[lang]}</div><div class="plabel">${t[f.age]}</div><div class="pcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>`;
-    c.onclick=()=>{setPersona(k,true);closeSheet();react('happy',1500)};
-    g.appendChild(c);
-  });
-}
+/* ---------- UI Actions ---------- */
 const openSheet=()=>{renderGrid();$('pov').classList.add('show');setTimeout(()=>$('psheet').classList.add('show'),50)};
 const closeSheet=()=>{$('psheet').classList.remove('show');$('pov').classList.remove('show')};
 
-/* ---------- question card ---------- */
 function showCard(item,reveal,hint){
   const ph=$('qPhoto');$('qcard').classList.remove('correct','revealed');ph.innerHTML='';
   if(item.photo){const im=new Image();im.src=item.photo;im.alt='';ph.appendChild(im)}
@@ -543,6 +460,7 @@ function showCard(item,reveal,hint){
   $('qcard').classList.add('show');
 }
 const markCard=c=>{$('qcard').classList.remove('correct','revealed');$('qcard').classList.add(c)};
+
 function renderDots(){
   const d=$('dots');d.innerHTML='';
   for(let i=0;i<S.maxQ;i++){const s=document.createElement('span');s.className='dot'+(i<S.turns-1?' done':i===S.turns-1?' cur':'');d.appendChild(s)}
@@ -550,22 +468,26 @@ function renderDots(){
 
 /* ---------- conversation ---------- */
 function say(text,cb){speak(text,cb)}
+
 function startConversation(){
   const t=I18N[lang];
   if(!S.items.length){say(t.empty,()=>setTimeout(endCall,800));return}
   S.maxQ=Math.min(5,S.items.length);renderDots();
-  react('happy',1600);
-  say(fmt(t.intro,{g:new Date().getHours()<12?t.greetM:t.greetE,name:userName(),ai:FACES[S.persona].n[lang]}),()=>setTimeout(askNext,600));
+  
+  const name = 'Omega'; 
+  say(fmt(t.intro,{g:new Date().getHours()<12?t.greetM:t.greetE,name:userName(),ai:name}),()=>setTimeout(askNext,600));
 }
+
 function askNext(){
   if(S.ended)return;
   if(S.turns>=S.maxQ){finish();return}
   const t=I18N[lang],item=nextItem();
   const text=item.type==='place'?t.qPlace:item.type==='event'?t.qEvent:t.qWho;
   S.q={item,tries:0};S.turns++;renderDots();showCard(item,false,false);
-  react('think',1500);                       // the companion thinks before asking
-  setTimeout(()=>say(text,autoListen),1500);
+  
+  setTimeout(()=>say(text,autoListen),500);
 }
+
 function answer(text){
   if(S.ended||!S.q)return;
   S.listening=false;setListeningUI(false);
@@ -574,22 +496,50 @@ function answer(text){
   const unsure=UNSURE.test(a)||a.length<2;
   const ok=!unsure&&norm(item.name).split(' ').filter(x=>x.length>1).some(k=>a.includes(k));
   let reply,next=true;
-  if(ok){S.recalled++;showCard(item,true,false);markCard('correct');reply=fmt(pick(t.good),v)}
-  else if(q.tries<1){q.tries++;S.q=q;showCard(item,false,true);reply=fmt(unsure?t.unsure:t.hint,v);next=false}
-  else{showCard(item,true,false);markCard('revealed');reply=fmt(t.reveal,v)}
-  react(ok?'happy':'sad',3200);              // claps when right, sad when not
+  
+  if(ok){
+    S.recalled++;
+    showCard(item,true,false);
+    markCard('correct');
+    triggerReaction('happy', 2500); // 👈 تفعيل التسقيفة
+    reply=fmt(pick(t.good),v);
+  }
+  else if(q.tries<1){
+    q.tries++;S.q=q;
+    showCard(item,false,true);
+    reply=fmt(unsure?t.unsure:t.hint,v);
+    next=false;
+  }
+  else{
+    showCard(item,true,false);
+    markCard('revealed');
+    triggerReaction('sad', 2500); // 👈 تفعيل الزعل
+    reply=fmt(t.reveal,v);
+  }
+  
   setTimeout(()=>say(reply,()=>next?setTimeout(askNext,800):autoListen()),500);
 }
+
 function forgot(){
   if(S.ended||!S.q)return;
   stopListen();const item=S.q.item;S.q=null;
-  showCard(item,true,false);markCard('revealed');react('sad',2200);
+  showCard(item,true,false);markCard('revealed');
+  triggerReaction('sad', 2500); // 👈 ممكن تفعليها هنا كمان لو حبيتي
   setTimeout(()=>say(I18N[lang].skip,()=>setTimeout(askNext,800)),500);
 }
-function finish(){react('happy',3500);say(fmt(I18N[lang].bye,{name:userName()}),()=>setTimeout(endCall,700))}
+
+function finish(){
+  say(fmt(I18N[lang].bye,{name:userName()}),()=>setTimeout(endCall,700))
+}
+
 function endCall(){
   if(S.ended)return;S.ended=true;
-  if(window.speechSynthesis)speechSynthesis.cancel();stopListen();
+  if(window.speechSynthesis)speechSynthesis.cancel();
+  stopListen();
+  stopTalkingAnimation();
+  if (reactInterval) clearInterval(reactInterval);
+  if (reactTimeout) clearTimeout(reactTimeout);
+  
   const d=Math.floor((Date.now()-S.start)/1000);
   $('statTime').textContent=Math.floor(d/60)+':'+String(d%60).padStart(2,'0');
   $('statRec').textContent=S.recalled+'/'+S.turns;
@@ -605,7 +555,9 @@ function applyLang(){
   $('shTitle').textContent=t.pTitle;$('shSub').textContent=t.pSub;
   $('endTitle').textContent=t.endTitle;$('endDesc').textContent=t.endDesc;$('lblTime').textContent=t.time;$('lblRec').textContent=t.rec;$('endBtn').textContent=t.home;
   $('listenText').textContent=t.listening;
-  if(S.persona){$('callName').textContent=FACES[S.persona].n[lang];$('personaLabel').textContent=FACES[S.persona].n[lang]}
+  
+  const name = 'Omega'; 
+  $('callName').textContent=name; $('personaLabel').textContent=name;
   $('statusText').textContent=S.speaking?t.speaking:S.listening?t.listening:S.q?t.yourTurn:t.connecting;
 }
 
@@ -617,7 +569,7 @@ $('personaBtn').onclick=openSheet;$('pclose').onclick=closeSheet;$('pov').onclic
 $('tsend').onclick=()=>{const v=$('tinput').value.trim();if(v){answer(v);$('tinput').value=''}};
 $('tinput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('tsend').click()}});
 if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>{};
-window.addEventListener('beforeunload',()=>{if(window.speechSynthesis)speechSynthesis.cancel();stopListen()});
+window.addEventListener('beforeunload',()=>{if(window.speechSynthesis)speechSynthesis.cancel();stopListen();stopTalkingAnimation()});
 
 setPersona(pickPersona(),false);
 applyLang();loadBank();initRec();
