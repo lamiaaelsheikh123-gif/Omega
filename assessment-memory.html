@@ -3,18 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Omega — Memory Challenge</title>
+<title>Omega — Memory Assessment</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #0E9487;
-  --secondary: #3B82F6;
-  --success: #22C55E;
-  --error: #EF4444;
-  --navy: #0F172A;
-  --slate: #64748B;
-  --bg: #F8FAFC;
-  --card: #FFFFFF;
+  --c-primary: #0E9487; --c-light: #2EC4B6; --c-blue: #3B82F6;
+  --c-success: #22C55E; --c-error: #EF4444;
+  --c-navy: #0F172A; --c-slate: #64748B; --c-bg: #F8FAFC; --c-card: #FFF;
+  --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -23,29 +19,30 @@ button { font-family: inherit; cursor: pointer; border: 0; background: none; }
 
 /* Phone Frame */
 .stage { height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.phone { position: relative; width: 375px; height: 812px; max-height: calc(100vh - 40px); border-radius: 44px; overflow: hidden; background: var(--bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
+.phone { position: relative; width: 375px; height: 812px; max-height: calc(100vh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
 @media (max-width: 480px) { .stage { padding: 0; } .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; } }
 
 /* Screen Layout */
 .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%); overflow: hidden; }
 
 /* Header */
-header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 52px 24px 10px; }
-.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--slate); font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 52px 24px 10px; flex-shrink: 0; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 .progress-bar { display: flex; gap: 6px; }
 .progress-bar span { width: 24px; height: 8px; border-radius: 10px; background: #CBD5E1; transition: all 0.3s; }
-.progress-bar span.active { background: var(--primary); width: 32px; }
-.progress-bar span.done { background: var(--secondary); }
+.progress-bar span.active { background: var(--c-primary); width: 32px; }
+.progress-bar span.done { background: var(--c-blue); }
 
-/* Main Content */
-main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 24px 40px; }
+/* Main Content (responsive: scrolls instead of clipping on small screens) */
+main { position: relative; z-index: 10; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: safe center; padding: 0 24px 32px; overflow-y: auto; overflow-x: hidden; }
+@media (max-height: 700px) { header { padding-top: 28px; } }
 
 /* Text Instructions */
 .instruction-box { text-align: center; margin-bottom: 24px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
-.instruction-box h2 { font-size: 20px; font-weight: 800; color: var(--navy); line-height: 1.4; }
+.instruction-box h2 { font-size: clamp(16px, 4.8vw, 20px); font-weight: 800; color: var(--c-navy); line-height: 1.4; }
 
 /* Buttons */
-.btn { width: 100%; max-width: 300px; padding: 18px; border-radius: 16px; background: var(--primary); color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s, background 0.2s; margin-top: 20px; }
+.btn { display: flex; align-items: center; justify-content: center; text-align: center; width: 100%; max-width: 300px; padding: 16px 18px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: 16px; line-height: 1.3; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; margin-top: 20px; flex-shrink: 0; }
 .btn:active { transform: scale(0.96); }
 .btn:disabled { background: #CBD5E1; box-shadow: none; cursor: not-allowed; }
 
@@ -55,42 +52,47 @@ main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: 
 .cloth { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, #0E9487, #0E9487 15px, #2EC4B6 15px, #2EC4B6 30px); transform: translateY(-101%); transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1); display: flex; align-items: center; justify-content: center; }
 .cloth.drop { transform: translateY(0); }
 .timer-bar { width: 100%; height: 6px; background: #E2E8F0; border-radius: 10px; overflow: hidden; margin-top: 16px; }
-.timer-bar i { display: block; height: 100%; width: 100%; background: var(--primary); animation: drain 5s linear forwards; }
+.timer-bar i { display: block; height: 100%; width: 100%; background: var(--c-primary); animation: drain 5s linear forwards; }
 
 /* OPTIONS GRID */
 .options-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-top: 10px; }
 .opt-btn { aspect-ratio: 1; background: #fff; border: 2px solid #E2E8F0; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 34px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); transition: all 0.2s; }
-.opt-btn.selected { border-color: var(--primary); background: #F0FDFA; transform: scale(1.05); }
-.opt-btn.correct { border-color: var(--success); background: #DCFCE7; }
-.opt-btn.wrong { border-color: var(--error); background: #FEE2E2; }
+.opt-btn.selected { border-color: var(--c-primary); background: #F0FDFA; transform: scale(1.05); }
+.opt-btn.correct { border-color: var(--c-success); background: #DCFCE7; }
+.opt-btn.wrong { border-color: var(--c-error); background: #FEE2E2; }
 
 /* GAME 2: LANTERNS */
 .lanterns-grid { display: flex; gap: 16px; justify-content: center; width: 100%; margin-top: 10px; }
 .lantern { width: 65px; height: 85px; border-radius: 40% 40% 20% 20%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 8px 0 rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
 .lantern.light-up { transform: translateY(-10px) scale(1.1); box-shadow: 0 0 30px currentColor, 0 0 60px currentColor; filter: brightness(1.3); }
-.sequence-hint { font-size: 24px; letter-spacing: 8px; color: var(--primary); height: 30px; margin-top: 20px; font-weight: 800; text-align: center;}
+.sequence-hint { font-size: 24px; letter-spacing: 8px; color: var(--c-primary); height: 30px; margin-top: 20px; font-weight: 800; text-align: center;}
 
-/* GAME 3: CHAIRS */
-.chairs-row { display: flex; gap: 8px; justify-content: center; width: 100%; margin-top: 10px; }
-.chair-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.chair-guest { width: 60px; height: 60px; border-radius: 50%; background: #fff; border: 3px solid #E2E8F0; box-shadow: 0 6px 12px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 34px; transition: opacity 0.5s; }
-.chair-guest.hidden { opacity: 0; }
-.chair-seat { width: 76px; height: 20px; border-radius: 10px; margin-top: 4px; }
+/* GAME 3: PICK & PLACE (Put It Back) */
+.shelf { width: min(100%, 300px, 40vh); background: #CBD5E1; padding: 8px; border-radius: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.slot { aspect-ratio: 1; background: #fff; border: 2px solid #E2E8F0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: clamp(24px, 7vh, 36px); transition: all 0.2s; }
+.slot.empty { background: #F1F5F9; border-style: dashed; }
+.slot.good { border-color: var(--c-success); background: #DCFCE7; }
+.slot.reveal { border-color: #F59E0B; background: #FEF3C7; }
+.tray { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: min(100%, 300px); min-height: 66px; margin-top: 14px; padding: 8px; border-radius: 16px; background: #fff; border: 2px solid #E2E8F0; }
+.titem { width: 48px; height: 48px; border-radius: 12px; background: #F8FAFC; border: 2px solid #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: grab; touch-action: none; }
+.titem.sel { border-color: var(--c-primary); background: #F0FDFA; transform: scale(1.08); }
+.slot .titem { width: 100%; height: 100%; border: 0; background: transparent; border-radius: 10px; }
+.ghost { position: fixed; z-index: 90; pointer-events: none; font-size: 42px; transform: translate(-50%, -50%) scale(1.2); }
 
-/* RESULTS */
-.results-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; animation: fadeUp 0.5s; }
-.results-icon { font-size: 80px; margin-bottom: 20px; animation: float 3s infinite; }
-.stars-row { display: flex; gap: 8px; margin-bottom: 20px; }
-.star { font-size: 40px; filter: grayscale(1) opacity(0.3); transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-.star.on { filter: none; transform: scale(1.1); }
+/* 🟢 INTERSTITIAL (Transition) — responsive */
+.interstitial { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: clamp(10px, 2.5vh, 20px); width: 100%; animation: fadeUp 0.5s; }
+.avatar-circle { width: min(200px, 28vh, 60vw); height: min(200px, 28vh, 60vw); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; }
+.avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+.interstitial h2 { font-size: clamp(20px, 6vw, 26px); font-weight: 800; color: var(--c-navy); line-height: 1.3; }
+.interstitial p { font-size: clamp(14px, 4vw, 16px); color: var(--c-slate); line-height: 1.5; max-width: 100%; width: 280px; }
+.interstitial .btn { margin-top: 4px; }
 
 /* Animations */
 @keyframes float { 50% { transform: translateY(-10px); } }
 @keyframes popIn { from { transform: scale(0); opacity: 0; } }
 @keyframes drain { to { width: 0; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } }
-@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-.shake { animation: shake 0.4s ease; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 </style>
 </head>
 <body>
@@ -109,6 +111,25 @@ main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: 
 </div></div></div>
 
 <script>
+/* ============================================================
+   ⚠️⚠️⚠️ مكان الصور بتاعتك (للتسقيفة) ⚠️⚠️⚠️
+   - clap: صور التسقيفة (بتتبدل كل 250 مللي ثانية)
+   - encourage: الصور التشجيعية (بتتبدل كل 800 مللي ثانية)
+============================================================ */
+const AVATAR_IMAGES = {
+  adult: {
+    clap: ['الكبار تسقيفه 1.jpg', 'الكبار تسقيفه 2.jpg'],
+    // 👇 [حطي هنا الصورتين التشجيعية للكبار]
+    encourage: ['الكبير جاب اقل من 50.jpg', 'الكبير جاب اقل من 50.jpg'] 
+  },
+  kid: {
+    clap: ['اطفال تسقيفه 1.jpg', 'اطفال تسقيفه مقفوله.jpg'],
+    // 👇 [حطي هنا الصورتين التشجيعية للأطفال]
+    encourage: ['الصغير جاب اقل من 50.jpg', 'الصغير جاب اقل من 50.jpg'] 
+  }
+};
+/* ============================================================ */
+
 const I18N = {
   en: {
     startTitle: "Memory Challenge",
@@ -121,15 +142,18 @@ const I18N = {
     r2Look: "Watch the sequence of lanterns...",
     r2Pick: "Tap the lanterns in the exact same order.",
     
-    r3Look: "Watch where each guest sits...",
-    r3Ask: "Who was sitting on the colored chair?",
+    r3Look: "Memorize where each item sits on the shelf...",
+    r3Pick: "Put each item back in its place. Drag it, or tap it then tap the slot.",
     
     done: "Confirm",
     finTitle: "Challenge Complete",
-    finDesc: "You scored {x} out of {y}.",
-    next: "Continue",
-    colors: ["Red", "Blue", "Green", "Yellow"],
-    exitMsg: "Exit? Progress will be lost."
+    next: "Next Challenge",
+    exitMsg: "Exit? Progress will be lost.",
+    
+    transGreat: "Great Job!",
+    transGreatDesc: "You did really well on this challenge. Keep it up!",
+    transEncourage: "Good Effort!",
+    transEncourageDesc: "Every practice makes you stronger. Let's continue!"
   },
   ar: {
     startTitle: "تحدي الذاكرة",
@@ -142,28 +166,37 @@ const I18N = {
     r2Look: "بص على ترتيب الفوانيس...",
     r2Pick: "دوس على الفوانيس بنفس الترتيب بالظبط.",
     
-    r3Look: "بص على الضيوف قاعدين فين...",
-    r3Ask: "مين كان قاعد على الكرسي ده؟",
+    r3Look: "احفظ مكان كل حاجة على الرف...",
+    r3Pick: "رجّع كل حاجة لمكانها. اسحبها، أو دوس عليها وبعدين على الخانة.",
     
     done: "تأكيد",
     finTitle: "خلصت التحدي",
-    finDesc: "نتيجتك {x} من {y}.",
-    next: "متابعة",
-    colors: ["الأحمر", "الأزرق", "الأخضر", "الأصفر"],
-    exitMsg: "هل تريد الخروج؟ ستفقد تقدمك."
+    next: "التحدي الجاي",
+    exitMsg: "هل تريد الخروج؟ ستفقد تقدمك.",
+    
+    transGreat: "شغل عالي!",
+    transGreatDesc: "أداءك كان ممتاز في التحدي ده. استمر!",
+    transEncourage: "محاولة جيدة!",
+    transEncourageDesc: "كل تدريب بيخليك أقوى. يلا نكمل!"
   }
 };
 
 let lang = localStorage.getItem('omega_lang') === 'ar' ? 'ar' : 'en';
 const $ = id => document.getElementById(id);
 const EMOJIS = ['🎂','🎈','🎁','🕯️','🧁','🍬','🍕','🥤','🎩','🍭','🍪','🧸'];
-const GUESTS = [{ n: 'Grandpa', e: '👴' }, { n: 'Mom', e: '👩' }, { n: 'Ahmed', e: '🧒' }, { n: 'Sara', e: '👧' }];
 const COLORS = ['#EF4444', '#3B82F6', '#22C55E', '#FBBF24'];
 const FREQS = [392, 494, 587, 659];
+const SHELF_ITEMS = ['🥤','🍭','🧁','🍇','🍿','🍩','🥛','🍒','🍪','🧃','🍫','🍓'];
 
 let round = 1, score = 0, total = 0;
 let R1_ITEMS = [], R2_SEQ = [];
 let audioCtx = null;
+let token = 0;
+
+const shuf = a => [...a].sort(() => Math.random() - 0.5);
+const sample = (a, n) => shuf(a).slice(0, n);
+const wait = ms => { const t = token; return new Promise((ok, no) => setTimeout(() => t === token ? ok() : no('cancel'), ms)); };
+const click = el => new Promise(r => { el.onclick = () => r(); });
 
 function updateProgress() {
   document.querySelectorAll('.progress-bar span').forEach((el, i) => {
@@ -191,12 +224,13 @@ function playTone(freq) {
 
 /* --- Start --- */
 function startGame() {
+  token++; round = 1; score = 0; total = 0;
   updateLang(); updateProgress();
   $('main').innerHTML = `
-    <div class="results-screen">
-      <div class="results-icon">🧠</div>
-      <h2 style="font-size:24px;font-weight:800;color:var(--navy);margin-bottom:10px;">${I18N[lang].startTitle}</h2>
-      <p style="color:var(--slate);font-size:14px;line-height:1.6;margin-bottom:20px;max-width:280px;">${I18N[lang].startDesc}</p>
+    <div class="interstitial">
+      <div style="font-size:80px; animation: float 3s infinite;">🧠</div>
+      <h2>${I18N[lang].startTitle}</h2>
+      <p>${I18N[lang].startDesc}</p>
       <button class="btn" id="startBtn">${I18N[lang].startBtn}</button>
     </div>
   `;
@@ -305,89 +339,161 @@ function round2_Lanterns() {
         if (p === 4) {
           score += correct; total += 4;
           document.querySelectorAll('.lantern').forEach(l => l.onclick = null);
-          setTimeout(round3_Guests, 2000);
+          setTimeout(round3_PutBack, 2000); // نروح لتحدي Pick & Place
         }
       };
     });
   }
 }
 
-/* --- GAME 3: GUESTS --- */
-function round3_Guests() {
+/* --- GAME 3: PICK & PLACE (Put It Back) --- */
+async function round3_PutBack() {
   round = 3; updateProgress();
-  
-  $('main').innerHTML = `
-    <div class="instruction-box"><h2>${I18N[lang].r3Look}</h2></div>
-    <div class="chairs-row">
-      ${GUESTS.map((g, i) => `
-        <div class="chair-col">
-          <div class="chair-guest" id="guest-${i}">${g.e}</div>
-          <div class="chair-seat" style="background: ${COLORS[i]};"></div>
-        </div>
-      `).join('')}
-    </div>
-    <div class="timer-bar"><i style="animation-duration:4s;"></i></div>
-  `;
+  const myToken = ++token;
+  try {
+    const n = 6, T = 8, total9 = 9;
+    const items = sample(SHELF_ITEMS, n);
+    const slotIdx = sample([...Array(total9).keys()], n);
 
-  setTimeout(() => {
-    GUESTS.forEach((_, i) => $('guest-' + i).classList.add('hidden'));
-    setTimeout(startQuestions, 600);
-  }, 4000);
+    const shelfHTML = show => `<div class="shelf" id="shelf">${Array.from({length: total9}, (_, i) => {
+      const k = slotIdx.indexOf(i);
+      return `<div class="slot ${show ? '' : 'empty'}" data-i="${i}">${show && k >= 0 ? items[k] : ''}</div>`;
+    }).join('')}</div>`;
 
-  function startQuestions() {
-    let q = 0, correctCount = 0;
-    const questions = [0, 2]; // Ask about Red (0) and Green (2)
+    // Look phase
+    $('main').innerHTML = `
+      <div class="instruction-box"><h2>${I18N[lang].r3Look}</h2></div>
+      ${shelfHTML(true)}
+      <div class="timer-bar" style="width:min(100%,300px)"><i style="animation-duration:${T}s"></i></div>
+    `;
+    await wait(T * 1000);
 
-    function ask() {
-      if (q >= questions.length) {
-        score += correctCount; total += 2;
-        setTimeout(showResults, 1500);
-        return;
-      }
-      const targetIdx = questions[q];
-      $('main').innerHTML = `
-        <div class="instruction-box"><h2>${I18N[lang].r3Ask}</h2></div>
-        <div class="chair-seat" style="width:100px;height:24px;background:${COLORS[targetIdx]};margin:0 auto 30px;border-radius:10px;"></div>
-        <div class="options-grid" style="grid-template-columns: repeat(2, 1fr); gap: 16px;">
-          ${GUESTS.map((g, i) => `
-            <button class="opt-btn" data-i="${i}" style="flex-direction:column;font-size:40px;aspect-ratio:auto;padding:20px;">
-              ${g.e} <span style="font-size:14px;font-weight:700;margin-top:8px;color:var(--navy);">${g.n}</span>
-            </button>
-          `).join('')}
-        </div>
-      `;
+    // Place phase
+    $('main').innerHTML = `
+      <div class="instruction-box" style="margin-bottom:14px"><h2>${I18N[lang].r3Pick}</h2></div>
+      ${shelfHTML(false)}
+      <div class="tray" id="tray">${shuf(items).map(e => `<div class="titem" data-e="${e}">${e}</div>`).join('')}</div>
+      <button class="btn" id="dn" disabled>${I18N[lang].done}</button>
+    `;
 
-      document.querySelectorAll('.opt-btn').forEach(btn => {
-        btn.onclick = () => {
-          document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
-          const isCorrect = +btn.dataset.i === targetIdx;
-          btn.classList.add(isCorrect ? 'correct' : 'wrong');
-          if (!isCorrect) document.querySelector(`.opt-btn[data-i="${targetIdx}"]`).classList.add('correct');
-          if (isCorrect) correctCount++;
-          q++; setTimeout(ask, 1200);
+    const slots = [...document.querySelectorAll('.slot')], tray = $('tray');
+    let sel = null;
+    const refresh = () => { $('dn').disabled = tray.querySelectorAll('.titem').length > 0; };
+    const put = (it, s) => {
+      const old = s.querySelector('.titem');
+      if (old && old !== it) tray.appendChild(old);
+      s.appendChild(it); s.classList.remove('empty');
+      slots.forEach(x => { if (!x.querySelector('.titem')) x.classList.add('empty'); });
+      it.classList.remove('sel'); sel = null; refresh();
+    };
+    const wire = t => {
+      t.onpointerdown = e => {
+        e.preventDefault();
+        const sx = e.clientX, sy = e.clientY; let ghost = null;
+        try { t.setPointerCapture(e.pointerId); } catch (_) {}
+        t.onpointermove = ev => {
+          if (!ghost && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 8) {
+            ghost = document.createElement('div'); ghost.className = 'ghost'; ghost.textContent = t.dataset.e;
+            document.body.appendChild(ghost); t.style.opacity = .3;
+          }
+          if (ghost) { ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px'; }
         };
-      });
-    }
-    ask();
-  }
+        t.onpointerup = ev => {
+          t.onpointermove = null; t.onpointerup = null;
+          if (ghost) {
+            ghost.remove(); t.style.opacity = '';
+            const el = document.elementFromPoint(ev.clientX, ev.clientY), s = el && el.closest('.slot');
+            if (s) put(t, s);
+          } else {
+            document.querySelectorAll('.titem').forEach(x => x.classList.remove('sel'));
+            sel = t; t.classList.add('sel');
+          }
+        };
+      };
+    };
+    document.querySelectorAll('.titem').forEach(wire);
+    slots.forEach(s => s.onclick = ev => {
+      if (sel && ev.target.closest('.slot') === s && !ev.target.classList.contains('titem')) put(sel, s);
+    });
+
+    await click($('dn'));
+    $('dn').style.display = 'none';
+    let r = 0;
+    slots.forEach(s => {
+      const t = s.querySelector('.titem'); if (!t) return;
+      t.onpointerdown = null;
+      const k = items.indexOf(t.dataset.e);
+      if (slotIdx[k] === +s.dataset.i) { r++; s.classList.add('good'); } else s.classList.add('reveal');
+    });
+    score += r; total += n;
+    await wait(2000);
+    showResults();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
 }
 
-/* --- RESULTS --- */
-function showResults() {
+/* --- RESULTS & TRANSITION (Interstitial) --- */
+async function showResults() {
   const accuracy = Math.round((score / total) * 100);
-  const stars = accuracy >= 80 ? 3 : accuracy >= 50 ? 2 : 1;
   localStorage.setItem('omega_memory_result', JSON.stringify({ accuracy, timestamp: Date.now() }));
 
+  round = 4; updateProgress(); // Fill progress bar
+
+  // Determine if passed (>= 50%)
+  const passed = accuracy >= 50;
+  
+  // Get user age to pick avatar
+  let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+  const avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+  
+  // Setup Interstitial UI
   $('main').innerHTML = `
-    <div class="results-screen">
-      <div class="stars-row">
-        ${[1,2,3].map(n => `<span class="star ${n <= stars ? 'on' : ''}" style="transition-delay:${n*0.2}s">⭐</span>`).join('')}
+    <div class="interstitial">
+      <div class="avatar-circle" id="avatarBox">
+        <img id="avatarImg" src="" alt="Avatar">
       </div>
-      <h2 style="font-size:24px;font-weight:800;color:var(--navy);margin-bottom:10px;">${I18N[lang].finTitle}</h2>
-      <p style="color:var(--slate);font-size:15px;">${I18N[lang].finDesc.replace('{x}', score).replace('{y}', total)}</p>
-      <button class="btn" onclick="window.location.href='assessment-attention.html'">${I18N[lang].next}</button>
+      <h2 id="transTitle"></h2>
+      <p id="transDesc"></p>
+      <button class="btn" id="nextBtn" style="display:none;">${I18N[lang].next}</button>
     </div>
   `;
+
+  let imgIndex = 0;
+  let interval = null;
+  const imgEl = $('avatarImg');
+
+  if (passed) {
+    $('transTitle').textContent = I18N[lang].transGreat;
+    $('transDesc').textContent = `${I18N[lang].transGreatDesc} (${accuracy}%)`;
+    
+    // Clapping Animation
+    const clapImgs = AVATAR_IMAGES[avatarType].clap;
+    imgEl.src = clapImgs[0];
+    interval = setInterval(() => {
+      imgIndex = (imgIndex + 1) % 2;
+      imgEl.src = clapImgs[imgIndex];
+    }, 250);
+    
+  } else {
+    $('transTitle').textContent = I18N[lang].transEncourage;
+    $('transDesc').textContent = `${I18N[lang].transEncourageDesc} (${accuracy}%)`;
+    
+    // Encouraging Animation (Placeholder)
+    const encourageImgs = AVATAR_IMAGES[avatarType].encourage;
+    imgEl.src = encourageImgs[0];
+    interval = setInterval(() => {
+      imgIndex = (imgIndex + 1) % 2;
+      imgEl.src = encourageImgs[imgIndex];
+    }, 800); // Slower transition for sad/encouraging
+  }
+
+  // Show button after 2.5 seconds
+  setTimeout(() => {
+    if(interval) clearInterval(interval);
+    // Stop on last image
+    imgEl.src = passed ? AVATAR_IMAGES[avatarType].clap[0] : AVATAR_IMAGES[avatarType].encourage[0];
+    $('nextBtn').style.display = 'flex';
+    $('nextBtn').onclick = () => window.location.href = 'assessment-attention.html';
+  }, 2500);
 }
 
 /* --- EVENTS --- */
