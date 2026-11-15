@@ -38,8 +38,10 @@ main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: 
 main::-webkit-scrollbar { display: none; }
 
 /* Common UI */
-.instruction-box { text-align: center; margin-bottom: 12px; min-height: 40px; display: flex; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; }
+.instruction-box { text-align: center; margin-bottom: 12px; min-height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; gap: 6px; }
 .instruction-box h2 { font-size: clamp(16px, 5vw, 20px); font-weight: 800; color: var(--c-navy); line-height: 1.3; }
+.timer-text { font-size: 16px; font-weight: 800; color: var(--c-primary); background: rgba(14,148,135,0.1); padding: 4px 12px; border-radius: 20px; }
+.timer-text.warning { color: var(--c-error); background: rgba(239,68,68,0.1); animation: pulse 1s infinite; }
 .btn { width: 100%; max-width: 300px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: clamp(14px, 4vw, 16px); box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; margin-top: 15px; flex-shrink: 0; }
 .btn:active { transform: scale(0.96); }
 .game-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; animation: fadeUp 0.4s ease; }
@@ -84,6 +86,7 @@ main::-webkit-scrollbar { display: none; }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 </style>
 </head>
 <body>
@@ -129,7 +132,7 @@ const I18N = {
     g1Q2: "Which is the odd one out?",
     g1Q3: "What comes next? 2, 4, 8, 16, ?",
     
-    g2Desc: "Slide the tiles to arrange numbers from 1 to 8.",
+    g2Desc: "Arrange numbers 1 to 7. (2 blanks to help you!)",
     
     g3Desc: "Reach the target number using the operations.",
     g3Target: "Target:",
@@ -151,7 +154,7 @@ const I18N = {
     g1Q2: "إيه الحاجة المختلفة؟",
     g1Q3: "إيه اللي جاي؟ 2, 4, 8, 16, ؟",
     
-    g2Desc: "حرّك البلاط عشان ترتب الأرقام من 1 لـ 8.",
+    g2Desc: "رتب الأرقام من 1 لـ 7. (في مربعين فاضيين لمساعدتك!)",
     
     g3Desc: "وصل للرقم الهدف باستخدام العمليات الحسابية.",
     g3Target: "الهدف:",
@@ -167,6 +170,7 @@ const I18N = {
 let lang = localStorage.getItem('omega_lang') === 'ar' ? 'ar' : 'en';
 let currentGameIndex = 0;
 let totalScore = 0;
+let slideTimerInterval = null;
 
 const $ = id => document.getElementById(id);
 
@@ -188,6 +192,7 @@ function updateLang() {
 }
 
 function nextGame(score) {
+  if (slideTimerInterval) clearInterval(slideTimerInterval);
   totalScore += (score || 0);
   currentGameIndex++;
   if (currentGameIndex < 3) {
@@ -278,10 +283,13 @@ const GAMES = [
     }
   },
 
-  // 2. SLIDING PUZZLE
+  // 2. SLIDING PUZZLE (Easier + Timer)
   {
     render: () => `
-      <div class="instruction-box"><h2>${I18N[lang].g2Desc}</h2></div>
+      <div class="instruction-box">
+        <h2>${I18N[lang].g2Desc}</h2>
+        <div class="timer-text" id="slideTimer">60s</div>
+      </div>
       <div class="game-container">
         <div class="slide-grid" id="slideGrid"></div>
         <button class="btn" id="checkBtn" style="display:none; margin-top:20px;">${I18N[lang].nextBtn}</button>
@@ -289,27 +297,49 @@ const GAMES = [
     `,
     init: () => {
       const n = 3;
-      const T = [1, 2, 3, 4, 5, 6, 7, 8, 0]; // 0 is the blank
-      let b = 8; // blank index
-      let lastMove = -1;
-
-      // Shuffle (Reduced from 40 to 12 to make it easier and quicker)
-      for (let i = 0; i < 12; i++) {
-        const nb = [];
+      // 7 tiles, 2 blanks (0)
+      let T = [1, 2, 3, 4, 5, 6, 7, 0, 0];
+      
+      // Shuffle logic (20 random moves)
+      for (let i = 0; i < 20; i++) {
+        const blanks = T.map((v, idx) => v === 0 ? idx : -1).filter(idx => idx !== -1);
+        const b = blanks[Math.floor(Math.random() * blanks.length)];
+        
         const x = b % n, y = Math.floor(b / n);
+        const nb = [];
         if (x > 0) nb.push(b - 1);
         if (x < n - 1) nb.push(b + 1);
         if (y > 0) nb.push(b - n);
         if (y < n - 1) nb.push(b + n);
         
-        const options = nb.filter(idx => idx !== lastMove);
-        const m = options[Math.floor(Math.random() * options.length)];
+        const m = nb[Math.floor(Math.random() * nb.length)];
         
+        // Swap
         T[b] = T[m];
         T[m] = 0;
-        lastMove = b;
-        b = m;
       }
+
+      // Timer Logic
+      let timeLeft = 60;
+      const timerEl = $('slideTimer');
+      if (slideTimerInterval) clearInterval(slideTimerInterval);
+      
+      slideTimerInterval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = timeLeft + 's';
+        
+        if (timeLeft <= 10) timerEl.classList.add('warning');
+        
+        if (timeLeft <= 0) {
+          clearInterval(slideTimerInterval);
+          timerEl.textContent = "Time's up!";
+          timerEl.classList.add('warning');
+          
+          // Show Next button if time is up
+          $('checkBtn').style.display = 'inline-flex';
+          $('checkBtn').onclick = () => nextGame(0);
+        }
+      }, 1000);
 
       function draw() {
         const grid = $('slideGrid');
@@ -322,13 +352,24 @@ const GAMES = [
           t.onclick = () => {
             const i = parseInt(t.dataset.i);
             const x = i % n, y = Math.floor(i / n);
-            const bx = b % n, by = Math.floor(b / n);
             
-            // Check if adjacent
-            if (Math.abs(x - bx) + Math.abs(y - by) === 1) {
-              T[b] = T[i];
+            // Check if adjacent to ANY blank
+            const blanks = T.map((val, idx) => val === 0 ? idx : -1).filter(idx => idx !== -1);
+            let isAdj = false;
+            let targetBlank = -1;
+            
+            for(let b of blanks) {
+              const bx = b % n, by = Math.floor(b / n);
+              if (Math.abs(x - bx) + Math.abs(y - by) === 1) {
+                isAdj = true;
+                targetBlank = b;
+                break;
+              }
+            }
+
+            if (isAdj) {
+              T[targetBlank] = T[i];
               T[i] = 0;
-              b = i;
               draw();
               checkWin();
             }
@@ -337,12 +378,11 @@ const GAMES = [
       }
 
       function checkWin() {
-        const isSolved = T.every((v, i) => {
-          if (i === 8) return v === 0;
-          return v === i + 1;
-        });
+        // Check if tiles 1-7 are in order at the beginning
+        const isSolved = T.slice(0, 7).every((v, i) => v === i + 1);
         
         if (isSolved) {
+          clearInterval(slideTimerInterval);
           $('slideGrid').style.boxShadow = '0 0 30px #22C55E';
           $('checkBtn').style.display = 'inline-flex';
           $('checkBtn').onclick = () => nextGame(1);
@@ -417,6 +457,7 @@ const GAMES = [
    CORE LOGIC
 ============================================ */
 function loadGame(index) {
+  if (slideTimerInterval) clearInterval(slideTimerInterval);
   updateProgress();
   const game = GAMES[index];
   $('main').innerHTML = game.render();
