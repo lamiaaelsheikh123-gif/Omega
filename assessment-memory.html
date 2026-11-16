@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Omega — Memory Assessment</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F8FAFC" />
+<title>Omega — Memory Assessment & Training</title>
+
+<!-- ✅ سكريبت اللغة قبل أي رسم -->
+<script>
+  (function () {
+    try {
+      var lang = localStorage.getItem('omega_lang') || 'en';
+      var html = document.documentElement;
+      html.lang = lang;
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --c-primary: #0E9487; --c-light: #2EC4B6; --c-blue: #3B82F6;
@@ -12,196 +29,270 @@
   --c-navy: #0F172A; --c-slate: #64748B; --c-bg: #F8FAFC; --c-card: #FFF;
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden;
+  user-select: none; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%;
+}
 html[lang="ar"] body { font-family: 'Cairo', sans-serif; }
-button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+
+button {
+  font-family: inherit; cursor: pointer; border: 0; background: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
 
 /* Phone Frame */
-.stage { height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.phone { position: relative; width: 375px; height: 812px; max-height: calc(100vh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
-@media (max-width: 480px) { .stage { padding: 0; } .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; } }
+.stage { height: 100vh; height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #E2E8F0; }
+.phone { position: relative; width: 375px; height: 812px; max-height: calc(100dvh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; }
+}
 
 /* Screen Layout */
 .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%); overflow: hidden; }
 
 /* Header */
 header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 52px 24px 10px; flex-shrink: 0; }
-.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+@media (max-width: 480px) { header { padding-top: max(20px, env(safe-area-inset-top)); } }
+
+.icon-btn { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.icon-btn:active { transform: scale(0.95); }
+
 .progress-bar { display: flex; gap: 6px; }
 .progress-bar span { width: 24px; height: 8px; border-radius: 10px; background: #CBD5E1; transition: all 0.3s; }
 .progress-bar span.active { background: var(--c-primary); width: 32px; }
 .progress-bar span.done { background: var(--c-blue); }
 
-/* Main Content (responsive: scrolls instead of clipping on small screens) */
-main { position: relative; z-index: 10; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: safe center; padding: 0 24px 32px; overflow-y: auto; overflow-x: hidden; }
-@media (max-height: 700px) { header { padding-top: 28px; } }
+/* Main Content (scrollable) */
+main { position: relative; z-index: 5; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 24px 20px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+main::-webkit-scrollbar { display: none; }
+
+/* Footer (Fixed Bottom Button) */
+.footer { position: relative; z-index: 10; padding: 16px 24px; padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)); flex-shrink: 0; background: linear-gradient(to top, var(--c-bg) 70%, rgba(248,250,252,0)); display: flex; flex-direction: column; gap: 10px; }
+@media (min-width: 481px) { .footer { padding-bottom: 44px; } }
 
 /* Text Instructions */
-.instruction-box { text-align: center; margin-bottom: 24px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+.instruction-box { text-align: center; margin-bottom: 24px; min-height: 60px; display: flex; align-items: center; justify-content: center; width: 100%; }
 .instruction-box h2 { font-size: clamp(16px, 4.8vw, 20px); font-weight: 800; color: var(--c-navy); line-height: 1.4; }
 
 /* Buttons */
-.btn { display: flex; align-items: center; justify-content: center; text-align: center; width: 100%; max-width: 300px; padding: 16px 18px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: 16px; line-height: 1.3; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; margin-top: 20px; flex-shrink: 0; }
-.btn:active { transform: scale(0.96); }
-.btn:disabled { background: #CBD5E1; box-shadow: none; cursor: not-allowed; }
+.btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { background: #CBD5E1; box-shadow: none; cursor: not-allowed; color: #94A3B8; }
 
-/* GAME 1: TABLE */
-.table-area { position: relative; width: 100%; height: 220px; border-radius: 20px; background: linear-gradient(135deg, #EAB308, #CA8A04); box-shadow: inset 0 -8px 0 rgba(0,0,0,0.15), 0 12px 24px rgba(0,0,0,0.15); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; padding: 20px; overflow: hidden; }
+/* ============================================================ */
+/* ASSESSMENT GAMES STYLES */
+/* ============================================================ */
+.table-area { position: relative; width: 100%; max-width: 320px; height: 220px; border-radius: 20px; background: linear-gradient(135deg, #EAB308, #CA8A04); box-shadow: inset 0 -8px 0 rgba(0,0,0,0.15), 0 12px 24px rgba(0,0,0,0.15); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; padding: 20px; overflow: hidden; margin: 0 auto; }
 .table-item { font-size: 48px; filter: drop-shadow(0 8px 8px rgba(0,0,0,0.25)); animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; }
 .cloth { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, #0E9487, #0E9487 15px, #2EC4B6 15px, #2EC4B6 30px); transform: translateY(-101%); transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1); display: flex; align-items: center; justify-content: center; }
 .cloth.drop { transform: translateY(0); }
-.timer-bar { width: 100%; height: 6px; background: #E2E8F0; border-radius: 10px; overflow: hidden; margin-top: 16px; }
+.timer-bar { width: 100%; max-width: 320px; height: 6px; background: #E2E8F0; border-radius: 10px; overflow: hidden; margin: 16px auto 0; }
 .timer-bar i { display: block; height: 100%; width: 100%; background: var(--c-primary); animation: drain 5s linear forwards; }
 
-/* OPTIONS GRID */
-.options-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-top: 10px; }
+.options-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; max-width: 320px; margin: 0 auto; }
 .opt-btn { aspect-ratio: 1; background: #fff; border: 2px solid #E2E8F0; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 34px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); transition: all 0.2s; }
+.opt-btn:active { transform: scale(0.95); }
 .opt-btn.selected { border-color: var(--c-primary); background: #F0FDFA; transform: scale(1.05); }
 .opt-btn.correct { border-color: var(--c-success); background: #DCFCE7; }
 .opt-btn.wrong { border-color: var(--c-error); background: #FEE2E2; }
 
-/* GAME 2: LANTERNS */
-.lanterns-grid { display: flex; gap: 16px; justify-content: center; width: 100%; margin-top: 10px; }
-.lantern { width: 65px; height: 85px; border-radius: 40% 40% 20% 20%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 8px 0 rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
+.lanterns-grid { display: flex; gap: 16px; justify-content: center; width: 100%; max-width: 320px; margin: 20px auto 0; }
+.lantern { width: 65px; height: 85px; border-radius: 40% 40% 20% 20%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 8px 0 rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer; }
 .lantern.light-up { transform: translateY(-10px) scale(1.1); box-shadow: 0 0 30px currentColor, 0 0 60px currentColor; filter: brightness(1.3); }
-.sequence-hint { font-size: 24px; letter-spacing: 8px; color: var(--c-primary); height: 30px; margin-top: 20px; font-weight: 800; text-align: center;}
+.sequence-hint { font-size: 24px; letter-spacing: 8px; color: var(--c-primary); height: 30px; margin-top: 20px; font-weight: 800; text-align: center; }
 
-/* GAME 3: PICK & PLACE (Put It Back) */
-.shelf { width: min(100%, 300px, 40vh); background: #CBD5E1; padding: 8px; border-radius: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.shelf { width: 100%; max-width: 300px; background: #CBD5E1; padding: 8px; border-radius: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 auto; }
 .slot { aspect-ratio: 1; background: #fff; border: 2px solid #E2E8F0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: clamp(24px, 7vh, 36px); transition: all 0.2s; }
 .slot.empty { background: #F1F5F9; border-style: dashed; }
 .slot.good { border-color: var(--c-success); background: #DCFCE7; }
 .slot.reveal { border-color: #F59E0B; background: #FEF3C7; }
-.tray { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: min(100%, 300px); min-height: 66px; margin-top: 14px; padding: 8px; border-radius: 16px; background: #fff; border: 2px solid #E2E8F0; }
+.tray { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 300px; min-height: 66px; margin: 14px auto 0; padding: 8px; border-radius: 16px; background: #fff; border: 2px solid #E2E8F0; }
 .titem { width: 48px; height: 48px; border-radius: 12px; background: #F8FAFC; border: 2px solid #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: grab; touch-action: none; }
 .titem.sel { border-color: var(--c-primary); background: #F0FDFA; transform: scale(1.08); }
 .slot .titem { width: 100%; height: 100%; border: 0; background: transparent; border-radius: 10px; }
 .ghost { position: fixed; z-index: 90; pointer-events: none; font-size: 42px; transform: translate(-50%, -50%) scale(1.2); }
 
-/* 🟢 INTERSTITIAL (Transition) — responsive */
-.interstitial { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: clamp(10px, 2.5vh, 20px); width: 100%; animation: fadeUp 0.5s; }
-.avatar-circle { width: min(200px, 28vh, 60vw); height: min(200px, 28vh, 60vw); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; }
+
+/* ============================================================ */
+/* TRAINING GAMES STYLES */
+/* ============================================================ */
+.train-grid { display: grid; gap: 10px; width: 100%; max-width: 320px; margin: 0 auto; }
+.train-tile { aspect-ratio: 1; background: #fff; border: 2px solid #E2E8F0; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.04); transition: all 0.2s; color: var(--c-navy); }
+.train-tile:active { transform: scale(0.95); }
+.train-tile.lit { background: var(--c-primary); border-color: var(--c-primary); color: #fff; transform: scale(1.05); }
+.train-tile.hidden-tile { background: var(--g-brand); color: transparent; }
+
+.word-pill { padding: 10px 16px; background: #fff; border: 2px solid #E2E8F0; border-radius: 12px; font-weight: 700; font-size: 16px; color: var(--c-navy); box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+.word-pill.selected { border-color: var(--c-primary); background: #F0FDFA; }
+
+
+/* ============================================================ */
+/* INTERSTITIAL & RESULT STYLES */
+/* ============================================================ */
+.interstitial { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: clamp(10px, 2.5vh, 20px); width: 100%; animation: fadeUp 0.5s; margin: auto 0; }
+.avatar-circle { width: min(200px, 28vh, 60vw); height: min(200px, 28vh, 60vw); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 80px; }
 .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 .interstitial h2 { font-size: clamp(20px, 6vw, 26px); font-weight: 800; color: var(--c-navy); line-height: 1.3; }
 .interstitial p { font-size: clamp(14px, 4vw, 16px); color: var(--c-slate); line-height: 1.5; max-width: 100%; width: 280px; }
-.interstitial .btn { margin-top: 4px; }
 
 /* Animations */
 @keyframes float { 50% { transform: translateY(-10px); } }
 @keyframes popIn { from { transform: scale(0); opacity: 0; } }
 @keyframes drain { to { width: 0; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 </style>
 </head>
 <body>
-<div class="stage"><div class="phone"><div class="screen" id="screen">
-  
-  <header>
-    <button class="icon-btn" id="exitBtn">✕</button>
-    <div class="progress-bar" id="progress">
-      <span class="active"></span><span></span><span></span>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen" id="screen">
+      
+      <header>
+        <button class="icon-btn" id="exitBtn" type="button" aria-label="Exit">✕</button>
+        <div class="progress-bar" id="progress">
+          <span></span><span></span><span></span>
+        </div>
+        <button class="icon-btn" id="langBtn" type="button" style="font-size:13px; color:var(--c-primary);">ع</button>
+      </header>
+
+      <main id="main"></main>
+
+      <div class="footer" id="footer"></div>
+
     </div>
-    <button class="icon-btn" id="langBtn" style="font-size:12px;">ع</button>
-  </header>
-
-  <main id="main"></main>
-
-</div></div></div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
-   ⚠️⚠️⚠️ مكان الصور بتاعتك (للتسقيفة) ⚠️⚠️⚠️
-   - clap: صور التسقيفة (بتتبدل كل 250 مللي ثانية)
-   - encourage: الصور التشجيعية (بتتبدل كل 800 مللي ثانية)
+   CONFIG & STATE
 ============================================================ */
 const AVATAR_IMAGES = {
   adult: {
     clap: ['الكبار تسقيفه 1.jpg', 'الكبار تسقيفه 2.jpg'],
-    // 👇 [حطي هنا الصورتين التشجيعية للكبار]
     encourage: ['الكبير جاب اقل من 50.jpg', 'الكبير جاب اقل من 50.jpg'] 
   },
   kid: {
     clap: ['اطفال تسقيفه 1.jpg', 'اطفال تسقيفه مقفوله.jpg'],
-    // 👇 [حطي هنا الصورتين التشجيعية للأطفال]
     encourage: ['الصغير جاب اقل من 50.jpg', 'الصغير جاب اقل من 50.jpg'] 
   }
 };
-/* ============================================================ */
 
 const I18N = {
   en: {
     startTitle: "Memory Challenge",
-    startDesc: "Test your visual memory through 3 quick interactive games.",
-    startBtn: "Start Challenge",
+    startDesc: "Test your visual memory through quick interactive games.",
+    startBtn: "Start",
     
+    // Assessment
     r1Look: "Study the table carefully...",
     r1Pick: "Select the 6 items that were on the table.",
-    
     r2Look: "Watch the sequence of lanterns...",
     r2Pick: "Tap the lanterns in the exact same order.",
-    
     r3Look: "Memorize where each item sits on the shelf...",
-    r3Pick: "Put each item back in its place. Drag it, or tap it then tap the slot.",
+    r3Pick: "Put each item back in its place.",
+    
+    // Training
+    tWordsLook: "Memorize these words...",
+    tWordsPick: "Select the words you saw.",
+    tGridLook: "Watch the squares light up...",
+    tGridPick: "Tap the squares that lit up.",
+    tMissingLook: "Memorize the objects...",
+    tMissingPick: "Which item is missing?",
+    tReverseLook: "Memorize the numbers...",
+    tReversePick: "Type the numbers in reverse order.",
     
     done: "Confirm",
-    finTitle: "Challenge Complete",
-    next: "Next Challenge",
+    next: "Next",
     exitMsg: "Exit? Progress will be lost.",
     
     transGreat: "Great Job!",
-    transGreatDesc: "You did really well on this challenge. Keep it up!",
+    transGreatDesc: "You did really well.",
     transEncourage: "Good Effort!",
-    transEncourageDesc: "Every practice makes you stronger. Let's continue!"
+    transEncourageDesc: "Keep practicing to get better.",
+    trainWin: "Level Up!",
+    trainWinDesc: "You're getting sharper.",
+    trainLose: "Try Again!",
+    trainLoseDesc: "Almost there."
   },
   ar: {
     startTitle: "تحدي الذاكرة",
-    startDesc: "اختبر ذاكرتك البصرية من خلال 3 ألعاب تفاعلية سريعة.",
-    startBtn: "ابدأ التحدي",
+    startDesc: "اختبر ذاكرتك البصرية من خلال ألعاب تفاعلية سريعة.",
+    startBtn: "ابدأ",
     
+    // Assessment
     r1Look: "بص على الطاولة كويس...",
     r1Pick: "اختار الـ6 حاجات اللي كانوا على الطاولة.",
-    
     r2Look: "بص على ترتيب الفوانيس...",
     r2Pick: "دوس على الفوانيس بنفس الترتيب بالظبط.",
-    
     r3Look: "احفظ مكان كل حاجة على الرف...",
-    r3Pick: "رجّع كل حاجة لمكانها. اسحبها، أو دوس عليها وبعدين على الخانة.",
+    r3Pick: "رجّع كل حاجة لمكانها.",
+    
+    // Training
+    tWordsLook: "احفظ الكلمات دي...",
+    tWordsPick: "اختار الكلمات اللي شفتها.",
+    tGridLook: "بص على المربعات اللي بتنور...",
+    tGridPick: "دوس على المربعات اللي كانت منورة.",
+    tMissingLook: "احفظ الصور دي...",
+    tMissingPick: "إيه اللي اختفى؟",
+    tReverseLook: "احفظ الأرقام دي...",
+    tReversePick: "اكتب الأرقام بالعكس.",
     
     done: "تأكيد",
-    finTitle: "خلصت التحدي",
-    next: "التحدي الجاي",
+    next: "التالي",
     exitMsg: "هل تريد الخروج؟ ستفقد تقدمك.",
     
     transGreat: "شغل عالي!",
-    transGreatDesc: "أداءك كان ممتاز في التحدي ده. استمر!",
+    transGreatDesc: "أداءك كان ممتاز.",
     transEncourage: "محاولة جيدة!",
-    transEncourageDesc: "كل تدريب بيخليك أقوى. يلا نكمل!"
+    transEncourageDesc: "استمر في التدريب.",
+    trainWin: "عدّيت المستوى!",
+    trainWinDesc: "ذاكرتك بتتحسن.",
+    trainLose: "حاول تاني!",
+    trainLoseDesc: "قربت جداً."
   }
 };
 
-let lang = localStorage.getItem('omega_lang') === 'ar' ? 'ar' : 'en';
-const $ = id => document.getElementById(id);
-const EMOJIS = ['🎂','🎈','🎁','🕯️','🧁','🍬','🍕','🥤','🎩','🍭','🍪','🧸'];
+const EMOJIS = ['🎂','🎈','🎁','🕯️','🧁','🍬','🍕','🥤','🎩','🍭','🍪','🧸','🚀','🌸','🐱','⭐','🍩','🚲'];
 const COLORS = ['#EF4444', '#3B82F6', '#22C55E', '#FBBF24'];
 const FREQS = [392, 494, 587, 659];
 const SHELF_ITEMS = ['🥤','🍭','🧁','🍇','🍿','🍩','🥛','🍒','🍪','🧃','🍫','🍓'];
+const WORDS = ['Apple', 'Ocean', 'Window', 'Garden', 'Pencil', 'Mountain', 'Camera', 'Flower', 'Rainbow', 'Planet', 'Coffee', 'Bridge', 'Mirror', 'Rabbit', 'تفاحة', 'بحر', 'شباك', 'حديقة', 'قلم', 'جبل', 'كاميرا', 'وردة'];
 
-let round = 1, score = 0, total = 0;
-let R1_ITEMS = [], R2_SEQ = [];
+let lang = localStorage.getItem('omega_lang') === 'ar' ? 'ar' : 'en';
+const $ = id => document.getElementById(id);
+
+// Mode logic: 'assessment' or 'train'
+// Default to 'assessment' if not set explicitly.
+let MODE = localStorage.getItem('omega_current_mode') || 'assessment';
+
+let score = 0, total = 0, level = 1;
 let audioCtx = null;
 let token = 0;
 
 const shuf = a => [...a].sort(() => Math.random() - 0.5);
 const sample = (a, n) => shuf(a).slice(0, n);
 const wait = ms => { const t = token; return new Promise((ok, no) => setTimeout(() => t === token ? ok() : no('cancel'), ms)); };
-const click = el => new Promise(r => { el.onclick = () => r(); });
 
-function updateProgress() {
-  document.querySelectorAll('.progress-bar span').forEach((el, i) => {
-    el.className = i + 1 < round ? 'done' : (i + 1 === round ? 'active' : '');
-  });
+function updateProgress(step = 0, max = 3) {
+  const pBar = $('progress');
+  if (MODE === 'train') { pBar.style.display = 'none'; return; } // Hide progress in training
+  pBar.style.display = 'flex';
+  
+  pBar.innerHTML = '';
+  for (let i = 0; i < max; i++) {
+    let span = document.createElement('span');
+    if (i + 1 < step) span.className = 'done';
+    else if (i + 1 === step) span.className = 'active';
+    pBar.appendChild(span);
+  }
 }
 
 function updateLang() {
@@ -222,49 +313,91 @@ function playTone(freq) {
   } catch(e) {}
 }
 
-/* --- Start --- */
-function startGame() {
-  token++; round = 1; score = 0; total = 0;
-  updateLang(); updateProgress();
-  $('main').innerHTML = `
-    <div class="interstitial">
-      <div style="font-size:80px; animation: float 3s infinite;">🧠</div>
-      <h2>${I18N[lang].startTitle}</h2>
-      <p>${I18N[lang].startDesc}</p>
-      <button class="btn" id="startBtn">${I18N[lang].startBtn}</button>
-    </div>
-  `;
-  $('startBtn').onclick = round1_Table;
+/* ============================================================
+   INIT & ROUTING (Assessment vs Training)
+============================================================ */
+function initGame() {
+  updateLang();
+  
+  if (MODE === 'train') {
+    // Training Mode
+    level = parseInt(localStorage.getItem('omega_memory_train_level') || '1');
+    $('main').innerHTML = `
+      <div class="interstitial" style="margin-top: 40px;">
+        <div style="font-size:80px; animation: float 3s infinite;">🧠</div>
+        <h2>${I18N[lang].startTitle} (Level ${level})</h2>
+        <p>${I18N[lang].startDesc}</p>
+      </div>
+    `;
+    $('footer').innerHTML = `<button class="btn" id="startBtn">${I18N[lang].startBtn}</button>`;
+    $('startBtn').onclick = () => startTrainingRound();
+  } else {
+    // Assessment Mode
+    let savedState = JSON.parse(localStorage.getItem('omega_mem_state') || 'null');
+    
+    if (savedState && savedState.step) {
+      // Resume Assessment
+      let round = savedState.step;
+      score = savedState.score || 0;
+      total = savedState.total || 0;
+      
+      if (round === 1) round1_Table(savedState.data);
+      else if (round === 2) round2_Lanterns(savedState.data);
+      else if (round === 3) round3_PutBack();
+      else showAssessmentResults();
+    } else {
+      $('main').innerHTML = `
+        <div class="interstitial" style="margin-top: 40px;">
+          <div style="font-size:80px; animation: float 3s infinite;">🧠</div>
+          <h2>${I18N[lang].startTitle}</h2>
+          <p>${I18N[lang].startDesc}</p>
+        </div>
+      `;
+      $('footer').innerHTML = `<button class="btn" id="startBtn">${I18N[lang].startBtn}</button>`;
+      $('startBtn').onclick = () => {
+        score = 0; total = 0;
+        round1_Table();
+      };
+    }
+  }
 }
 
-/* --- GAME 1: TABLE --- */
-function round1_Table() {
-  round = 1; updateProgress();
-  R1_ITEMS = [...EMOJIS].sort(() => Math.random() - 0.5).slice(0, 6);
+function saveAssessmentState(step, data = {}) {
+  localStorage.setItem('omega_mem_state', JSON.stringify({ step, score, total, data }));
+}
+
+/* ============================================================
+   ASSESSMENT GAMES (The Original 3)
+============================================================ */
+function round1_Table(data = {}) {
+  updateProgress(1, 3);
+  const R1_ITEMS = data.R1_ITEMS || sample(EMOJIS, 6);
+  saveAssessmentState(1, { R1_ITEMS });
   
   $('main').innerHTML = `
     <div class="instruction-box"><h2>${I18N[lang].r1Look}</h2></div>
-    <div class="table-area" id="table">
+    <div class="table-area">
       ${R1_ITEMS.map((e, i) => `<span class="table-item" style="animation-delay:${i*0.1}s">${e}</span>`).join('')}
       <div class="cloth" id="cloth"></div>
     </div>
     <div class="timer-bar"><i></i></div>
   `;
+  $('footer').innerHTML = '';
 
-  setTimeout(() => $('cloth').classList.add('drop'), 5000);
+  setTimeout(() => $('cloth').classList.add('drop'), 4500);
 
   setTimeout(() => {
     $('main').innerHTML = `
       <div class="instruction-box"><h2>${I18N[lang].r1Pick}</h2></div>
       <div class="options-grid" id="grid"></div>
-      <button class="btn" id="doneBtn" disabled>${I18N[lang].done}</button>
     `;
+    $('footer').innerHTML = `<button class="btn" id="doneBtn" disabled>${I18N[lang].done}</button>`;
     
     const distractors = EMOJIS.filter(e => !R1_ITEMS.includes(e)).sort(() => Math.random() - 0.5).slice(0, 6);
     const options = [...R1_ITEMS, ...distractors].sort(() => Math.random() - 0.5);
     const selected = new Set();
 
-    $('grid').innerHTML = options.map(e => `<button class="opt-btn" data-e="${e}">${e}</button>`).join('');
+    $('grid').innerHTML = options.map(e => `<button class="opt-btn" type="button" data-e="${e}">${e}</button>`).join('');
 
     document.querySelectorAll('.opt-btn').forEach(btn => {
       btn.onclick = () => {
@@ -286,15 +419,15 @@ function round1_Table() {
       });
       score += correct; total += 6;
       $('doneBtn').style.display = 'none';
-      setTimeout(round2_Lanterns, 2000);
+      setTimeout(() => round2_Lanterns(), 1500);
     };
-  }, 6000);
+  }, 5500);
 }
 
-/* --- GAME 2: LANTERNS --- */
-function round2_Lanterns() {
-  round = 2; updateProgress();
-  R2_SEQ = Array.from({length: 4}, () => Math.floor(Math.random() * 4));
+function round2_Lanterns(data = {}) {
+  updateProgress(2, 3);
+  const R2_SEQ = data.R2_SEQ || Array.from({length: 4}, () => Math.floor(Math.random() * 4));
+  saveAssessmentState(2, { R2_SEQ });
   
   $('main').innerHTML = `
     <div class="instruction-box"><h2>${I18N[lang].r2Look}</h2></div>
@@ -303,6 +436,7 @@ function round2_Lanterns() {
     </div>
     <div class="sequence-hint" id="hint"></div>
   `;
+  $('footer').innerHTML = '';
 
   let step = 0;
   function playSeq() {
@@ -339,16 +473,15 @@ function round2_Lanterns() {
         if (p === 4) {
           score += correct; total += 4;
           document.querySelectorAll('.lantern').forEach(l => l.onclick = null);
-          setTimeout(round3_PutBack, 2000); // نروح لتحدي Pick & Place
+          setTimeout(round3_PutBack, 1500);
         }
       };
     });
   }
 }
 
-/* --- GAME 3: PICK & PLACE (Put It Back) --- */
 async function round3_PutBack() {
-  round = 3; updateProgress();
+  updateProgress(3, 3);
   const myToken = ++token;
   try {
     const n = 6, T = 8, total9 = 9;
@@ -360,21 +493,20 @@ async function round3_PutBack() {
       return `<div class="slot ${show ? '' : 'empty'}" data-i="${i}">${show && k >= 0 ? items[k] : ''}</div>`;
     }).join('')}</div>`;
 
-    // Look phase
     $('main').innerHTML = `
       <div class="instruction-box"><h2>${I18N[lang].r3Look}</h2></div>
       ${shelfHTML(true)}
-      <div class="timer-bar" style="width:min(100%,300px)"><i style="animation-duration:${T}s"></i></div>
+      <div class="timer-bar" style="max-width:300px"><i style="animation-duration:${T}s"></i></div>
     `;
+    $('footer').innerHTML = '';
     await wait(T * 1000);
 
-    // Place phase
     $('main').innerHTML = `
-      <div class="instruction-box" style="margin-bottom:14px"><h2>${I18N[lang].r3Pick}</h2></div>
+      <div class="instruction-box" style="margin-bottom:10px"><h2>${I18N[lang].r3Pick}</h2></div>
       ${shelfHTML(false)}
       <div class="tray" id="tray">${shuf(items).map(e => `<div class="titem" data-e="${e}">${e}</div>`).join('')}</div>
-      <button class="btn" id="dn" disabled>${I18N[lang].done}</button>
     `;
+    $('footer').innerHTML = `<button class="btn" id="dn" disabled>${I18N[lang].done}</button>`;
 
     const slots = [...document.querySelectorAll('.slot')], tray = $('tray');
     let sel = null;
@@ -416,91 +548,308 @@ async function round3_PutBack() {
       if (sel && ev.target.closest('.slot') === s && !ev.target.classList.contains('titem')) put(sel, s);
     });
 
-    await click($('dn'));
-    $('dn').style.display = 'none';
-    let r = 0;
-    slots.forEach(s => {
-      const t = s.querySelector('.titem'); if (!t) return;
-      t.onpointerdown = null;
-      const k = items.indexOf(t.dataset.e);
-      if (slotIdx[k] === +s.dataset.i) { r++; s.classList.add('good'); } else s.classList.add('reveal');
-    });
-    score += r; total += n;
-    await wait(2000);
-    showResults();
+    $('dn').onclick = async () => {
+      $('dn').style.display = 'none';
+      let r = 0;
+      slots.forEach(s => {
+        const t = s.querySelector('.titem'); if (!t) return;
+        t.onpointerdown = null;
+        const k = items.indexOf(t.dataset.e);
+        if (slotIdx[k] === +s.dataset.i) { r++; s.classList.add('good'); } else s.classList.add('reveal');
+      });
+      score += r; total += n;
+      await wait(1500);
+      showAssessmentResults();
+    };
   } catch (e) { if (e !== 'cancel') console.error(e); }
 }
 
-/* --- RESULTS & TRANSITION (Interstitial) --- */
-async function showResults() {
+function showAssessmentResults() {
   const accuracy = Math.round((score / total) * 100);
   localStorage.setItem('omega_memory_result', JSON.stringify({ accuracy, timestamp: Date.now() }));
+  localStorage.removeItem('omega_mem_state');
+  
+  showInterstitial(accuracy, 'assessment');
+}
 
-  round = 4; updateProgress(); // Fill progress bar
 
-  // Determine if passed (>= 50%)
+/* ============================================================
+   TRAINING GAMES (Dynamic, Level-based)
+============================================================ */
+function startTrainingRound() {
+  score = 0; total = 0;
+  // Randomly pick one of the training games
+  const games = [trainWords, trainGrid, trainMissing, trainReverse];
+  const selectedGame = games[Math.floor(Math.random() * games.length)];
+  selectedGame();
+}
+
+// 1. Word Recall
+function trainWords() {
+  const count = Math.min(3 + level, 7);
+  const list = sample(WORDS, count);
+  
+  $('main').innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].tWordsLook}</h2></div>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;" id="wordList">
+      ${list.map(w => `<span class="word-pill">${w}</span>`).join('')}
+    </div>
+  `;
+  $('footer').innerHTML = '';
+
+  setTimeout(() => {
+    $('main').innerHTML = `
+      <div class="instruction-box"><h2>${I18N[lang].tWordsPick}</h2></div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;" id="wordGrid"></div>
+    `;
+    $('footer').innerHTML = `<button class="btn" id="doneBtn" disabled>${I18N[lang].done}</button>`;
+    
+    const distractors = WORDS.filter(w => !list.includes(w)).sort(() => Math.random() - 0.5).slice(0, count);
+    const options = [...list, ...distractors].sort(() => Math.random() - 0.5);
+    const selected = new Set();
+
+    $('wordGrid').innerHTML = options.map(w => `<button class="word-pill" type="button" data-w="${w}" style="cursor:pointer;">${w}</button>`).join('');
+
+    document.querySelectorAll('#wordGrid .word-pill').forEach(btn => {
+      btn.onclick = () => {
+        const w = btn.dataset.w;
+        if (selected.has(w)) { selected.delete(w); btn.classList.remove('selected'); }
+        else if (selected.size < count) { selected.add(w); btn.classList.add('selected'); }
+        $('doneBtn').disabled = selected.size !== count;
+      };
+    });
+
+    $('doneBtn').onclick = () => {
+      let correct = 0;
+      selected.forEach(w => { if (list.includes(w)) correct++; });
+      
+      // 1 point per correct word, minus penalty for wrong choices
+      score = correct;
+      total = count;
+      
+      showInterstitial(Math.round((score/total)*100), 'train');
+    };
+  }, 3000);
+}
+
+// 2. Grid Memory
+function trainGrid() {
+  const size = level < 3 ? 3 : (level < 6 ? 4 : 5);
+  const count = Math.min(level + 2, size * size - 2);
+  
+  $('main').innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].tGridLook}</h2></div>
+    <div class="train-grid" id="grid" style="grid-template-columns: repeat(${size}, 1fr);"></div>
+  `;
+  $('footer').innerHTML = '';
+  
+  const grid = $('grid');
+  const tiles = [];
+  const targets = sample([...Array(size*size).keys()], count);
+  
+  for(let i=0; i<size*size; i++) {
+    let t = document.createElement('div');
+    t.className = 'train-tile';
+    t.dataset.i = i;
+    grid.appendChild(t);
+    tiles.push(t);
+  }
+  
+  setTimeout(() => {
+    targets.forEach(i => tiles[i].classList.add('lit'));
+    
+    setTimeout(() => {
+      targets.forEach(i => tiles[i].classList.remove('lit'));
+      $('main').querySelector('.instruction-box h2').textContent = I18N[lang].tGridPick;
+      
+      let found = 0;
+      tiles.forEach((t, i) => {
+        t.onclick = () => {
+          if (targets.includes(i) && !t.classList.contains('lit')) {
+            t.classList.add('lit');
+            found++;
+            if(found === count) {
+              score = count; total = count;
+              setTimeout(() => showInterstitial(100, 'train'), 500);
+            }
+          } else if (!targets.includes(i)) {
+            score = found; total = count;
+            t.style.animation = 'shake 0.4s';
+            setTimeout(() => { t.style.animation = ''; showInterstitial(Math.round((score/total)*100), 'train'); }, 400);
+          }
+        };
+      });
+    }, 1500 + count * 200);
+  }, 500);
+}
+
+// 3. What's Missing
+function trainMissing() {
+  const count = Math.min(level + 3, 8);
+  const set = sample(EMOJIS, count);
+  const missing = set[Math.floor(Math.random() * set.length)];
+  
+  $('main').innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].tMissingLook}</h2></div>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; font-size:40px;" id="objList">
+      ${set.map(e => `<span>${e}</span>`).join('')}
+    </div>
+  `;
+  $('footer').innerHTML = '';
+  
+  setTimeout(() => {
+    $('main').innerHTML = `
+      <div class="instruction-box"><h2>${I18N[lang].tMissingPick}</h2></div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; font-size:40px; margin-bottom:20px;" id="objListRem">
+        ${set.filter(e => e !== missing).map(e => `<span>${e}</span>`).join('')}
+      </div>
+      <div class="options-grid" id="optGrid" style="grid-template-columns: repeat(4, 1fr); max-width:300px;"></div>
+    `;
+    
+    const opts = [missing, ...sample(EMOJIS.filter(e => !set.includes(e)), 3)].sort(() => Math.random() - 0.5);
+    
+    $('optGrid').innerHTML = opts.map(e => `<button class="opt-btn" type="button" data-e="${e}">${e}</button>`).join('');
+    
+    document.querySelectorAll('#optGrid .opt-btn').forEach(btn => {
+      btn.onclick = () => {
+        if (btn.dataset.e === missing) {
+          score = 1; total = 1;
+          showInterstitial(100, 'train');
+        } else {
+          score = 0; total = 1;
+          btn.classList.add('wrong');
+          setTimeout(() => showInterstitial(0, 'train'), 500);
+        }
+      };
+    });
+  }, 3000);
+}
+
+// 4. Reverse Numbers
+function trainReverse() {
+  const len = Math.min(level + 2, 7);
+  const nums = Array.from({length: len}, () => Math.floor(Math.random()*10));
+  const revAns = [...nums].reverse().join('');
+  
+  $('main').innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].tReverseLook}</h2></div>
+    <div style="font-size:48px; font-weight:800; letter-spacing:8px; color:var(--c-primary);">${nums.join('')}</div>
+  `;
+  $('footer').innerHTML = '';
+  
+  setTimeout(() => {
+    $('main').innerHTML = `
+      <div class="instruction-box"><h2>${I18N[lang].tReversePick}</h2></div>
+      <input type="text" id="revInp" inputmode="numeric" style="width:80%; max-width:280px; padding:16px; font-size:24px; text-align:center; border-radius:16px; border:2px solid #E2E8F0; margin-bottom:20px; outline:none; background:#fff; font-weight:700; color:var(--c-navy);" placeholder="?">
+    `;
+    $('footer').innerHTML = `<button class="btn" id="subBtn">${I18N[lang].done}</button>`;
+    $('revInp').focus();
+    
+    $('subBtn').onclick = () => {
+      const val = $('revInp').value.trim();
+      if (val === revAns) {
+        score = 1; total = 1;
+        showInterstitial(100, 'train');
+      } else {
+        score = 0; total = 1;
+        showInterstitial(0, 'train');
+      }
+    };
+  }, 3000);
+}
+
+
+/* ============================================================
+   RESULTS & INTERSTITIAL (Shared)
+============================================================ */
+function showInterstitial(accuracy, mode) {
   const passed = accuracy >= 50;
   
-  // Get user age to pick avatar
   let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
   const avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
   
-  // Setup Interstitial UI
+  let title = '', desc = '';
+  
+  if (mode === 'assessment') {
+    title = passed ? I18N[lang].transGreat : I18N[lang].transEncourage;
+    desc = `${passed ? I18N[lang].transGreatDesc : I18N[lang].transEncourageDesc} (${accuracy}%)`;
+  } else {
+    title = passed ? I18N[lang].trainWin : I18N[lang].trainLose;
+    desc = passed ? I18N[lang].trainWinDesc : I18N[lang].trainLoseDesc;
+    
+    // Update level if they win
+    if (passed) {
+      level++;
+      localStorage.setItem('omega_memory_train_level', level);
+    }
+  }
+  
   $('main').innerHTML = `
-    <div class="interstitial">
+    <div class="interstitial" style="margin-top: 20px;">
       <div class="avatar-circle" id="avatarBox">
-        <img id="avatarImg" src="" alt="Avatar">
+        <span id="avatarEmoji">${passed ? '👏' : '💜'}</span>
+        <img id="avatarImg" src="" alt="Avatar" style="display:none;" onerror="this.style.display='none'; document.getElementById('avatarEmoji').style.display='block';">
       </div>
-      <h2 id="transTitle"></h2>
-      <p id="transDesc"></p>
-      <button class="btn" id="nextBtn" style="display:none;">${I18N[lang].next}</button>
+      <h2 id="transTitle">${title}</h2>
+      <p id="transDesc">${desc}</p>
     </div>
   `;
+  
+  $('footer').innerHTML = `<button class="btn" id="nextBtn" style="display:none;">${I18N[lang].next}</button>`;
 
   let imgIndex = 0;
   let interval = null;
   const imgEl = $('avatarImg');
+  const emojiEl = $('avatarEmoji');
 
-  if (passed) {
-    $('transTitle').textContent = I18N[lang].transGreat;
-    $('transDesc').textContent = `${I18N[lang].transGreatDesc} (${accuracy}%)`;
-    
-    // Clapping Animation
-    const clapImgs = AVATAR_IMAGES[avatarType].clap;
-    imgEl.src = clapImgs[0];
-    interval = setInterval(() => {
-      imgIndex = (imgIndex + 1) % 2;
-      imgEl.src = clapImgs[imgIndex];
-    }, 250);
-    
-  } else {
-    $('transTitle').textContent = I18N[lang].transEncourage;
-    $('transDesc').textContent = `${I18N[lang].transEncourageDesc} (${accuracy}%)`;
-    
-    // Encouraging Animation (Placeholder)
-    const encourageImgs = AVATAR_IMAGES[avatarType].encourage;
-    imgEl.src = encourageImgs[0];
-    interval = setInterval(() => {
-      imgIndex = (imgIndex + 1) % 2;
-      imgEl.src = encourageImgs[imgIndex];
-    }, 800); // Slower transition for sad/encouraging
-  }
+  const clapImgs = AVATAR_IMAGES[avatarType].clap;
+  const encourageImgs = AVATAR_IMAGES[avatarType].encourage;
+  
+  imgEl.src = passed ? clapImgs[0] : encourageImgs[0];
+  imgEl.style.display = 'block'; emojiEl.style.display = 'none';
 
-  // Show button after 2.5 seconds
+  interval = setInterval(() => {
+    imgIndex = (imgIndex + 1) % 2;
+    imgEl.src = passed ? clapImgs[imgIndex] : encourageImgs[imgIndex];
+  }, passed ? 250 : 800);
+
   setTimeout(() => {
     if(interval) clearInterval(interval);
-    // Stop on last image
-    imgEl.src = passed ? AVATAR_IMAGES[avatarType].clap[0] : AVATAR_IMAGES[avatarType].encourage[0];
-    $('nextBtn').style.display = 'flex';
-    $('nextBtn').onclick = () => window.location.href = 'assessment-attention.html';
+    imgEl.src = passed ? clapImgs[0] : encourageImgs[0];
+    
+    const btn = $('nextBtn');
+    btn.style.display = 'flex';
+    btn.onclick = () => {
+      if (mode === 'assessment') {
+        window.location.href = 'assessment-attention.html';
+      } else {
+        // Reload training for next round
+        startTrainingRound();
+      }
+    };
   }, 2500);
 }
 
 /* --- EVENTS --- */
-$('langBtn').onclick = () => { lang = lang === 'ar' ? 'en' : 'ar'; startGame(); };
-$('exitBtn').onclick = () => { if (confirm(I18N[lang].exitMsg)) window.location.href = 'assessment-intro.html'; };
+$('langBtn').onclick = () => { 
+  lang = lang === 'ar' ? 'en' : 'ar'; 
+  localStorage.setItem('omega_lang', lang);
+  initGame(); 
+};
 
-startGame();
+$('exitBtn').onclick = () => { 
+  if (confirm(I18N[lang].exitMsg)) {
+    if (MODE === 'assessment') {
+      localStorage.removeItem('omega_mem_state');
+      window.location.href = 'assessment-intro.html';
+    } else {
+      window.location.href = 'home.html';
+    }
+  }
+};
+
+// Boot
+initGame();
 </script>
 </body>
 </html>
