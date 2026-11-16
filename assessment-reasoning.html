@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F8FAFC" />
 <title>Omega — Reasoning Assessment</title>
+
+<!-- ✅ سكريبت اللغة قبل أي رسم -->
+<script>
+  (function () {
+    try {
+      var lang = localStorage.getItem('omega_lang') || 'en';
+      var html = document.documentElement;
+      html.lang = lang;
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --c-primary: #0E9487; --c-light: #2EC4B6; --c-blue: #3B82F6;
@@ -12,46 +29,68 @@
   --c-navy: #0F172A; --c-slate: #64748B; --c-bg: #F8FAFC;
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden;
+  user-select: none; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%;
+}
 html[lang="ar"] body { font-family: 'Cairo', sans-serif; }
-button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+
+button {
+  font-family: inherit; cursor: pointer; border: 0; background: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
 
 /* Phone Frame */
-.stage { height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.phone { position: relative; width: 375px; height: 812px; max-height: calc(100vh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
-@media (max-width: 480px) { .stage { padding: 0; } .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; } }
+.stage { height: 100vh; height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #E2E8F0; }
+.phone { position: relative; width: 375px; height: 812px; max-height: calc(100dvh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; }
+}
 
 /* Screen Layout */
 .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%); overflow: hidden; }
 
 /* Header */
 header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 52px 20px 10px; flex-shrink: 0; }
-.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+@media (max-width: 480px) { header { padding-top: max(20px, env(safe-area-inset-top)); } }
+
+.icon-btn { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.icon-btn:active { transform: scale(0.95); }
+
 .progress-bar { display: flex; gap: 6px; }
 .progress-bar span { width: 24px; height: 8px; border-radius: 10px; background: #CBD5E1; transition: all 0.3s; }
 .progress-bar span.active { background: var(--c-primary); width: 32px; }
 .progress-bar span.done { background: var(--c-blue); }
 
 /* Main Content */
-main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 16px 20px; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+main { position: relative; z-index: 5; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 16px 100px; min-height: 0; overflow-y: auto; scrollbar-width: none; }
 main::-webkit-scrollbar { display: none; }
+
+/* Fixed Footer */
+.footer { position: absolute; bottom: 0; left: 0; width: 100%; z-index: 20; padding: 16px 20px; padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)); background: linear-gradient(to top, var(--c-bg) 80%, rgba(248,250,252,0)); display: flex; flex-direction: column; gap: 10px; }
 
 /* Common UI */
 .instruction-box { text-align: center; margin-bottom: 15px; min-height: 40px; display: flex; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; }
 .instruction-box h2 { font-size: clamp(16px, 5vw, 20px); font-weight: 800; color: var(--c-navy); line-height: 1.3; }
-.btn { width: 100%; max-width: 300px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: clamp(14px, 4vw, 16px); box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; margin-top: 15px; flex-shrink: 0; }
-.btn:active { transform: scale(0.96); }
+
+.btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; }
+.btn:active { transform: scale(0.97); }
+
 .game-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; animation: fadeUp 0.4s ease; }
 
-/* 🟢 GAME 1: DETECT THE LIE */
-.suspects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 320px; }
-.suspect { background: #fff; border-radius: 16px; padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; border: 2px solid transparent; }
-.suspect:active { transform: scale(0.95); }
-.suspect.wrong { border-color: var(--c-error); animation: shake 0.3s; }
-.suspect-emoji { font-size: 40px; }
-.suspect-item { font-size: 30px; }
-.suspect-speech { background: #F1F5F9; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 700; color: var(--c-navy); text-align: center; width: 100%; }
+/* 🟢 GAME 1: ANALOGIES */
+.analogy-box { background: #fff; border-radius: 20px; padding: 24px 20px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.analogy-word { font-size: 32px; font-weight: 800; color: var(--c-navy); margin-bottom: 6px; }
+.analogy-arrow { font-size: 20px; color: var(--c-slate); margin: 4px 0; }
+.analogy-hint { font-size: 13px; color: var(--c-slate); margin-top: 8px; }
+.analogy-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 320px; margin-top: 20px; }
+.a-opt { background: #fff; padding: 18px 12px; border-radius: 16px; border: 2px solid #E2E8F0; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 16px; font-weight: 700; color: var(--c-navy); cursor: pointer; transition: all 0.2s; touch-action: manipulation; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.a-opt:active { transform: scale(0.95); }
 
 /* 🟢 GAME 2: SYMBOL EQUATIONS */
 .eq-board { background: #fff; border-radius: 20px; padding: 20px; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
@@ -59,19 +98,26 @@ main::-webkit-scrollbar { display: none; }
 .eq-row .op { font-size: 20px; color: var(--c-slate); }
 .eq-row.highlight { background: #F0FDFA; padding: 10px; border-radius: 12px; border: 2px dashed var(--c-primary); }
 .eq-opts { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
-.eq-opt { width: 60px; height: 60px; background: #fff; border-radius: 12px; border: 2px solid #E2E8F0; font-size: 24px; font-weight: 800; color: var(--c-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-.eq-opt.wrong { border-color: var(--c-error); color: var(--c-error); animation: shake 0.3s; }
+.eq-opt { width: 60px; height: 60px; background: #fff; border-radius: 12px; border: 2px solid #E2E8F0; font-size: 24px; font-weight: 800; color: var(--c-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; touch-action: manipulation; }
+.eq-opt:active { transform: scale(0.95); }
 
 /* 🟢 GAME 3: LOGIC TOWERS */
-.towers-area { display: flex; align-items: flex-end; justify-content: center; gap: 20px; height: 200px; width: 100%; max-width: 300px; border-bottom: 4px solid #CBD5E1; padding-bottom: 5px; }
-.tower { width: 60px; border-radius: 10px 10px 0 0; display: flex; justify-content: center; align-items: flex-start; padding-top: 10px; color: #fff; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: inset 0 4px 0 rgba(0,0,0,0.1); }
+.clues-text { font-size: 14px; font-weight: 600; color: var(--c-navy); text-align: center; line-height: 1.7; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.towers-area { display: flex; gap: 12px; justify-content: center; width: 100%; max-width: 320px; }
+.tower { flex: 1; height: 120px; border-radius: 12px; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 24px; font-weight: 800; cursor: pointer; transition: all 0.2s; touch-action: manipulation; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2); }
 .tower:active { transform: scale(0.95); }
-.tower.wrong { animation: shake 0.3s; opacity: 0.5; }
-.clues-text { font-size: 16px; font-weight: 600; color: var(--c-navy); text-align: center; line-height: 1.6; margin-bottom: 15px; background: #fff; padding: 15px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+/* ============================================ */
+/* TRAINING GAMES */
+/* ============================================ */
+.train-seq { font-size: 32px; font-weight: 800; color: var(--c-primary); text-align: center; margin: 20px 0; letter-spacing: 4px; }
+.train-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 280px; margin: 0 auto; }
+.t-opt { background: #fff; padding: 16px; border-radius: 16px; border: 2px solid #E2E8F0; font-weight: 800; font-size: 18px; color: var(--c-navy); box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; touch-action: manipulation; }
+.t-opt:active { transform: scale(0.95); }
 
 /* 🟢 INTERSTITIAL (Final) */
 .interstitial { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 15px; width: 100%; animation: fadeUp 0.5s; padding: 0 10px; }
-.avatar-circle { width: clamp(160px, 50vw, 220px); height: clamp(160px, 50vw, 220px); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; }
+.avatar-circle { width: clamp(160px, 50vw, 220px); height: clamp(160px, 50vw, 220px); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 60px; }
 .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 .interstitial h2 { font-size: clamp(20px, 6vw, 26px); font-weight: 800; color: var(--c-navy); }
 .interstitial p { font-size: clamp(14px, 4vw, 16px); color: var(--c-slate); line-height: 1.5; max-width: 280px; }
@@ -81,105 +127,145 @@ main::-webkit-scrollbar { display: none; }
 </style>
 </head>
 <body>
-<div class="stage"><div class="phone"><div class="screen" id="screen">
-  
-  <header>
-    <button class="icon-btn" id="exitBtn">✕</button>
-    <div class="progress-bar" id="progress">
-      <span class="active"></span><span></span><span></span>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+      
+      <header>
+        <button class="icon-btn" id="exitBtn" type="button" aria-label="Exit">✕</button>
+        <div class="progress-bar" id="progress">
+          <span class="active"></span><span></span><span></span>
+        </div>
+        <button class="icon-btn" id="langBtn" type="button" style="font-size:13px; color:var(--c-primary);">ع</button>
+      </header>
+
+      <main id="main"></main>
+
+      <div class="footer" id="footer"></div>
+
     </div>
-    <button class="icon-btn" id="langBtn" style="font-size:12px;">ع</button>
-  </header>
-
-  <main id="main"></main>
-
-</div></div></div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
-   ⚠️⚠️⚠️ مكان الصور بتاعتك (التسقيفة والتشجيع) ⚠️⚠️⚠️
+   ⚠️ مكان الصور بتاعتك
 ============================================================ */
 const AVATAR_IMAGES = {
   adult: {
     clap: ['الكبار تسقيفه 1.jpg', 'الكبار تسقيفه 2.jpg'], 
-    encourage: ['adult_encourage_1.jpg', 'adult_encourage_2.jpg'] 
+    encourage: ['الكبير جاب اقل من 50.jpg', 'الكبير جاب اقل من 50.jpg'] 
   },
   kid: {
     clap: ['اطفال تسقيفه 1.jpg', 'اطفال تسقيفه مقفوله.jpg'], 
-    encourage: ['kid_encourage_1.jpg', 'kid_encourage_2.jpg'] 
+    encourage: ['الصغير جاب اقل من 50.jpg', 'الصغير جاب اقل من 50.jpg'] 
   }
 };
-/* ============================================================ */
 
 const I18N = {
   en: {
     startTitle: "Reasoning Challenge",
-    startDesc: "Test your logic and deduction skills through 3 mini-puzzles.",
+    startDesc: "Test your logic and deduction skills.",
     startBtn: "Start Challenge",
     nextBtn: "Next Puzzle",
+    finishBtn: "Finish Assessment",
     
-    // Game 1: Detect the Lie
-    g1Desc: "Who is lying? Find the suspect whose statement is false.",
-    g1Stmt1: "I have a red apple.",
-    g1Stmt2: "I have a blue book.",
-    g1Stmt3: "I have a red pencil.", // Wait, he has a green pencil. He lies.
+    // Game 1: Analogies
+    g1Desc: "Complete the analogy.",
+    g1Q: "Fish is to Swimming as Bird is to...",
+    g1Opt1: "Fly",
+    g1Opt2: "Walk",
+    g1Opt3: "Sleep",
+    g1Opt4: "Swim",
     
     // Game 2: Symbol Equations
     g2Desc: "Find the value of the missing symbol.",
     
     // Game 3: Logic Towers
-    g3Desc: "Based on the clues, which tower is the tallest?",
-    g3Clue1: "The Red tower is taller than the Blue tower.",
-    g3Clue2: "The Yellow tower is shorter than the Blue tower.",
+    g3Desc: "Based on the clues, which tower is the TALLEST?",
+    g3Clue1: "• Blue is shorter than Red.",
+    g3Clue2: "• Green is taller than Red.",
+    g3Clue3: "• Yellow is shorter than Blue.",
     
-    finTitle: "Assessment Complete",
-    transGreat: "Brilliant!",
+    // Training
+    trainSeq: "What comes next in the sequence?",
+    trainOdd: "Which one is the odd one out?",
+    trainLogic: "If A > B, and B > C, who is the smallest?",
+    
+    finTitle: "Assessment Complete!",
+    transGreat: "Genius!",
     transGreatDesc: "Your logic and deduction are excellent!",
     transEncourage: "Good Effort!",
-    transEncourageDesc: "Reasoning takes practice. Keep going!"
+    transEncourageDesc: "Reasoning takes practice. Keep going!",
+    
+    trainWin: "Level Up!",
+    trainWinDesc: "Your logic is getting sharper.",
+    trainLose: "Try Again!",
+    trainLoseDesc: "Almost there."
   },
   ar: {
     startTitle: "تحدي الاستدلال",
-    startDesc: "اختبر منطقك وقدرتك على الاستنتاج من خلال 3 ألعاب.",
+    startDesc: "اختبر منطقك وقدرتك على الاستنتاج.",
     startBtn: "ابدأ التحدي",
     nextBtn: "اللعبة التالية",
+    finishBtn: "إنهاء التقييم",
     
-    // Game 1: Detect the Lie
-    g1Desc: "مين اللي بيكدب؟ لاقي الشخص اللي كلامه مش متطابق مع اللي ماسكه.",
-    g1Stmt1: "أنا ماسك تفاحة حمرا.",
-    g1Stmt2: "أنا ماسك كتاب أزرق.",
-    g1Stmt3: "أنا ماسك قلم أحمر.",
+    // Game 1: Analogies
+    g1Desc: "كمّل القياس.",
+    g1Q: "السمكة تسبح زي العصفور...",
+    g1Opt1: "يطير",
+    g1Opt2: "يمشي",
+    g1Opt3: "ينام",
+    g1Opt4: "يسبح",
     
     // Game 2: Symbol Equations
     g2Desc: "لاقي قيمة الرمز الناقص.",
     
     // Game 3: Logic Towers
     g3Desc: "بناءً على الأدلة، إيه هو أطول برج؟",
-    g3Clue1: "البرج الأحمر أطول من البرج الأزرق.",
-    g3Clue2: "البرج الأصفر أقصر من البرج الأزرق.",
+    g3Clue1: "• الأزرق أقصر من الأحمر.",
+    g3Clue2: "• الأخضر أطول من الأحمر.",
+    g3Clue3: "• الأصفر أقصر من الأزرق.",
     
-    finTitle: "اكتمل التقييم",
+    // Training
+    trainSeq: "إيه اللي جاي في التسلسل؟",
+    trainOdd: "إيه الغريب فيهم؟",
+    trainLogic: "لو أ > ب، وب > ج، مين الأصغر؟",
+    
+    finTitle: "اكتمل التقييم!",
     transGreat: "عبقري!",
     transGreatDesc: "استدلالك ومنطقك ممتازين!",
     transEncourage: "محاولة جيدة!",
-    transEncourageDesc: "الاستدلال محتاج تدريب. يلا نكمل!"
+    transEncourageDesc: "الاستدلال محتاج تدريب. يلا نكمل!",
+    
+    trainWin: "عدّيت المستوى!",
+    trainWinDesc: "منطقك بيتحسن.",
+    trainLose: "حاول تاني!",
+    trainLoseDesc: "قربت جداً."
   }
 };
 
 let lang = localStorage.getItem('omega_lang') === 'ar' ? 'ar' : 'en';
+const $ = id => document.getElementById(id);
+const main = $('main');
+
+let MODE = localStorage.getItem('omega_reasoning_mode') || 'assessment';
 let currentGameIndex = 0;
 let totalScore = 0;
-
-const $ = id => document.getElementById(id);
+let currentLvl = 1;
 
 function updateProgress() {
-  const container = $('progress');
-  container.innerHTML = '';
+  const pBar = $('progress');
+  if (MODE === 'train') { pBar.style.display = 'none'; return; }
+  pBar.style.display = 'flex';
+  
+  pBar.innerHTML = '';
   for (let i = 0; i < 3; i++) {
-    const span = document.createElement('span');
+    let span = document.createElement('span');
     if (i < currentGameIndex) span.className = 'done';
     else if (i === currentGameIndex) span.className = 'active';
-    container.appendChild(span);
+    pBar.appendChild(span);
   }
 }
 
@@ -192,6 +278,8 @@ function updateLang() {
 function nextGame(score) {
   totalScore += (score || 0);
   currentGameIndex++;
+  $('footer').innerHTML = '';
+  
   if (currentGameIndex < 3) {
     loadGame(currentGameIndex);
   } else {
@@ -203,45 +291,50 @@ function nextGame(score) {
    GAME DEFINITIONS
 ============================================ */
 const GAMES = [
-  // 1. DETECT THE LIE
+  // 1. ANALOGIES (Replaced the Boxes Riddle)
   {
     render: () => `
       <div class="instruction-box"><h2>${I18N[lang].g1Desc}</h2></div>
       <div class="game-container">
-        <div class="suspects-grid">
-          <!-- Suspect 1: Truth -->
-          <div class="suspect" onclick="checkLie(false, this)">
-            <div class="suspect-emoji">👩</div>
-            <div class="suspect-item">🍎</div>
-            <div class="suspect-speech">${I18N[lang].g1Stmt1}</div>
-          </div>
-          <!-- Suspect 2: Truth -->
-          <div class="suspect" onclick="checkLie(false, this)">
-            <div class="suspect-emoji">👨</div>
-            <div class="suspect-item">📘</div>
-            <div class="suspect-speech">${I18N[lang].g1Stmt2}</div>
-          </div>
-          <!-- Suspect 3: LIE (Has green pencil, says red) -->
-          <div class="suspect" onclick="checkLie(true, this)">
-            <div class="suspect-emoji">🧒</div>
-            <div class="suspect-item">🖍️</div> <!-- Assuming green pencil emoji, or text -->
-            <div class="suspect-speech">${I18N[lang].g1Stmt3}</div>
-          </div>
+        <div class="analogy-box">
+          <div style="font-size:60px; margin-bottom:10px;">🐟</div>
+          <div class="analogy-word">${I18N[lang].g1Q}</div>
         </div>
-        <button class="btn" id="checkBtn" style="display:none; margin-top:20px;">${I18N[lang].nextBtn}</button>
+        <div class="analogy-opts" id="analogyOpts">
+          <div class="a-opt" data-val="fly">🦅 ${I18N[lang].g1Opt1}</div>
+          <div class="a-opt" data-val="walk">🚶 ${I18N[lang].g1Opt2}</div>
+          <div class="a-opt" data-val="sleep">😴 ${I18N[lang].g1Opt3}</div>
+          <div class="a-opt" data-val="swim">🏊 ${I18N[lang].g1Opt4}</div>
+        </div>
       </div>
     `,
     init: () => {
-      window.checkLie = (isCorrect, el) => {
-        if (isCorrect) {
-          el.style.borderColor = 'var(--c-success)';
-          el.style.background = '#DCFCE7';
-          setTimeout(() => nextGame(1), 1000);
-        } else {
-          el.classList.add('wrong');
-          setTimeout(() => el.classList.remove('wrong'), 500);
-        }
-      };
+      const opts = document.querySelectorAll('.a-opt');
+      const correctEl = document.querySelector('[data-val="fly"]');
+      
+      opts.forEach(el => {
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          // Disable all immediately
+          opts.forEach(o => o.style.pointerEvents = 'none');
+          
+          if (el.dataset.val === 'fly') {
+            el.style.borderColor = 'var(--c-success)';
+            el.style.background = '#DCFCE7';
+            el.style.color = 'var(--c-success)';
+            setTimeout(() => nextGame(1), 800);
+          } else {
+            el.style.borderColor = 'var(--c-error)';
+            el.style.animation = 'shake 0.3s';
+            // Show correct answer in green
+            correctEl.style.borderColor = 'var(--c-success)';
+            correctEl.style.background = '#DCFCE7';
+            correctEl.style.color = 'var(--c-success)';
+            correctEl.style.boxShadow = '0 0 15px rgba(34, 197, 94, 0.4)';
+            setTimeout(() => nextGame(0), 1800);
+          }
+        });
+      });
     }
   },
 
@@ -251,37 +344,45 @@ const GAMES = [
       <div class="instruction-box"><h2>${I18N[lang].g2Desc}</h2></div>
       <div class="game-container">
         <div class="eq-board">
-          <div class="eq-row">
-            <span>🍎</span> <span class="op">+</span> <span>🍎</span> <span class="op">=</span> <span>10</span>
-          </div>
-          <div class="eq-row">
-            <span>🍎</span> <span class="op">+</span> <span>🍌</span> <span class="op">=</span> <span>8</span>
-          </div>
-          <div class="eq-row">
-            <span>🍌</span> <span class="op">+</span> <span>🍇</span> <span class="op">=</span> <span>9</span>
-          </div>
-          <div class="eq-row highlight">
-            <span>🍇</span> <span class="op">+</span> <span>🍎</span> <span class="op">=</span> <span>?</span>
-          </div>
+          <div class="eq-row"><span>🍎</span> <span class="op">+</span> <span>🍎</span> <span class="op">=</span> <span>10</span></div>
+          <div class="eq-row"><span>🍎</span> <span class="op">+</span> <span>🍌</span> <span class="op">=</span> <span>8</span></div>
+          <div class="eq-row"><span>🍌</span> <span class="op">+</span> <span>🍇</span> <span class="op">=</span> <span>9</span></div>
+          <div class="eq-row highlight"><span>🍇</span> <span class="op">+</span> <span>🍎</span> <span class="op">=</span> <span>?</span></div>
         </div>
         <div class="eq-opts">
-          <div class="eq-opt" onclick="checkEq(11, this)">11</div>
-          <div class="eq-opt" onclick="checkEq(10, this)">10</div>
-          <div class="eq-opt" onclick="checkEq(12, this)">12</div>
+          <div class="eq-opt" data-val="11">11</div>
+          <div class="eq-opt" data-val="10">10</div>
+          <div class="eq-opt" data-val="12">12</div>
         </div>
       </div>
     `,
     init: () => {
-      window.checkEq = (val, el) => {
-        if (val === 11) { // Grape (6) + Apple (5) = 11
-          el.style.borderColor = 'var(--c-success)';
-          el.style.color = 'var(--c-success)';
-          setTimeout(() => nextGame(1), 1000);
-        } else {
-          el.classList.add('wrong');
-          setTimeout(() => el.classList.remove('wrong'), 500);
-        }
-      };
+      const opts = document.querySelectorAll('.eq-opt');
+      const correctEl = document.querySelector('[data-val="11"]');
+      
+      opts.forEach(el => {
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          opts.forEach(o => o.style.pointerEvents = 'none');
+          
+          if (el.dataset.val === '11') { // Grape (6) + Apple (5) = 11
+            el.style.borderColor = 'var(--c-success)';
+            el.style.background = '#DCFCE7';
+            el.style.color = 'var(--c-success)';
+            setTimeout(() => nextGame(1), 800);
+          } else {
+            el.style.borderColor = 'var(--c-error)';
+            el.style.color = 'var(--c-error)';
+            el.style.animation = 'shake 0.3s';
+            // Show correct answer
+            correctEl.style.borderColor = 'var(--c-success)';
+            correctEl.style.background = '#DCFCE7';
+            correctEl.style.color = 'var(--c-success)';
+            correctEl.style.boxShadow = '0 0 15px rgba(34, 197, 94, 0.4)';
+            setTimeout(() => nextGame(0), 1800);
+          }
+        });
+      });
     }
   },
 
@@ -292,29 +393,187 @@ const GAMES = [
       <div class="game-container">
         <div class="clues-text">
           ${I18N[lang].g3Clue1}<br>
-          ${I18N[lang].g3Clue2}
+          ${I18N[lang].g3Clue2}<br>
+          ${I18N[lang].g3Clue3}
         </div>
         <div class="towers-area">
-          <!-- Heights: Red=150, Blue=110, Yellow=70 -->
-          <div class="tower" onclick="checkTower('blue', this)" style="height: 110px; background: #3B82F6;">?</div>
-          <div class="tower" onclick="checkTower('red', this)" style="height: 150px; background: #EF4444;">?</div>
-          <div class="tower" onclick="checkTower('yellow', this)" style="height: 70px; background: #FBBF24;">?</div>
+          <div class="tower" data-color="red" style="background: #EF4444;">?</div>
+          <div class="tower" data-color="blue" style="background: #3B82F6;">?</div>
+          <div class="tower" data-color="yellow" style="background: #FBBF24;">?</div>
+          <div class="tower" data-color="green" style="background: #22C55E;">?</div>
         </div>
       </div>
     `,
     init: () => {
-      window.checkTower = (color, el) => {
-        if (color === 'red') {
-          el.style.boxShadow = '0 0 20px #EF4444';
-          setTimeout(() => nextGame(1), 1000);
-        } else {
-          el.classList.add('wrong');
-          setTimeout(() => el.classList.remove('wrong'), 500);
-        }
-      };
+      // Logic: Green > Red > Blue > Yellow. So Green is tallest.
+      const towers = document.querySelectorAll('.tower');
+      const correctEl = document.querySelector('[data-color="green"]');
+      
+      towers.forEach(el => {
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          towers.forEach(t => t.style.pointerEvents = 'none');
+          
+          if (el.dataset.color === 'green') {
+            el.style.boxShadow = '0 0 25px #22C55E, inset 0 -4px 0 rgba(0,0,0,0.2)';
+            el.style.transform = 'scale(1.05)';
+            setTimeout(() => nextGame(1), 800);
+          } else {
+            el.style.opacity = '0.4';
+            el.style.animation = 'shake 0.3s';
+            // Show correct answer
+            correctEl.style.boxShadow = '0 0 25px #22C55E, inset 0 -4px 0 rgba(0,0,0,0.2)';
+            correctEl.style.transform = 'scale(1.05)';
+            setTimeout(() => nextGame(0), 1800);
+          }
+        });
+      });
     }
   }
 ];
+
+/* ============================================
+   TRAINING MODE
+============================================ */
+function startTrainingRound() {
+  main.innerHTML = '';
+  $('footer').innerHTML = '';
+  const games = [trainSequence, trainOddOneOut, trainLogic];
+  const selectedGame = games[Math.floor(Math.random() * games.length)];
+  selectedGame();
+}
+
+// 1. Number Sequence
+function trainSequence() {
+  const start = Math.floor(Math.random() * 5) + 2;
+  const diff = Math.floor(Math.random() * 3) + 2;
+  const seq = [start, start+diff, start+2*diff, start+3*diff];
+  const ans = start+4*diff;
+  
+  const opts = [ans, ans+diff, ans-1, ans+2].sort(() => Math.random() - 0.5);
+  
+  main.innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].trainSeq}</h2></div>
+    <div class="train-seq">${seq.join(', ')}, ?</div>
+    <div class="train-options" id="tOpts"></div>
+  `;
+  
+  $('tOpts').innerHTML = opts.map(o => `<button class="t-opt" data-v="${o}">${o}</button>`).join('');
+  
+  $('tOpts').querySelectorAll('.t-opt').forEach(btn => {
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+      let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+      
+      if (parseInt(btn.dataset.v) === ans) {
+        currentLvl++;
+        localStorage.setItem('omega_reasoning_train_level', currentLvl);
+        showTrainingResult(true, I18N[lang].trainWinDesc, avatarType);
+      } else {
+        showTrainingResult(false, I18N[lang].trainLoseDesc, avatarType);
+      }
+    });
+  });
+}
+
+// 2. Odd One Out
+function trainOddOneOut() {
+  const sets = [
+    { items: ['🍎','🍌','🍇','🚗'], odd: '🚗' },
+    { items: ['🐶','🐱','🐭','🌳'], odd: '🌳' },
+    { items: ['🔴','🔵','🟢','🟪'], odd: '🟪' }
+  ];
+  const set = sets[Math.floor(Math.random() * sets.length)];
+  const opts = set.items.sort(() => Math.random() - 0.5);
+  
+  main.innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].trainOdd}</h2></div>
+    <div class="train-options" id="tOpts"></div>
+  `;
+  
+  $('tOpts').innerHTML = opts.map(o => `<button class="t-opt" data-v="${o}">${o}</button>`).join('');
+  
+  $('tOpts').querySelectorAll('.t-opt').forEach(btn => {
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+      let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+      
+      if (btn.dataset.v === set.odd) {
+        currentLvl++;
+        localStorage.setItem('omega_reasoning_train_level', currentLvl);
+        showTrainingResult(true, I18N[lang].trainWinDesc, avatarType);
+      } else {
+        showTrainingResult(false, I18N[lang].trainLoseDesc, avatarType);
+      }
+    });
+  });
+}
+
+// 3. Logic (A > B > C)
+function trainLogic() {
+  const names = [['Ahmed','Ali','Omar'], ['Sara','Mona','Hana'], ['A','B','C']];
+  const n = names[Math.floor(Math.random() * names.length)];
+  
+  main.innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].trainLogic}</h2></div>
+    <div class="train-seq" style="font-size:24px; color:var(--c-navy);">${n[0]} > ${n[1]} > ${n[2]}</div>
+    <div class="train-options" id="tOpts">
+      <button class="t-opt" data-v="1">${n[0]}</button>
+      <button class="t-opt" data-v="2">${n[1]}</button>
+      <button class="t-opt" data-v="3">${n[2]}</button>
+    </div>
+  `;
+  
+  $('tOpts').querySelectorAll('.t-opt').forEach(btn => {
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+      let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+      
+      if (btn.dataset.v === '3') {
+        currentLvl++;
+        localStorage.setItem('omega_reasoning_train_level', currentLvl);
+        showTrainingResult(true, I18N[lang].trainWinDesc, avatarType);
+      } else {
+        showTrainingResult(false, I18N[lang].trainLoseDesc, avatarType);
+      }
+    });
+  });
+}
+
+function showTrainingResult(passed, desc, avatarType) {
+  $('main').innerHTML = `
+    <div class="interstitial">
+      <div class="avatar-circle" id="avatarBox">
+        <span id="avatarEmoji">${passed ? '👏' : '💜'}</span>
+        <img id="avatarImg" src="" alt="Avatar" style="display:none;" onerror="this.style.display='none'; document.getElementById('avatarEmoji').style.display='block';">
+      </div>
+      <h2>${passed ? I18N[lang].trainWin : I18N[lang].trainLose}</h2>
+      <p>${desc}</p>
+    </div>
+  `;
+  $('footer').innerHTML = `<button class="btn" id="nextBtn" type="button">${I18N[lang].next}</button>`;
+  
+  const imgEl = $('avatarImg');
+  const emojiEl = $('avatarEmoji');
+  const imgs = passed ? AVATAR_IMAGES[avatarType].clap : AVATAR_IMAGES[avatarType].encourage;
+  
+  imgEl.src = imgs[0];
+  imgEl.style.display = 'block'; emojiEl.style.display = 'none';
+  
+  let idx = 0;
+  let intv = setInterval(() => {
+    idx = (idx + 1) % 2;
+    imgEl.src = imgs[idx];
+  }, passed ? 250 : 800);
+  
+  $('nextBtn').onclick = () => {
+    clearInterval(intv);
+    startTrainingRound();
+  };
+}
 
 /* ============================================
    CORE LOGIC
@@ -323,6 +582,7 @@ function loadGame(index) {
   updateProgress();
   const game = GAMES[index];
   $('main').innerHTML = game.render();
+  $('footer').innerHTML = '';
   game.init();
 }
 
@@ -330,21 +590,35 @@ function startGame() {
   updateLang();
   currentGameIndex = 0;
   totalScore = 0;
-  $('main').innerHTML = `
-    <div class="interstitial">
-      <div style="font-size:80px; animation: float 3s infinite;">🧠</div>
-      <h2>${I18N[lang].startTitle}</h2>
-      <p>${I18N[lang].startDesc}</p>
-      <button class="btn" id="startBtn">${I18N[lang].startBtn}</button>
-    </div>
-  `;
-  $('startBtn').onclick = () => loadGame(0);
+  
+  if (MODE === 'train') {
+    currentLvl = parseInt(localStorage.getItem('omega_reasoning_train_level') || '1');
+    $('main').innerHTML = `
+      <div class="interstitial">
+        <div style="font-size:80px; animation: float 3s infinite;">🧠</div>
+        <h2>${I18N[lang].startTitle} (Lvl ${currentLvl})</h2>
+        <p>${I18N[lang].startDesc}</p>
+      </div>
+    `;
+    $('footer').innerHTML = `<button class="btn" id="startBtn" type="button">${I18N[lang].startBtn}</button>`;
+    $('startBtn').onclick = () => startTrainingRound();
+  } else {
+    $('main').innerHTML = `
+      <div class="interstitial">
+        <div style="font-size:80px; animation: float 3s infinite;">🧠</div>
+        <h2>${I18N[lang].startTitle}</h2>
+        <p>${I18N[lang].startDesc}</p>
+      </div>
+    `;
+    $('footer').innerHTML = `<button class="btn" id="startBtn" type="button">${I18N[lang].startBtn}</button>`;
+    $('startBtn').onclick = () => loadGame(0);
+  }
 }
 
 function showResults() {
   updateProgress();
   
-  const accuracy = 85; // Placeholder for passing
+  const accuracy = Math.round((totalScore / 3) * 100);
   localStorage.setItem('omega_reasoning_result', JSON.stringify({ accuracy, timestamp: Date.now() }));
 
   const passed = accuracy >= 50;
@@ -354,11 +628,10 @@ function showResults() {
   $('main').innerHTML = `
     <div class="interstitial">
       <div class="avatar-circle" id="avatarBox">
-        <img id="avatarImg" src="" alt="Avatar">
+        <img id="avatarImg" src="" alt="Avatar" onerror="this.style.display='none'; this.parentElement.innerHTML='${passed ? '👏' : '💜'}';">
       </div>
       <h2 id="transTitle"></h2>
       <p id="transDesc"></p>
-      <button class="btn" id="nextBtn" style="opacity:0; pointer-events:none;">${I18N[lang].nextBtn}</button>
     </div>
   `;
 
@@ -368,20 +641,22 @@ function showResults() {
 
   if (passed) {
     $('transTitle').textContent = I18N[lang].transGreat;
-    $('transDesc').textContent = I18N[lang].transGreatDesc;
+    $('transDesc').textContent = `${I18N[lang].transGreatDesc} (${accuracy}%)`;
     
     const clapImgs = AVATAR_IMAGES[avatarType].clap;
     imgEl.src = clapImgs[0];
+    imgEl.style.display = 'block';
     interval = setInterval(() => {
       imgIndex = (imgIndex + 1) % 2;
       imgEl.src = clapImgs[imgIndex];
     }, 250);
   } else {
     $('transTitle').textContent = I18N[lang].transEncourage;
-    $('transDesc').textContent = I18N[lang].transEncourageDesc;
+    $('transDesc').textContent = `${I18N[lang].transEncourageDesc} (${accuracy}%)`;
     
     const encourageImgs = AVATAR_IMAGES[avatarType].encourage;
     imgEl.src = encourageImgs[0];
+    imgEl.style.display = 'block';
     interval = setInterval(() => {
       imgIndex = (imgIndex + 1) % 2;
       imgEl.src = encourageImgs[imgIndex];
@@ -392,23 +667,34 @@ function showResults() {
     if(interval) clearInterval(interval);
     imgEl.src = passed ? AVATAR_IMAGES[avatarType].clap[0] : AVATAR_IMAGES[avatarType].encourage[0];
     
-    const nextBtn = $('nextBtn');
-    nextBtn.style.transition = 'opacity 0.4s';
-    nextBtn.style.opacity = '1';
-    nextBtn.style.pointerEvents = 'auto';
-    
-    // This is the last assessment, so it redirects to the summary/complete page
-    nextBtn.onclick = () => {
-      window.location.href = 'assessment-complete.html';
+    // ✅ زرار الإنهاء
+    $('footer').innerHTML = `<button class="btn" id="finishBtn" type="button">${I18N[lang].finishBtn}</button>`;
+    $('finishBtn').onclick = () => {
+      window.location.href = 'home.html';
     };
   }, 2500);
 }
 
 /* --- EVENTS --- */
-$('langBtn').onclick = () => { lang = lang === 'ar' ? 'en' : 'ar'; startGame(); };
-$('exitBtn').onclick = () => { if (confirm("Exit? Progress will be lost.")) window.location.href = 'assessment-intro.html'; };
+$('langBtn').onclick = () => { 
+  lang = lang === 'ar' ? 'en' : 'ar'; 
+  localStorage.setItem('omega_lang', lang);
+  startGame(); 
+};
 
+$('exitBtn').onclick = () => { 
+  if (confirm("Exit? Progress will be lost.")) {
+    if (MODE === 'assessment') {
+      window.location.href = 'assessment-intro.html';
+    } else {
+      window.location.href = 'home.html';
+    }
+  }
+};
+
+// Boot
 startGame();
 </script>
+
 </body>
 </html>
