@@ -1,190 +1,272 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F8FAFC" />
 <title>Omega — Attention Assessment</title>
+
+<!-- ✅ سكريبت اللغة قبل أي رسم -->
+<script>
+  (function () {
+    try {
+      var lang = localStorage.getItem('omega_lang') || 'en';
+      var html = document.documentElement;
+      html.lang = lang;
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --c-primary: #0E9487; --c-light: #2EC4B6; --c-blue: #3B82F6;
   --c-success: #22C55E; --c-error: #EF4444; --c-warning: #FBBF24;
-  --c-navy: #0F172A; --c-slate: #64748B; --c-bg: #F8FAFC;
+  --c-navy: #0F172A; --c-slate: #64748B; --c-bg: #F8FAFC; --c-card: #FFF;
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden;
+  user-select: none; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%;
+}
 html[lang="ar"] body { font-family: 'Cairo', sans-serif; }
-button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+
+button {
+  font-family: inherit; cursor: pointer; border: 0; background: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
 
 /* Phone Frame */
-.stage { height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.phone { position: relative; width: 375px; height: 812px; max-height: calc(100vh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
-@media (max-width: 480px) { .stage { padding: 0; } .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; } }
+.stage { height: 100vh; height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #E2E8F0; }
+.phone { position: relative; width: 375px; height: 812px; max-height: calc(100dvh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; }
+}
 
 /* Screen Layout */
 .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%); overflow: hidden; }
 
 /* Header */
 header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 52px 24px 10px; flex-shrink: 0; }
-.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+@media (max-width: 480px) { header { padding-top: max(20px, env(safe-area-inset-top)); } }
+
+.icon-btn { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.icon-btn:active { transform: scale(0.95); }
+
 .progress-bar { display: flex; gap: 6px; }
 .progress-bar span { width: 24px; height: 8px; border-radius: 10px; background: #CBD5E1; transition: all 0.3s; }
 .progress-bar span.active { background: var(--c-primary); width: 32px; }
 .progress-bar span.done { background: var(--c-blue); }
 
-/* Main Content */
-main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 20px 30px; min-height: 0; }
+/* Main Content (Game Area) */
+main { position: relative; z-index: 5; flex: 1; min-height: 0; overflow: hidden; background: #fff; margin: 10px 24px; border-radius: 24px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 2px solid #E2E8F0; }
 
-/* Text Instructions */
-.instruction-box { text-align: center; margin-bottom: 15px; min-height: 50px; display: flex; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; }
-.instruction-box h2 { font-size: clamp(16px, 5vw, 20px); font-weight: 800; color: var(--c-navy); line-height: 1.4; }
+/* Footer */
+.footer { position: relative; z-index: 10; padding: 16px 24px; padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)); flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+@media (min-width: 481px) { .footer { padding-bottom: 44px; } }
 
-/* Buttons */
-.btn { width: 100%; max-width: 300px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: clamp(14px, 4vw, 16px); box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; margin-top: 20px; flex-shrink: 0; }
-.btn:active { transform: scale(0.96); }
-.btn:disabled { background: #CBD5E1; box-shadow: none; cursor: not-allowed; }
+.btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { background: #CBD5E1; box-shadow: none; cursor: not-allowed; color: #94A3B8; }
 
-/* Timer bar */
-.timer-bar { width: 100%; height: 6px; background: #E2E8F0; border-radius: 10px; overflow: hidden; margin-bottom: 10px; flex-shrink: 0; }
-.timer-bar i { display: block; height: 100%; width: 100%; background: var(--c-primary); transition: width 0.1s linear; }
-.timer-bar i.warning { background: var(--c-error); }
-
-/* ============================================
-   GAME 1: FIREFLIES (ليل اليراعات)
-============================================ */
-.firefly-area { position: relative; width: 100%; height: 280px; background: linear-gradient(180deg, #0F172A, #1E1B4B); border-radius: 24px; overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.8); flex-shrink: 0; }
-.bug { position: absolute; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; transition: transform 0.1s; }
-.bug.target { width: 40px; height: 40px; background: radial-gradient(circle, #FEF08A, #EAB308); box-shadow: 0 0 20px #FDE047, 0 0 40px #EAB308; animation: float 2s infinite ease-in-out alternate; }
-.bug.distractor { width: 36px; height: 36px; background: radial-gradient(circle, #F87171, #B91C1C); box-shadow: 0 0 15px #EF4444; animation: float 1.5s infinite ease-in-out alternate-reverse; }
-.bug:active { transform: scale(0.8); }
-
-/* ============================================
-   GAME 2: CONVEYOR BELT (سير المصنع)
-============================================ */
-.conveyor-area { position: relative; width: 100%; height: 280px; background: #475569; border-radius: 24px; overflow: hidden; box-shadow: inset 0 4px 10px rgba(0,0,0,0.3); flex-shrink: 0; display: flex; flex-direction: column; }
-.belt { position: absolute; top: 50%; left: 0; right: 0; height: 60px; background: repeating-linear-gradient(90deg, #334155, #334155 20px, #1E293B 20px, #1E293B 40px); border-top: 3px solid #94A3B8; border-bottom: 3px solid #94A3B8; transform: translateY(-50%); animation: beltMove 1s linear infinite; }
-.conveyor-item { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 36px; cursor: pointer; animation: slideLeft 2.5s linear forwards; z-index: 2; }
-.conveyor-item:active { transform: translateY(-50%) scale(0.8); }
-@keyframes beltMove { to { background-position: 40px 0; } }
-@keyframes slideLeft { from { left: 100%; } to { left: -20%; } }
-
-/* ============================================
-   GAME 3: COLOR MATCH (مطابقة الألوان)
-============================================ */
-.stroop-container { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; gap: 30px; }
-.stroop-word { font-size: 48px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 20px; background: #fff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-width: 200px; text-align: center; }
-.color-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 280px; }
-.color-btn { aspect-ratio: 1; border-radius: 50%; box-shadow: 0 8px 0 rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.1); transition: all 0.1s; }
-.color-btn:active { transform: translateY(4px); box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
-
-/* 🟢 INTERSTITIAL (Transition) */
-.interstitial { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 20px; width: 100%; animation: fadeUp 0.5s; padding: 0 10px; }
-.avatar-circle { width: clamp(160px, 50vw, 220px); height: clamp(160px, 50vw, 220px); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; }
+/* Interstitial (Start & Result Screens) */
+.interstitial { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 16px; padding: 24px; background: #fff; z-index: 20; animation: fadeUp 0.5s; }
+.interstitial h2 { font-size: 24px; font-weight: 800; color: var(--c-navy); line-height: 1.3; }
+.interstitial p { font-size: 15px; color: var(--c-slate); line-height: 1.5; }
+.avatar-circle { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 60px; margin-bottom: 10px; }
 .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
-.interstitial h2 { font-size: clamp(20px, 6vw, 26px); font-weight: 800; color: var(--c-navy); }
-.interstitial p { font-size: clamp(14px, 4vw, 16px); color: var(--c-slate); line-height: 1.5; max-width: 280px; }
+
+/* Floating Instruction */
+.instruction { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; font-size: 22px; font-weight: 800; color: var(--c-navy); width: 80%; pointer-events: none; z-index: 10; animation: popIn 0.4s; }
+
+/* ============================================================ */
+/* GAME TARGETS (The iOS Fix is here) */
+/* ============================================================ */
+.target {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* ✅ السحر كله هنا لمشكلة الآيفون */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 5;
+}
+
+.dot-target {
+  width: 60px; height: 60px;
+  background: var(--c-warning);
+  border-radius: 50%;
+  box-shadow: 0 8px 16px rgba(251, 191, 36, 0.4);
+}
+.dot-target.hit {
+  transform: scale(1.5); opacity: 0; transition: all 0.2s;
+}
+
+.item-target {
+  width: 60px; height: 60px; font-size: 40px;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
+}
+.item-target.hit { transform: scale(1.5); opacity: 0; transition: all 0.2s; }
+.item-target.hit-bad { transform: scale(0.5); opacity: 0; transition: all 0.2s; }
+
+.center-target {
+  width: 120px; height: 120px;
+}
+.go-circle {
+  background: var(--c-success);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+}
+.nogo-square {
+  background: var(--c-error);
+  border-radius: 20%;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+}
+
+/* Training Games */
+.train-grid { display: grid; gap: 10px; width: 80%; max-width: 300px; margin: auto; }
+.train-tile { aspect-ratio: 1; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; touch-action: manipulation; }
+.train-tile:active { transform: scale(0.95); }
+
+.stroop-box { text-align: center; }
+.stroop-word { font-size: 48px; font-weight: 900; letter-spacing: 4px; margin-bottom: 20px; }
+.stroop-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 80%; max-width: 280px; margin: auto; }
+.stroop-btn { padding: 16px; border-radius: 12px; font-weight: 800; font-size: 18px; color: #fff; touch-action: manipulation; }
+.stroop-btn:active { transform: scale(0.95); }
+
+.reaction-box { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; color: #fff; text-align: center; touch-action: manipulation; }
 
 /* Animations */
-@keyframes float { 50% { transform: translateY(-15px) scale(1.1); } }
+@keyframes popIn { from { transform: scale(0); opacity: 0; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } }
 </style>
 </head>
 <body>
-<div class="stage"><div class="phone"><div class="screen" id="screen">
-  
-  <header>
-    <button class="icon-btn" id="exitBtn">✕</button>
-    <div class="progress-bar" id="progress">
-      <span class="active"></span><span></span><span></span>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen" id="screen">
+      
+      <header>
+        <button class="icon-btn" id="exitBtn" type="button" aria-label="Exit">✕</button>
+        <div class="progress-bar" id="progress">
+          <span></span><span></span><span></span>
+        </div>
+        <button class="icon-btn" id="langBtn" type="button" style="font-size:13px; color:var(--c-primary);">ع</button>
+      </header>
+
+      <main id="main">
+        <!-- Game elements will be injected here -->
+      </main>
+
+      <div class="footer" id="footer"></div>
+
     </div>
-    <button class="icon-btn" id="langBtn" style="font-size:12px;">ع</button>
-  </header>
-
-  <main id="main"></main>
-
-</div></div></div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
-   ⚠️⚠️⚠️ مكان الصور بتاعتك (التسقيفة والتشجيع) ⚠️⚠️⚠️
+   CONFIG & STATE
 ============================================================ */
 const AVATAR_IMAGES = {
   adult: {
-    clap: ['الكبار تسقيفه 1.jpg', 'الكبار تسقيفه 2.jpg'], // 👈 صور التسقيفة للكبار
-    encourage: ['الكبير جاب اقل من 50.jpg', 'الكبير جاب اقل من 50.jpg'] // 👈 صور التشجيع/الزعل للكبار
+    clap: ['الكبار تسقيفه 1.jpg', 'الكبار تسقيفه 2.jpg'],
+    encourage: ['الكبير جاب اقل من 50.jpg', 'الكبير جاب اقل من 50.jpg'] 
   },
   kid: {
-    clap: ['اطفال تسقيفه 1.jpg', 'اطفال تسقيفه مقفوله.jpg'], // 👈 صور التسقيفة للأطفال
-    encourage: ['الصغير جاب اقل من 50.jpg', 'الصغير جاب اقل من 50.jpg'] // 👈 صور التشجيع/الزعل للأطفال
+    clap: ['اطفال تسقيفه 1.jpg', 'اطفال تسقيفه مقفوله.jpg'],
+    encourage: ['الصغير جاب اقل من 50.jpg', 'الصغير جاب اقل من 50.jpg'] 
   }
 };
-/* ============================================================ */
 
 const I18N = {
   en: {
     startTitle: "Attention Challenge",
-    startDesc: "Test your focus through 3 quick interactive games.",
-    startBtn: "Start Challenge",
+    startDesc: "Test your focus and reaction speed.",
+    startBtn: "Start",
     
-    g1Intro: "Catch the glowing fireflies, avoid the red ones!",
-    g1End: "Time's up!",
+    r1: "Tap the yellow dots as fast as you can!",
+    r2: "Catch the gifts! Avoid the black dots.",
+    r3: "Tap the GREEN circle. DO NOT tap the RED square.",
     
-    g2Intro: "Grab the gifts, avoid the bombs!",
-    g2End: "Belt stopped!",
+    trainReact: "Wait for GREEN, then tap as fast as you can!",
+    trainSearch: "Find the different emoji!",
+    trainStroop: "Tap the color of the TEXT, not the word.",
     
-    g3Intro: "Tap the color of the text, NOT the word!",
-    g3End: "Last one done!",
-    
-    finTitle: "Challenge Complete",
-    next: "Next Challenge",
+    next: "Next",
     exitMsg: "Exit? Progress will be lost.",
-    
-    transGreat: "Great Job!",
-    transGreatDesc: "You did really well on this challenge. Keep it up!",
+    transGreat: "Excellent Focus!",
+    transGreatDesc: "You did great.",
     transEncourage: "Good Effort!",
-    transEncourageDesc: "Every practice makes you stronger. Let's continue!"
+    transEncourageDesc: "Keep practicing.",
+    trainWin: "Level Up!",
+    trainWinDesc: "Your focus is getting sharper.",
+    trainLose: "Try Again!",
+    trainLoseDesc: "Almost there."
   },
   ar: {
     startTitle: "تحدي الانتباه",
-    startDesc: "اختبر تركيزك من خلال 3 ألعاب تفاعلية سريعة.",
-    startBtn: "ابدأ التحدي",
+    startDesc: "اختبر تركيزك وسرعة رد فعلك.",
+    startBtn: "ابدأ",
     
-    g1Intro: "اصطاد اليراعات المضيئة، وابعد عن الحمرا!",
-    g1End: "خلص الوقت!",
+    r1: "دوس على النقط الصفرا بأسرع ما يمكن!",
+    r2: "اصطاد الهدايا! وابعد عن النقط السودة.",
+    r3: "دوس على الدايرة الخضرا. ومتدوسش على المربع الأحمر!",
     
-    g2Intro: "جمع الهدايا، وابعد عن القنابل!",
-    g2End: "السير وقف!",
+    trainReact: "استنى لحد ما تبقى خضرا، وبعدين دوس بأسرع ما يمكن!",
+    trainSearch: "لاقي الإيموجي المختلف!",
+    trainStroop: "دوس على لون الكتابة، مش الكلمة.",
     
-    g3Intro: "دوس على لون الكلام، مش الكلمة نفسها!",
-    g3End: "خلصت آخر لعبة!",
-    
-    finTitle: "خلصت التحدي",
-    next: "التحدي الجاي",
+    next: "التالي",
     exitMsg: "هل تريد الخروج؟ ستفقد تقدمك.",
-    
-    transGreat: "شغل عالي!",
-    transGreatDesc: "أداءك كان ممتاز في التحدي ده. استمر!",
+    transGreat: "تركيز ممتاز!",
+    transGreatDesc: "أداءك كان رائع.",
     transEncourage: "محاولة جيدة!",
-    transEncourageDesc: "كل تدريب بيخليك أقوى. يلا نكمل!"
+    transEncourageDesc: "استمر في التدريب.",
+    trainWin: "عدّيت المستوى!",
+    trainWinDesc: "تركيزك بيتحسن.",
+    trainLose: "حاول تاني!",
+    trainLoseDesc: "قربت جداً."
   }
 };
 
 let lang = localStorage.getItem('omega_lang') === 'ar' ? 'ar' : 'en';
 const $ = id => document.getElementById(id);
-const COLORS_MAP = {
-  RED: '#EF4444', BLUE: '#3B82F6', GREEN: '#22C55E', YELLOW: '#FBBF24'
-};
-const COLOR_NAMES = { en: { RED: 'Red', BLUE: 'Blue', GREEN: 'Green', YELLOW: 'Yellow' }, ar: { RED: 'أحمر', BLUE: 'أزرق', GREEN: 'أخضر', YELLOW: 'أصفر' } };
+const main = $('main');
 
-let round = 1;
-let totalScore = 0;
-let gameInterval = null;
+// Mode logic: 'assessment' or 'train'
+let MODE = localStorage.getItem('omega_attention_mode') || 'assessment';
 
-function updateProgress() {
-  document.querySelectorAll('.progress-bar span').forEach((el, i) => {
-    el.className = i + 1 < round ? 'done' : (i + 1 === round ? 'active' : '');
-  });
+let score = 0, total = 0, level = 1, token = 0;
+
+const wait = ms => { const t = token; return new Promise((ok, no) => setTimeout(() => t === token ? ok() : no('cancel'), ms)); };
+
+function updateProgress(step = 0, max = 3) {
+  const pBar = $('progress');
+  if (MODE === 'train') { pBar.style.display = 'none'; return; }
+  pBar.style.display = 'flex';
+  pBar.innerHTML = '';
+  for (let i = 0; i < max; i++) {
+    let span = document.createElement('span');
+    if (i + 1 < step) span.className = 'done';
+    else if (i + 1 === step) span.className = 'active';
+    pBar.appendChild(span);
+  }
 }
 
 function updateLang() {
@@ -193,288 +275,430 @@ function updateLang() {
   $('langBtn').textContent = lang === 'ar' ? 'EN' : 'ع';
 }
 
-/* --- Start --- */
-function startGame() {
-  updateLang(); updateProgress();
-  $('main').innerHTML = `
-    <div class="interstitial">
-      <div style="font-size:80px; animation: float 3s infinite;">🎯</div>
-      <h2>${I18N[lang].startTitle}</h2>
-      <p>${I18N[lang].startDesc}</p>
-      <button class="btn" id="startBtn">${I18N[lang].startBtn}</button>
-    </div>
-  `;
-  $('startBtn').onclick = game1_Fireflies;
+function showInstruction(text) {
+  main.innerHTML = `<div class="instruction">${text}</div>`;
 }
 
-/* ============================================
-   GAME 1: FIREFLIES
-============================================ */
-function game1_Fireflies() {
-  round = 1; updateProgress();
-  let score = 0;
-  let timeLeft = 15;
+/* ============================================================
+   INIT & ROUTING
+============================================================ */
+function initGame() {
+  updateLang();
+  main.innerHTML = '';
   
-  $('main').innerHTML = `
-    <div class="instruction-box"><h2>${I18N[lang].g1Intro}</h2></div>
-    <div class="timer-bar"><i id="timer1"></i></div>
-    <div class="firefly-area" id="ffArea"></div>
-  `;
+  if (MODE === 'train') {
+    level = parseInt(localStorage.getItem('omega_attention_train_level') || '1');
+    showInterstitial("🎯", I18N[lang].startTitle, `${I18N[lang].startDesc} (Level ${level})`, I18N[lang].startBtn, startTrainingRound);
+  } else {
+    showInterstitial("🎯", I18N[lang].startTitle, I18N[lang].startDesc, I18N[lang].startBtn, runAssessment);
+  }
+}
 
-  const area = $('ffArea');
-  const timer = $('timer1');
+/* ============================================================
+   ASSESSMENT MODE (3 Rounds)
+============================================================ */
+async function runAssessment() {
+  score = 0; total = 0;
   
-  // Spawner
-  gameInterval = setInterval(() => {
-    const isTarget = Math.random() > 0.4;
-    const bug = document.createElement('div');
-    bug.className = 'bug ' + (isTarget ? 'target' : 'distractor');
+  // Round 1: Dots
+  updateProgress(1, 3);
+  main.innerHTML = '';
+  showInstruction(I18N[lang].r1);
+  await wait(2000);
+  main.innerHTML = '';
+  let r1 = await playDots(6);
+  score += r1; total += 6;
+
+  // Round 2: Gifts
+  updateProgress(2, 3);
+  main.innerHTML = '';
+  showInstruction(I18N[lang].r2);
+  await wait(2000);
+  main.innerHTML = '';
+  let r2 = await playGifts(8);
+  score += r2; total += 8;
+
+  // Round 3: Go/No-Go
+  updateProgress(3, 3);
+  main.innerHTML = '';
+  showInstruction(I18N[lang].r3);
+  await wait(2000);
+  main.innerHTML = '';
+  let r3 = await playGoNoGo(8);
+  score += r3; total += 8;
+
+  // Finish Assessment
+  const accuracy = Math.round((Math.max(0, score) / total) * 100);
+  localStorage.setItem('omega_attention_result', JSON.stringify({ accuracy, timestamp: Date.now() }));
+  
+  let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+  let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+  let passed = accuracy >= 50;
+  
+  showInterstitial(
+    passed ? '👏' : '💜',
+    passed ? I18N[lang].transGreat : I18N[lang].transEncourage,
+    `${passed ? I18N[lang].transGreatDesc : I18N[lang].transEncourageDesc} (${accuracy}%)`,
+    I18N[lang].next,
+    () => window.location.href = 'assessment-visual.html',
+    avatarType,
+    passed
+  );
+}
+
+// 1. Tap the Dots
+async function playDots(count) {
+  let hits = 0;
+  for (let i = 0; i < count; i++) {
+    let hit = await spawnTarget('dot-target', 1500);
+    if (hit) hits++;
+    await wait(300); // Small gap between dots
+  }
+  return hits;
+}
+
+// 2. Catch Gifts (Avoid Bombs)
+async function playGifts(count) {
+  let hits = 0;
+  for (let i = 0; i < count; i++) {
+    const isGift = Math.random() > 0.3; // 70% gifts, 30% black dots
+    let tapped = await spawnItem(isGift, 1200);
     
-    // Random position (keep away from edges)
-    const maxX = area.clientWidth - 50;
-    const maxY = area.clientHeight - 50;
-    bug.style.left = Math.max(10, Math.random() * maxX) + 'px';
-    bug.style.top = Math.max(10, Math.random() * maxY) + 'px';
+    if (isGift && tapped) hits++;
+    if (!isGift && tapped) hits -= 1; // Penalty for tapping bomb
+    if (isGift && !tapped) hits -= 0.5; // Penalty for missing gift
     
-    // Click logic
-    bug.onclick = (e) => {
-      e.stopPropagation();
-      if (isTarget) {
-        score += 1;
-        bug.style.transform = 'scale(2)';
-        bug.style.opacity = '0';
-        setTimeout(() => bug.remove(), 200);
+    await wait(300);
+  }
+  return Math.max(0, hits);
+}
+
+// 3. Go / No-Go
+async function playGoNoGo(count) {
+  let hits = 0;
+  for (let i = 0; i < count; i++) {
+    const isGo = Math.random() > 0.4; // 60% Go, 40% No-Go
+    let tapped = await spawnGoNoGo(isGo, 1500);
+    
+    if (isGo && tapped) hits++;
+    if (!isGo && tapped) hits -= 1; // Penalty for tapping No-Go
+    
+    await wait(500);
+  }
+  return Math.max(0, hits);
+}
+
+/* ============================================================
+   TRAINING MODE (Endless, Dynamic)
+============================================================ */
+function startTrainingRound() {
+  const games = [trainReaction, trainVisualSearch, trainStroop];
+  const selectedGame = games[Math.floor(Math.random() * games.length)];
+  selectedGame();
+}
+
+// 1. Reaction Time
+async function trainReaction() {
+  main.innerHTML = '';
+  showInstruction(I18N[lang].trainReact);
+  const delay = 2000 + Math.random() * 3000; // 2 to 5 seconds
+  
+  const box = document.createElement('div');
+  box.className = 'reaction-box';
+  box.style.background = '#CBD5E1';
+  box.textContent = '...';
+  main.appendChild(box);
+
+  await wait(delay);
+  box.style.background = 'var(--c-success)';
+  box.textContent = 'TAP NOW!';
+  
+  const startTime = Date.now();
+  let tapped = false;
+  
+  const handleTap = (e) => {
+    e.preventDefault();
+    if (tapped) return;
+    tapped = true;
+    const reactionTime = Date.now() - startTime;
+    box.removeEventListener('pointerdown', handleTap);
+    
+    // Treat fast reaction (< 600ms) as a win
+    const passed = reactionTime < 600;
+    if (passed) {
+      level++; localStorage.setItem('omega_attention_train_level', level);
+    }
+    
+    let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+    let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+    
+    showInterstitial(
+      passed ? '👏' : '💜',
+      passed ? I18N[lang].trainWin : I18N[lang].trainLose,
+      passed ? `${I18N[lang].trainWinDesc} (${reactionTime}ms)` : `${I18N[lang].trainLoseDesc} (${reactionTime}ms)`,
+      I18N[lang].next,
+      startTrainingRound,
+      avatarType,
+      passed
+    );
+  };
+  
+  box.addEventListener('pointerdown', handleTap);
+  
+  // Timeout if they don't tap within 2 seconds
+  setTimeout(() => {
+    if (!tapped) {
+      tapped = true;
+      box.removeEventListener('pointerdown', handleTap);
+      let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+      let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+      showInterstitial('💜', I18N[lang].trainLose, 'Too slow!', I18N[lang].next, startTrainingRound, avatarType, false);
+    }
+  }, 2000);
+}
+
+// 2. Visual Search
+async function trainVisualSearch() {
+  main.innerHTML = '';
+  const size = level < 3 ? 3 : 4;
+  const targetEmoji = '🍏';
+  const baseEmoji = '🍎';
+  
+  const grid = document.createElement('div');
+  grid.className = 'train-grid';
+  grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+  
+  const totalCells = size * size;
+  const targetIdx = Math.floor(Math.random() * totalCells);
+  
+  for (let i = 0; i < totalCells; i++) {
+    let tile = document.createElement('div');
+    tile.className = 'train-tile';
+    tile.textContent = i === targetIdx ? targetEmoji : baseEmoji;
+    
+    const handleTap = (e) => {
+      e.preventDefault();
+      if (i === targetIdx) {
+        level++; localStorage.setItem('omega_attention_train_level', level);
+        let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+        let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+        showInterstitial('👏', I18N[lang].trainWin, I18N[lang].trainWinDesc, I18N[lang].next, startTrainingRound, avatarType, true);
       } else {
-        score -= 1; // Penalty
-        bug.style.transform = 'scale(0.5)';
-        bug.style.opacity = '0';
-        setTimeout(() => bug.remove(), 200);
+        tile.style.background = '#FEE2E2';
+        let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+        let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+        setTimeout(() => showInterstitial('💜', I18N[lang].trainLose, I18N[lang].trainLoseDesc, I18N[lang].next, startTrainingRound, avatarType, false), 300);
       }
     };
-    
-    area.appendChild(bug);
-    
-    // Auto remove after 1.2s
-    setTimeout(() => {
-      if (bug.parentNode) {
-        bug.style.opacity = '0';
-        setTimeout(() => bug.remove(), 300);
-      }
-    }, 1200);
-    
-  }, 600);
-
-  // Timer
-  const tick = setInterval(() => {
-    timeLeft -= 0.1;
-    timer.style.width = (timeLeft / 15 * 100) + '%';
-    if (timeLeft <= 3) timer.classList.add('warning');
-    
-    if (timeLeft <= 0) {
-      clearInterval(tick);
-      clearInterval(gameInterval);
-      area.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:800;">${I18N[lang].g1End}</div>`;
-      totalScore += Math.max(0, score);
-      setTimeout(game2_Conveyor, 1500);
-    }
-  }, 100);
-}
-
-/* ============================================
-   GAME 2: CONVEYOR BELT
-============================================ */
-function game2_Conveyor() {
-  round = 2; updateProgress();
-  let score = 0;
-  let timeLeft = 15;
-  
-  $('main').innerHTML = `
-    <div class="instruction-box"><h2>${I18N[lang].g2Intro}</h2></div>
-    <div class="timer-bar"><i id="timer2"></i></div>
-    <div class="conveyor-area" id="convArea">
-      <div class="belt"></div>
-    </div>
-  `;
-
-  const area = $('convArea');
-  const timer = $('timer2');
-  
-  // Spawner
-  gameInterval = setInterval(() => {
-    const isGift = Math.random() > 0.4;
-    const item = document.createElement('div');
-    item.className = 'conveyor-item';
-    item.textContent = isGift ? '🎁' : '💣';
-    
-    item.onclick = () => {
-      if (isGift) score += 1;
-      else score -= 1;
-      item.style.opacity = '0';
-      item.style.transform = 'translateY(-50%) scale(1.5)';
-      setTimeout(() => item.remove(), 200);
-    };
-    
-    area.appendChild(item);
-    
-    // Auto remove if not clicked (Missed)
-    setTimeout(() => {
-      if (item.parentNode) item.remove();
-    }, 2500);
-    
-  }, 800);
-
-  // Timer
-  const tick = setInterval(() => {
-    timeLeft -= 0.1;
-    timer.style.width = (timeLeft / 15 * 100) + '%';
-    if (timeLeft <= 3) timer.classList.add('warning');
-    
-    if (timeLeft <= 0) {
-      clearInterval(tick);
-      clearInterval(gameInterval);
-      area.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:800;z-index:10;">${I18N[lang].g2End}</div>`;
-      totalScore += Math.max(0, score);
-      setTimeout(game3_Stroop, 1500);
-    }
-  }, 100);
-}
-
-/* ============================================
-   GAME 3: STROOP (COLOR MATCH)
-============================================ */
-function game3_Stroop() {
-  round = 3; updateProgress();
-  let qIndex = 0;
-  const totalQ = 5;
-  let score = 0;
-  const colorKeys = Object.keys(COLORS_MAP);
-  
-  function renderQ() {
-    if (qIndex >= totalQ) {
-      totalScore += score;
-      setTimeout(showResults, 1000);
-      return;
-    }
-    
-    // Pick word and color (ensure they are different to avoid easy answers)
-    const word = colorKeys[Math.floor(Math.random() * 4)];
-    let color = colorKeys[Math.floor(Math.random() * 4)];
-    while (color === word) color = colorKeys[Math.floor(Math.random() * 4)];
-    
-    $('main').innerHTML = `
-      <div class="instruction-box">
-        <h2>${I18N[lang].g3Intro}</h2>
-        <span style="font-size:12px;color:var(--c-slate);margin-top:5px;">(${qIndex+1} / ${totalQ})</span>
-      </div>
-      <div class="stroop-container">
-        <div class="stroop-word" style="color: ${COLORS_MAP[color]};">${COLOR_NAMES[lang][word]}</div>
-        <div class="color-grid" id="colorGrid">
-          ${colorKeys.map(c => `<button class="color-btn" data-c="${c}" style="background: ${COLORS_MAP[c]};"></button>`).join('')}
-        </div>
-      </div>
-    `;
-    
-    document.querySelectorAll('.color-btn').forEach(btn => {
-      btn.onclick = () => {
-        const picked = btn.dataset.c;
-        // Flash feedback
-        if (picked === color) {
-          score++;
-          btn.style.boxShadow = '0 0 0 6px #22C55E';
-        } else {
-          btn.style.boxShadow = '0 0 0 6px #EF4444';
-        }
-        
-        setTimeout(() => {
-          qIndex++;
-          renderQ();
-        }, 400);
-      };
-    });
+    tile.addEventListener('pointerdown', handleTap);
+    grid.appendChild(tile);
   }
   
-  renderQ();
+  main.innerHTML = `<div style="text-align:center; font-weight:800; color:var(--c-navy); margin-bottom:20px; font-size:20px;">${I18N[lang].trainSearch}</div>`;
+  main.appendChild(grid);
 }
 
-/* ============================================
-   RESULTS & TRANSITION (Final Interstitial)
-============================================ */
-function showResults() {
-  // Total score: Game 1 + Game 2 + Game 3. Max estimated points ~ 50.
-  const maxScore = 50; 
-  const accuracy = Math.min(100, Math.round((totalScore / 25) * 100)); // Adjusted scale
+// 3. Stroop Test
+async function trainStroop() {
+  main.innerHTML = '';
+  const colors = [
+    { name: 'RED', hex: '#EF4444' },
+    { name: 'BLUE', hex: '#3B82F6' },
+    { name: 'GREEN', hex: '#22C55E' },
+    { name: 'YELLOW', hex: '#FBBF24' }
+  ];
   
-  localStorage.setItem('omega_attention_result', JSON.stringify({ accuracy, timestamp: Date.now() }));
+  const wordObj = colors[Math.floor(Math.random() * colors.length)];
+  const inkObj = colors[Math.floor(Math.random() * colors.length)];
+  
+  const container = document.createElement('div');
+  container.className = 'stroop-box';
+  container.innerHTML = `
+    <div style="font-size:16px; font-weight:700; color:var(--c-slate); margin-bottom:20px;">${I18N[lang].trainStroop}</div>
+    <div class="stroop-word" style="color:${inkObj.hex};">${wordObj.name}</div>
+    <div class="stroop-opts">
+      ${colors.map(c => `<button class="stroop-btn" style="background:${c.hex}" data-color="${c.name}">${c.name}</button>`).join('')}
+    </div>
+  `;
+  
+  main.appendChild(container);
+  
+  container.querySelectorAll('.stroop-btn').forEach(btn => {
+    btn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      const selected = btn.dataset.color;
+      let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+      let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+      
+      if (selected === inkObj.name) {
+        level++; localStorage.setItem('omega_attention_train_level', level);
+        showInterstitial('👏', I18N[lang].trainWin, I18N[lang].trainWinDesc, I18N[lang].next, startTrainingRound, avatarType, true);
+      } else {
+        showInterstitial('💜', I18N[lang].trainLose, I18N[lang].trainLoseDesc, I18N[lang].next, startTrainingRound, avatarType, false);
+      }
+    });
+  });
+}
 
-  round = 4; updateProgress(); // Fill progress bar
 
-  // Determine if passed (>= 50%)
-  const passed = accuracy >= 50;
-  
-  // Get user age to pick avatar
-  let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
-  const avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
-  
-  // Setup Interstitial UI
-  $('main').innerHTML = `
+/* ============================================================
+   SPARK HELPERS (The Core Engine)
+============================================================ */
+function spawnTarget(className, timeout) {
+  return new Promise(resolve => {
+    const target = document.createElement('div');
+    target.className = 'target ' + className;
+    target.style.left = Math.floor(Math.random() * 70) + 15 + '%';
+    target.style.top = Math.floor(Math.random() * 70) + 15 + '%';
+    
+    let isTapped = false;
+    
+    // ✅ iPhone Fix: pointerdown + preventDefault
+    const handleTap = (e) => {
+      e.preventDefault();
+      if (isTapped) return;
+      isTapped = true;
+      target.classList.add('hit');
+      setTimeout(() => target.remove(), 200);
+      clearTimeout(timer);
+      resolve(true); // Hit
+    };
+
+    target.addEventListener('pointerdown', handleTap);
+    main.appendChild(target);
+
+    const timer = setTimeout(() => {
+      if (isTapped) return;
+      isTapped = true;
+      target.remove();
+      resolve(false); // Missed
+    }, timeout);
+  });
+}
+
+function spawnItem(isGift, timeout) {
+  return new Promise(resolve => {
+    const target = document.createElement('div');
+    target.className = 'target item-target';
+    target.textContent = isGift ? '🎁' : '⚫';
+    target.style.left = Math.floor(Math.random() * 70) + 15 + '%';
+    target.style.top = Math.floor(Math.random() * 70) + 15 + '%';
+    
+    let isTapped = false;
+    const handleTap = (e) => {
+      e.preventDefault();
+      if (isTapped) return;
+      isTapped = true;
+      target.classList.add(isGift ? 'hit' : 'hit-bad');
+      setTimeout(() => target.remove(), 200);
+      clearTimeout(timer);
+      resolve(true); // Tapped
+    };
+
+    target.addEventListener('pointerdown', handleTap);
+    main.appendChild(target);
+
+    const timer = setTimeout(() => {
+      if (isTapped) return;
+      isTapped = true;
+      target.remove();
+      resolve(false); // Missed
+    }, timeout);
+  });
+}
+
+function spawnGoNoGo(isGo, timeout) {
+  return new Promise(resolve => {
+    const target = document.createElement('div');
+    target.className = 'target center-target ' + (isGo ? 'go-circle' : 'nogo-square');
+    target.style.left = '50%';
+    target.style.top = '50%';
+    target.style.transform = 'translate(-50%, -50%)';
+    
+    let isTapped = false;
+    const handleTap = (e) => {
+      e.preventDefault();
+      if (isTapped) return;
+      isTapped = true;
+      target.remove();
+      clearTimeout(timer);
+      resolve(true); // Tapped
+    };
+
+    if (isGo) {
+      target.addEventListener('pointerdown', handleTap);
+    }
+    main.appendChild(target);
+
+    const timer = setTimeout(() => {
+      if (isTapped) return;
+      isTapped = true;
+      target.remove();
+      resolve(false); // Missed (timed out)
+    }, timeout);
+  });
+}
+
+/* ============================================================
+   INTERSTITIAL SCREEN
+============================================================ */
+function showInterstitial(emoji, title, desc, btnText, callback, avatarType = null, passed = null) {
+  main.innerHTML = `
     <div class="interstitial">
       <div class="avatar-circle" id="avatarBox">
-        <img id="avatarImg" src="" alt="Avatar">
+        <span id="avatarEmoji">${emoji}</span>
+        <img id="avatarImg" src="" alt="Avatar" style="display:none;" onerror="this.style.display='none'; document.getElementById('avatarEmoji').style.display='block';">
       </div>
-      <h2 id="transTitle"></h2>
-      <p id="transDesc"></p>
-      <button class="btn" id="nextBtn" style="opacity:0; pointer-events:none;">${I18N[lang].next}</button>
+      <h2>${title}</h2>
+      <p>${desc}</p>
     </div>
   `;
+  $('footer').innerHTML = `<button class="btn" id="actionBtn">${btnText}</button>`;
+  $('actionBtn').onclick = callback;
 
-  let imgIndex = 0;
-  let interval = null;
-  const imgEl = $('avatarImg');
-
-  if (passed) {
-    $('transTitle').textContent = I18N[lang].transGreat;
-    $('transDesc').textContent = `${I18N[lang].transGreatDesc} (${accuracy}%)`;
+  if (avatarType !== null && passed !== null) {
+    const imgEl = $('avatarImg');
+    const emojiEl = $('avatarEmoji');
+    const imgs = passed ? AVATAR_IMAGES[avatarType].clap : AVATAR_IMAGES[avatarType].encourage;
     
-    const clapImgs = AVATAR_IMAGES[avatarType].clap;
-    imgEl.src = clapImgs[0];
-    interval = setInterval(() => {
-      imgIndex = (imgIndex + 1) % 2;
-      imgEl.src = clapImgs[imgIndex];
-    }, 250);
+    imgEl.src = imgs[0];
+    imgEl.style.display = 'block'; 
+    emojiEl.style.display = 'none';
     
-  } else {
-    $('transTitle').textContent = I18N[lang].transEncourage;
-    $('transDesc').textContent = `${I18N[lang].transEncourageDesc} (${accuracy}%)`;
+    let idx = 0;
+    let intv = setInterval(() => {
+      idx = (idx + 1) % 2;
+      imgEl.src = imgs[idx];
+    }, passed ? 250 : 800);
     
-    const encourageImgs = AVATAR_IMAGES[avatarType].encourage;
-    imgEl.src = encourageImgs[0];
-    interval = setInterval(() => {
-      imgIndex = (imgIndex + 1) % 2;
-      imgEl.src = encourageImgs[imgIndex];
-    }, 800);
-  }
-
-  // Show button after 3 seconds with smooth transition
-  setTimeout(() => {
-    if(interval) clearInterval(interval);
-    imgEl.src = passed ? AVATAR_IMAGES[avatarType].clap[0] : AVATAR_IMAGES[avatarType].encourage[0];
-    
-    const nextBtn = $('nextBtn');
-    nextBtn.style.transition = 'opacity 0.4s';
-    nextBtn.style.opacity = '1';
-    nextBtn.style.pointerEvents = 'auto';
-    
-    nextBtn.onclick = () => {
-      window.location.href = 'assessment-problem.html';
+    // Stop animation when they click Next
+    const originalCallback = $('actionBtn').onclick;
+    $('actionBtn').onclick = () => {
+      clearInterval(intv);
+      originalCallback();
     };
-  }, 3000);
+  }
 }
 
 /* --- EVENTS --- */
-$('langBtn').onclick = () => { lang = lang === 'ar' ? 'en' : 'ar'; startGame(); };
-$('exitBtn').onclick = () => { if (confirm(I18N[lang].exitMsg)) window.location.href = 'assessment-intro.html'; };
+$('langBtn').onclick = () => { 
+  lang = lang === 'ar' ? 'en' : 'ar'; 
+  localStorage.setItem('omega_lang', lang);
+  initGame(); 
+};
 
-startGame();
+$('exitBtn').onclick = () => { 
+  if (confirm(I18N[lang].exitMsg)) {
+    if (MODE === 'assessment') {
+      window.location.href = 'assessment-intro.html';
+    } else {
+      window.location.href = 'home.html';
+    }
+  }
+};
+
+// Boot
+initGame();
 </script>
 </body>
 </html>
