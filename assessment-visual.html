@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F8FAFC" />
 <title>Omega — Visual Assessment</title>
+
+<!-- ✅ سكريبت اللغة قبل أي رسم -->
+<script>
+  (function () {
+    try {
+      var lang = localStorage.getItem('omega_lang') || 'en';
+      var html = document.documentElement;
+      html.lang = lang;
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --c-primary: #0E9487; --c-light: #2EC4B6; --c-blue: #3B82F6;
@@ -12,36 +29,58 @@
   --c-navy: #0F172A; --c-slate: #64748B; --c-bg: #F8FAFC;
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden;
+  user-select: none; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%;
+}
 html[lang="ar"] body { font-family: 'Cairo', sans-serif; }
-button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+
+button {
+  font-family: inherit; cursor: pointer; border: 0; background: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
 
 /* Phone Frame */
-.stage { height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.phone { position: relative; width: 375px; height: 812px; max-height: calc(100vh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
-@media (max-width: 480px) { .stage { padding: 0; } .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; } }
+.stage { height: 100vh; height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #E2E8F0; }
+.phone { position: relative; width: 375px; height: 812px; max-height: calc(100dvh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; }
+}
 
 /* Screen Layout */
 .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%); overflow: hidden; }
 
 /* Header */
 header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 52px 20px 10px; flex-shrink: 0; }
-.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+@media (max-width: 480px) { header { padding-top: max(20px, env(safe-area-inset-top)); } }
+
+.icon-btn { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.icon-btn:active { transform: scale(0.95); }
+
 .progress-bar { display: flex; gap: 6px; }
 .progress-bar span { width: 24px; height: 8px; border-radius: 10px; background: #CBD5E1; transition: all 0.3s; }
 .progress-bar span.active { background: var(--c-primary); width: 32px; }
 .progress-bar span.done { background: var(--c-blue); }
 
 /* Main Content */
-main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 16px 20px; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+main { position: relative; z-index: 5; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 16px 100px; min-height: 0; overflow-y: auto; scrollbar-width: none; }
 main::-webkit-scrollbar { display: none; }
+
+/* Fixed Footer */
+.footer { position: absolute; bottom: 0; left: 0; width: 100%; z-index: 20; padding: 16px 20px; padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)); background: linear-gradient(to top, var(--c-bg) 80%, rgba(248,250,252,0)); display: flex; flex-direction: column; gap: 10px; }
 
 /* Common UI */
 .instruction-box { text-align: center; margin-bottom: 15px; min-height: 40px; display: flex; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; }
 .instruction-box h2 { font-size: clamp(16px, 5vw, 20px); font-weight: 800; color: var(--c-navy); line-height: 1.3; }
-.btn { width: 100%; max-width: 300px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: clamp(14px, 4vw, 16px); box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; margin-top: 15px; flex-shrink: 0; }
-.btn:active { transform: scale(0.96); }
+
+.btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; }
+.btn:active { transform: scale(0.97); }
+
 .game-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; animation: fadeUp 0.4s ease; }
 
 /* 🟢 GAME 1: MEMORY MATCH */
@@ -54,13 +93,12 @@ main::-webkit-scrollbar { display: none; }
 .m-back { background: #fff; border: 2px solid var(--c-primary); transform: rotateY(180deg); }
 .m-card.matched { pointer-events: none; opacity: 0; transform: scale(0.8); transition: all 0.5s; }
 
-/* 🟢 GAME 2: MISSING PIECE */
-.missing-container { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
-.pattern-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #CBD5E1; padding: 6px; border-radius: 16px; width: 240px; height: 240px; }
-.p-cell { border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
-.p-cell.empty { border: 2px dashed #94A3B8; background: #F8FAFC; }
-.options-grid { display: flex; gap: 12px; justify-content: center; }
-.opt-piece { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 34px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.2s; border: 2px solid transparent; }
+/* 🟢 GAME 2: MATRIX PUZZLE (Replaced the stupid one) */
+.matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background: #CBD5E1; padding: 8px; border-radius: 16px; width: 240px; height: 240px; }
+.m-cell { border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 40px; background: #F8FAFC; }
+.m-cell.empty { border: 2px dashed #94A3B8; background: transparent; }
+.options-grid { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+.opt-piece { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 34px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.2s; border: 2px solid transparent; background: #fff; }
 .opt-piece:active { transform: scale(0.9); }
 .opt-piece.wrong { animation: shake 0.3s; border-color: var(--c-error); }
 
@@ -72,9 +110,20 @@ main::-webkit-scrollbar { display: none; }
 .m-opt:active { transform: scale(0.9); }
 .m-opt.wrong { animation: shake 0.3s; border-color: var(--c-error); }
 
+/* ============================================ */
+/* TRAINING GAMES */
+/* ============================================ */
+.rotate-container { display: flex; flex-direction: column; align-items: center; width: 100%; gap: 20px; }
+.rotate-target { font-size: 80px; transition: transform 0.3s; }
+.rotate-opts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 240px; }
+.r-opt { aspect-ratio: 1; background: #fff; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); touch-action: manipulation; }
+
+.diff-grid { display: grid; gap: 10px; width: 100%; max-width: 320px; margin: 0 auto; }
+.diff-tile { aspect-ratio: 1; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); touch-action: manipulation; }
+
 /* 🟢 INTERSTITIAL (Final) */
 .interstitial { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 15px; width: 100%; animation: fadeUp 0.5s; padding: 0 10px; }
-.avatar-circle { width: clamp(160px, 50vw, 220px); height: clamp(160px, 50vw, 220px); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; }
+.avatar-circle { width: clamp(160px, 50vw, 220px); height: clamp(160px, 50vw, 220px); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 60px; }
 .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 .interstitial h2 { font-size: clamp(20px, 6vw, 26px); font-weight: 800; color: var(--c-navy); }
 .interstitial p { font-size: clamp(14px, 4vw, 16px); color: var(--c-slate); line-height: 1.5; max-width: 280px; }
@@ -84,85 +133,113 @@ main::-webkit-scrollbar { display: none; }
 </style>
 </head>
 <body>
-<div class="stage"><div class="phone"><div class="screen" id="screen">
-  
-  <header>
-    <button class="icon-btn" id="exitBtn">✕</button>
-    <div class="progress-bar" id="progress">
-      <span class="active"></span><span></span><span></span>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+      
+      <header>
+        <button class="icon-btn" id="exitBtn" type="button" aria-label="Exit">✕</button>
+        <div class="progress-bar" id="progress">
+          <span class="active"></span><span></span><span></span>
+        </div>
+        <button class="icon-btn" id="langBtn" type="button" style="font-size:13px; color:var(--c-primary);">ع</button>
+      </header>
+
+      <main id="main"></main>
+
+      <div class="footer" id="footer"></div>
+
     </div>
-    <button class="icon-btn" id="langBtn" style="font-size:12px;">ع</button>
-  </header>
-
-  <main id="main"></main>
-
-</div></div></div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
-   ⚠️⚠️⚠️ مكان الصور بتاعتك (التسقيفة والتشجيع) ⚠️⚠️⚠️
+   ⚠️ مكان الصور بتاعتك
 ============================================================ */
 const AVATAR_IMAGES = {
   adult: {
     clap: ['الكبار تسقيفه 1.jpg', 'الكبار تسقيفه 2.jpg'], 
-    encourage: ['adult_encourage_1.jpg', 'adult_encourage_2.jpg'] 
+    encourage: ['الكبير جاب اقل من 50.jpg', 'الكبير جاب اقل من 50.jpg'] 
   },
   kid: {
     clap: ['اطفال تسقيفه 1.jpg', 'اطفال تسقيفه مقفوله.jpg'], 
-    encourage: ['kid_encourage_1.jpg', 'kid_encourage_2.jpg'] 
+    encourage: ['الصغير جاب اقل من 50.jpg', 'الصغير جاب اقل من 50.jpg'] 
   }
 };
-/* ============================================================ */
 
 const I18N = {
   en: {
     startTitle: "Visual Challenge",
     startDesc: "Test your visual memory and spatial reasoning.",
     startBtn: "Start Challenge",
-    nextBtn: "Next Game",
     
     g1Desc: "Find the matching pairs. Every match removes 2 cards!",
-    g2Desc: "Which piece completes the pattern?",
+    g2Desc: "Which color completes the pattern?",
     g3Desc: "Which one is the correct mirror image?",
     
+    trainRotate: "Which shape is the SAME but rotated?",
+    trainDiff: "Find the different color!",
+    
     finTitle: "Assessment Complete",
+    next: "Next Challenge",
     transGreat: "Sharp eyes!",
     transGreatDesc: "You have excellent visual perception!",
     transEncourage: "Good Effort!",
-    transEncourageDesc: "Visual puzzles need practice. Let's keep going!"
+    transEncourageDesc: "Visual puzzles need practice. Let's keep going!",
+    
+    trainWin: "Level Up!",
+    trainWinDesc: "Your visual skills are getting sharper.",
+    trainLose: "Try Again!",
+    trainLoseDesc: "Almost there."
   },
   ar: {
     startTitle: "التحدي البصري",
     startDesc: "اختبر ذاكرتك البصرية وقدرتك على التخيل.",
     startBtn: "ابدأ التحدي",
-    nextBtn: "اللعبة التالية",
     
     g1Desc: "لاقي الكروت المتطابقة. كل تطابق بيشيل كارتين!",
-    g2Desc: "أي قطعة بتكمل النمط؟",
+    g2Desc: "أي لون بيكمل النمط؟",
     g3Desc: "أي واحدة هي الانعكاس الصحيح في المرآة؟",
     
+    trainRotate: "أي شكل هو نفسه بس متدور؟",
+    trainDiff: "لاقي اللون المختلف!",
+    
     finTitle: "اكتمل التقييم",
+    next: "التالي",
     transGreat: "عيون حادة!",
     transGreatDesc: "إدراكك البصري ممتاز!",
     transEncourage: "محاولة جيدة!",
-    transEncourageDesc: "الألغاز البصرية محتاجة تدريب. يلا نكمل!"
+    transEncourageDesc: "الألغاز البصرية محتاجة تدريب. يلا نكمل!",
+    
+    trainWin: "عدّيت المستوى!",
+    trainWinDesc: "مهاراتك البصرية بتتحسن.",
+    trainLose: "حاول تاني!",
+    trainLoseDesc: "قربت جداً."
   }
 };
 
 let lang = localStorage.getItem('omega_lang') === 'ar' ? 'ar' : 'en';
+const $ = id => document.getElementById(id);
+const main = $('main');
+
+let MODE = localStorage.getItem('omega_visual_mode') || 'assessment';
 let currentGameIndex = 0;
 let totalScore = 0;
-
-const $ = id => document.getElementById(id);
+let currentLvl = 1;
 
 function updateProgress() {
-  const container = $('progress');
-  container.innerHTML = '';
+  const pBar = $('progress');
+  if (MODE === 'train') { pBar.style.display = 'none'; return; }
+  pBar.style.display = 'flex';
+  
+  pBar.innerHTML = '';
   for (let i = 0; i < 3; i++) {
-    const span = document.createElement('span');
+    let span = document.createElement('span');
     if (i < currentGameIndex) span.className = 'done';
     else if (i === currentGameIndex) span.className = 'active';
-    container.appendChild(span);
+    pBar.appendChild(span);
   }
 }
 
@@ -175,6 +252,8 @@ function updateLang() {
 function nextGame(score) {
   totalScore += (score || 0);
   currentGameIndex++;
+  $('footer').innerHTML = '';
+  
   if (currentGameIndex < 3) {
     loadGame(currentGameIndex);
   } else {
@@ -186,22 +265,22 @@ function nextGame(score) {
    GAME DEFINITIONS
 ============================================ */
 const GAMES = [
-  // 1. MEMORY MATCH (Cards)
+  // 1. MEMORY MATCH
   {
     render: () => `
       <div class="instruction-box"><h2>${I18N[lang].g1Desc}</h2></div>
       <div class="game-container">
         <div class="mem-grid" id="memGrid"></div>
-        <button class="btn" id="checkBtn" style="display:none; margin-top:20px;">${I18N[lang].nextBtn}</button>
       </div>
     `,
     init: () => {
-      const emojis = ['🦊', '🐼', '🦁', '🐸', '🐧', '🦋']; // 6 pairs = 12 cards
+      const emojis = ['🦊', '🐼', '🦁', '🐸', '🐧', '🦋'];
       const deck = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
       
       let flipped = [];
       let matched = 0;
       let lock = false;
+      let mistakes = 0;
 
       const grid = $('memGrid');
       grid.innerHTML = deck.map((e, i) => `
@@ -214,7 +293,8 @@ const GAMES = [
       `).join('');
 
       grid.querySelectorAll('.m-card').forEach(card => {
-        card.onclick = () => {
+        card.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
           if (lock || card.classList.contains('flipped') || card.classList.contains('matched')) return;
           
           card.classList.add('flipped');
@@ -223,7 +303,6 @@ const GAMES = [
           if (flipped.length === 2) {
             lock = true;
             if (flipped[0].dataset.e === flipped[1].dataset.e) {
-              // Match!
               setTimeout(() => {
                 flipped[0].classList.add('matched');
                 flipped[1].classList.add('matched');
@@ -231,12 +310,15 @@ const GAMES = [
                 lock = false;
                 matched++;
                 if (matched === 6) {
-                  $('checkBtn').style.display = 'inline-flex';
-                  $('checkBtn').onclick = () => nextGame(1);
+                  // Score based on mistakes (max 3 mistakes for full score)
+                  let finalScore = 1;
+                  if (mistakes > 3) finalScore = 0.5;
+                  if (mistakes > 6) finalScore = 0;
+                  nextGame(finalScore);
                 }
               }, 500);
             } else {
-              // Wrong
+              mistakes++;
               setTimeout(() => {
                 flipped[0].classList.remove('flipped');
                 flipped[1].classList.remove('flipped');
@@ -245,59 +327,57 @@ const GAMES = [
               }, 800);
             }
           }
-        };
+        });
       });
     }
   },
 
-  // 2. MISSING PIECE
+  // 2. MATRIX PUZZLE (Replaced the stupid one)
   {
     render: () => `
       <div class="instruction-box"><h2>${I18N[lang].g2Desc}</h2></div>
-      <div class="game-container missing-container">
-        <div class="pattern-grid" id="patternGrid"></div>
+      <div class="game-container">
+        <div class="matrix-grid" id="matrixGrid"></div>
         <div class="options-grid" id="optionsGrid"></div>
-        <button class="btn" id="checkBtn" style="display:none; margin-top:20px;">${I18N[lang].nextBtn}</button>
       </div>
     `,
     init: () => {
-      // Pattern: Rows have specific emojis
-      // Row 1: 🍎 🍎 🍎
-      // Row 2: 🍌 🍌 🍌
-      // Row 3: 🍇 🍇 🍇 (Missing the last one)
-      
-      const grid = $('patternGrid');
+      const grid = $('matrixGrid');
       const optionsGrid = $('optionsGrid');
       
-      const pattern = ['🍎','🍎','🍎', '🍌','🍌','🍌', '🍇','🍇','?'];
-      const answer = '🍇';
+      // Pattern: 
+      // 🔴 🔵 🟢
+      // 🟢 🔴 🔵
+      // 🔵 🟢 ❓ (Answer: 🔴)
+      const pattern = ['🔴','🔵','🟢', '🟢','🔴','🔵', '🔵','🟢','?'];
+      const answer = '🔴';
       
       grid.innerHTML = pattern.map((p, i) => 
-        `<div class="p-cell ${p === '?' ? 'empty' : ''}" id="cell-${i}">${p === '?' ? '' : p}</div>`
+        `<div class="m-cell ${p === '?' ? 'empty' : ''}" id="cell-${i}">${p === '?' ? '' : p}</div>`
       ).join('');
 
-      const opts = ['🍎', '🍌', '🍇', '🍓'].sort(() => Math.random() - 0.5);
+      const opts = ['🔴', '🔵', '🟢', '🟡'].sort(() => Math.random() - 0.5);
       
       optionsGrid.innerHTML = opts.map(o => 
-        `<div class="opt-piece" onclick="checkMissing('${o}', this)">${o}</div>`
+        `<div class="opt-piece" data-o="${o}">${o}</div>`
       ).join('');
 
-      window.checkMissing = (o, el) => {
-        if (o === answer) {
-          el.style.borderColor = 'var(--c-success)';
-          $('cell-8').textContent = answer;
-          $('cell-8').classList.remove('empty');
-          $('cell-8').style.background = '#DCFCE7';
-          
-          setTimeout(() => {
-            $('checkBtn').style.display = 'inline-flex';
-            $('checkBtn').onclick = () => nextGame(1);
-          }, 500);
-        } else {
-          el.classList.add('wrong');
-          setTimeout(() => el.classList.remove('wrong'), 500);
-        }
-      };
+      optionsGrid.querySelectorAll('.opt-piece').forEach(el => {
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          if (el.dataset.o === answer) {
+            el.style.borderColor = 'var(--c-success)';
+            $('cell-8').textContent = answer;
+            $('cell-8').classList.remove('empty');
+            $('cell-8').style.background = '#DCFCE7';
+            
+            setTimeout(() => nextGame(1), 800);
+          } else {
+            el.classList.add('wrong');
+            setTimeout(() => el.classList.remove('wrong'), 500);
+          }
+        });
+      });
     }
   },
 
@@ -306,55 +386,159 @@ const GAMES = [
     render: () => `
       <div class="instruction-box"><h2>${I18N[lang].g3Desc}</h2></div>
       <div class="game-container mirror-container">
-        <div class="target-shape" style="transform: rotate(-15deg);">🐕</div>
-        <div class="mirror-options" id="mirrorOptions">
-          <!-- Correct Answer: Mirrored -->
-          <div class="m-opt" onclick="checkMirror('correct', this)">🐕</div>
-          <!-- Wrong Answers -->
-          <div class="m-opt" onclick="checkMirror('wrong', this)" style="transform: scaleX(-1);">🐕</div>
-          <div class="m-opt" onclick="checkMirror('wrong', this)" style="transform: rotate(180deg);">🐕</div>
-          <div class="m-opt" onclick="checkMirror('wrong', this)" style="transform: rotate(90deg);">🐕</div>
-        </div>
-        <button class="btn" id="checkBtn" style="display:none; margin-top:20px;">${I18N[lang].nextBtn}</button>
+        <div class="target-shape" id="targetShape" style="font-size:80px; transform:none;">↗️</div>
+        <div class="mirror-options" id="mirrorOptions"></div>
       </div>
     `,
     init: () => {
-      // Wait, the logic here is slightly flawed. 
-      // The target is tilted -15deg. The mirror image should be tilted +15deg.
-      // Let's fix the target and options to make it obvious.
-      // Actually, to make it simple, let's use an asymmetrical shape like "F".
-      // But an emoji is nicer. Let's use an arrow pointing diagonally.
-      
-      // I will rewrite the render for Game 3 to be cleaner.
-      const targetContainer = document.querySelector('.target-shape');
-      targetContainer.innerHTML = '↗️';
-      targetContainer.style.transform = 'none';
-      targetContainer.style.fontSize = '80px';
-
       const opts = $('mirrorOptions');
-      // Correct mirror of ↗️ is ↖️
-      opts.innerHTML = `
-        <div class="m-opt" onclick="checkMirror('wrong', this)">↗️</div>
-        <div class="m-opt" onclick="checkMirror('correct', this)">↖️</div>
-        <div class="m-opt" onclick="checkMirror('wrong', this)">↘️</div>
-        <div class="m-opt" onclick="checkMirror('wrong', this)">↙️</div>
-      `;
       
-      window.checkMirror = (type, el) => {
-        if (type === 'correct') {
-          el.style.borderColor = 'var(--c-success)';
-          setTimeout(() => {
-            $('checkBtn').style.display = 'inline-flex';
-            $('checkBtn').onclick = () => nextGame(1);
-          }, 500);
-        } else {
-          el.classList.add('wrong');
-          setTimeout(() => el.classList.remove('wrong'), 500);
-        }
-      };
+      const options = [
+        { icon: '↗️', correct: false },
+        { icon: '↖️', correct: true },  // Mirror of ↗️ is ↖️
+        { icon: '↘️', correct: false },
+        { icon: '↙️', correct: false }
+      ].sort(() => Math.random() - 0.5);
+
+      opts.innerHTML = options.map(o => 
+        `<div class="m-opt" data-c="${o.correct}">${o.icon}</div>`
+      ).join('');
+      
+      opts.querySelectorAll('.m-opt').forEach(el => {
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          if (el.dataset.c === 'true') {
+            el.style.borderColor = 'var(--c-success)';
+            setTimeout(() => nextGame(1), 800);
+          } else {
+            el.classList.add('wrong');
+            setTimeout(() => el.classList.remove('wrong'), 500);
+          }
+        });
+      });
     }
   }
 ];
+
+/* ============================================
+   TRAINING MODE
+============================================ */
+function startTrainingRound() {
+  main.innerHTML = '';
+  $('footer').innerHTML = '';
+  const games = [trainRotation, trainDifferent];
+  const selectedGame = games[Math.floor(Math.random() * games.length)];
+  selectedGame();
+}
+
+// 1. Mental Rotation
+function trainRotation() {
+  const shapes = ['L', 'F', 'G', 'J', 'P', 'R'];
+  const base = shapes[Math.floor(Math.random() * shapes.length)];
+  const angle = [90, 180, 270][Math.floor(Math.random() * 3)];
+  
+  main.innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].trainRotate}</h2></div>
+    <div class="rotate-container">
+      <div class="rotate-target" style="transform: rotate(${angle}deg);">${base}</div>
+      <div class="rotate-opts" id="rotOpts"></div>
+    </div>
+  `;
+  
+  const opts = $('rotOpts');
+  const correctIcon = base;
+  const wrongIcons = shapes.filter(s => s !== base).slice(0, 3);
+  const allOpts = [{icon: correctIcon, correct: true}, ...wrongIcons.map(i => ({icon: i, correct: false}))].sort(() => Math.random() - 0.5);
+  
+  opts.innerHTML = allOpts.map(o => `<div class="r-opt" data-c="${o.correct}">${o.icon}</div>`).join('');
+  
+  opts.querySelectorAll('.r-opt').forEach(el => {
+    el.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+      let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+      
+      if (el.dataset.c === 'true') {
+        currentLvl++;
+        localStorage.setItem('omega_visual_train_level', currentLvl);
+        showTrainingResult(true, I18N[lang].trainWinDesc, avatarType);
+      } else {
+        showTrainingResult(false, I18N[lang].trainLoseDesc, avatarType);
+      }
+    });
+  });
+}
+
+// 2. Find the Different
+function trainDifferent() {
+  const size = currentLvl < 3 ? 3 : 4;
+  const colors = ['#EF4444', '#3B82F6', '#22C55E', '#FBBF24', '#8B5CF6'];
+  const baseColor = colors[Math.floor(Math.random() * colors.length)];
+  const diffColor = colors.filter(c => c !== baseColor)[0]; // Pick another color
+  
+  const total = size * size;
+  const diffIdx = Math.floor(Math.random() * total);
+  
+  main.innerHTML = `
+    <div class="instruction-box"><h2>${I18N[lang].trainDiff}</h2></div>
+    <div class="diff-grid" id="diffGrid" style="grid-template-columns: repeat(${size}, 1fr);"></div>
+  `;
+  
+  const grid = $('diffGrid');
+  for (let i = 0; i < total; i++) {
+    let t = document.createElement('div');
+    t.className = 'diff-tile';
+    t.style.background = (i === diffIdx) ? diffColor : baseColor;
+    
+    t.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      let age = parseInt(localStorage.getItem('omega_user_age') || localStorage.getItem('omega_age')) || 0;
+      let avatarType = (age > 0 && age <= 12) ? 'kid' : 'adult';
+      
+      if (i === diffIdx) {
+        currentLvl++;
+        localStorage.setItem('omega_visual_train_level', currentLvl);
+        showTrainingResult(true, I18N[lang].trainWinDesc, avatarType);
+      } else {
+        t.style.border = '3px solid #EF4444';
+        setTimeout(() => showTrainingResult(false, I18N[lang].trainLoseDesc, avatarType), 300);
+      }
+    });
+    grid.appendChild(t);
+  }
+}
+
+function showTrainingResult(passed, desc, avatarType) {
+  $('main').innerHTML = `
+    <div class="interstitial">
+      <div class="avatar-circle" id="avatarBox">
+        <span id="avatarEmoji">${passed ? '👏' : '💜'}</span>
+        <img id="avatarImg" src="" alt="Avatar" style="display:none;" onerror="this.style.display='none'; document.getElementById('avatarEmoji').style.display='block';">
+      </div>
+      <h2>${passed ? I18N[lang].trainWin : I18N[lang].trainLose}</h2>
+      <p>${desc}</p>
+    </div>
+  `;
+  $('footer').innerHTML = `<button class="btn" id="nextBtn" type="button">${I18N[lang].next}</button>`;
+  
+  const imgEl = $('avatarImg');
+  const emojiEl = $('avatarEmoji');
+  const imgs = passed ? AVATAR_IMAGES[avatarType].clap : AVATAR_IMAGES[avatarType].encourage;
+  
+  imgEl.src = imgs[0];
+  imgEl.style.display = 'block'; emojiEl.style.display = 'none';
+  
+  let idx = 0;
+  let intv = setInterval(() => {
+    idx = (idx + 1) % 2;
+    imgEl.src = imgs[idx];
+  }, passed ? 250 : 800);
+  
+  $('nextBtn').onclick = () => {
+    clearInterval(intv);
+    startTrainingRound();
+  };
+}
 
 /* ============================================
    CORE LOGIC
@@ -363,6 +547,7 @@ function loadGame(index) {
   updateProgress();
   const game = GAMES[index];
   $('main').innerHTML = game.render();
+  $('footer').innerHTML = '';
   game.init();
 }
 
@@ -370,21 +555,36 @@ function startGame() {
   updateLang();
   currentGameIndex = 0;
   totalScore = 0;
-  $('main').innerHTML = `
-    <div class="interstitial">
-      <div style="font-size:80px; animation: float 3s infinite;">👁️</div>
-      <h2>${I18N[lang].startTitle}</h2>
-      <p>${I18N[lang].startDesc}</p>
-      <button class="btn" id="startBtn">${I18N[lang].startBtn}</button>
-    </div>
-  `;
-  $('startBtn').onclick = () => loadGame(0);
+  
+  if (MODE === 'train') {
+    currentLvl = parseInt(localStorage.getItem('omega_visual_train_level') || '1');
+    $('main').innerHTML = `
+      <div class="interstitial">
+        <div style="font-size:80px; animation: float 3s infinite;">👁️</div>
+        <h2>${I18N[lang].startTitle} (Lvl ${currentLvl})</h2>
+        <p>${I18N[lang].startDesc}</p>
+      </div>
+    `;
+    $('footer').innerHTML = `<button class="btn" id="startBtn" type="button">${I18N[lang].startBtn}</button>`;
+    $('startBtn').onclick = () => startTrainingRound();
+  } else {
+    $('main').innerHTML = `
+      <div class="interstitial">
+        <div style="font-size:80px; animation: float 3s infinite;">👁️</div>
+        <h2>${I18N[lang].startTitle}</h2>
+        <p>${I18N[lang].startDesc}</p>
+      </div>
+    `;
+    $('footer').innerHTML = `<button class="btn" id="startBtn" type="button">${I18N[lang].startBtn}</button>`;
+    $('startBtn').onclick = () => loadGame(0);
+  }
 }
 
 function showResults() {
   updateProgress();
   
-  const accuracy = 85; // Placeholder for passing
+  // Max score is 3 (1 point per game). Accuracy = (score / 3) * 100
+  const accuracy = Math.round((totalScore / 3) * 100);
   localStorage.setItem('omega_visual_result', JSON.stringify({ accuracy, timestamp: Date.now() }));
 
   const passed = accuracy >= 50;
@@ -394,11 +594,10 @@ function showResults() {
   $('main').innerHTML = `
     <div class="interstitial">
       <div class="avatar-circle" id="avatarBox">
-        <img id="avatarImg" src="" alt="Avatar">
+        <img id="avatarImg" src="" alt="Avatar" onerror="this.style.display='none'; this.parentElement.innerHTML='${passed ? '👏' : '💜'}';">
       </div>
       <h2 id="transTitle"></h2>
       <p id="transDesc"></p>
-      <button class="btn" id="nextBtn" style="opacity:0; pointer-events:none;">${I18N[lang].nextBtn}</button>
     </div>
   `;
 
@@ -408,20 +607,22 @@ function showResults() {
 
   if (passed) {
     $('transTitle').textContent = I18N[lang].transGreat;
-    $('transDesc').textContent = I18N[lang].transGreatDesc;
+    $('transDesc').textContent = `${I18N[lang].transGreatDesc} (${accuracy}%)`;
     
     const clapImgs = AVATAR_IMAGES[avatarType].clap;
     imgEl.src = clapImgs[0];
+    imgEl.style.display = 'block';
     interval = setInterval(() => {
       imgIndex = (imgIndex + 1) % 2;
       imgEl.src = clapImgs[imgIndex];
     }, 250);
   } else {
     $('transTitle').textContent = I18N[lang].transEncourage;
-    $('transDesc').textContent = I18N[lang].transEncourageDesc;
+    $('transDesc').textContent = `${I18N[lang].transEncourageDesc} (${accuracy}%)`;
     
     const encourageImgs = AVATAR_IMAGES[avatarType].encourage;
     imgEl.src = encourageImgs[0];
+    imgEl.style.display = 'block';
     interval = setInterval(() => {
       imgIndex = (imgIndex + 1) % 2;
       imgEl.src = encourageImgs[imgIndex];
@@ -432,22 +633,33 @@ function showResults() {
     if(interval) clearInterval(interval);
     imgEl.src = passed ? AVATAR_IMAGES[avatarType].clap[0] : AVATAR_IMAGES[avatarType].encourage[0];
     
-    const nextBtn = $('nextBtn');
-    nextBtn.style.transition = 'opacity 0.4s';
-    nextBtn.style.opacity = '1';
-    nextBtn.style.pointerEvents = 'auto';
-    
-    nextBtn.onclick = () => {
+    $('footer').innerHTML = `<button class="btn" id="nextBtn" type="button">${I18N[lang].next}</button>`;
+    $('nextBtn').onclick = () => {
       window.location.href = 'assessment-reasoning.html';
     };
   }, 2500);
 }
 
 /* --- EVENTS --- */
-$('langBtn').onclick = () => { lang = lang === 'ar' ? 'en' : 'ar'; startGame(); };
-$('exitBtn').onclick = () => { if (confirm("Exit? Progress will be lost.")) window.location.href = 'assessment-intro.html'; };
+$('langBtn').onclick = () => { 
+  lang = lang === 'ar' ? 'en' : 'ar'; 
+  localStorage.setItem('omega_lang', lang);
+  startGame(); 
+};
 
+$('exitBtn').onclick = () => { 
+  if (confirm("Exit? Progress will be lost.")) {
+    if (MODE === 'assessment') {
+      window.location.href = 'assessment-intro.html';
+    } else {
+      window.location.href = 'home.html';
+    }
+  }
+};
+
+// Boot
 startGame();
 </script>
+
 </body>
 </html>
