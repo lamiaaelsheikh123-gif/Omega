@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F8FAFC" />
 <title>Omega — Problem Solving Assessment</title>
+
+<!-- ✅ سكريبت اللغة قبل أي رسم -->
+<script>
+  (function () {
+    try {
+      var lang = localStorage.getItem('omega_lang') || 'en';
+      var html = document.documentElement;
+      html.lang = lang;
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --c-primary: #0E9487; --c-light: #2EC4B6; --c-blue: #3B82F6;
@@ -12,38 +29,61 @@
   --c-navy: #0F172A; --c-slate: #64748B; --c-bg: #F8FAFC;
   --g-brand: linear-gradient(135deg, #0E9487 0%, #2EC4B6 45%, #3B82F6 100%);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%; font-family: 'Poppins', sans-serif; background: #E2E8F0; overflow: hidden;
+  user-select: none; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%;
+}
 html[lang="ar"] body { font-family: 'Cairo', sans-serif; }
-button { font-family: inherit; cursor: pointer; border: 0; background: none; }
+
+button {
+  font-family: inherit; cursor: pointer; border: 0; background: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
 
 /* Phone Frame */
-.stage { height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.phone { position: relative; width: 375px; height: 812px; max-height: calc(100vh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
-@media (max-width: 480px) { .stage { padding: 0; } .phone { width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; } }
+.stage { height: 100vh; height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #E2E8F0; }
+.phone { position: relative; width: 375px; height: 812px; max-height: calc(100dvh - 40px); border-radius: 44px; overflow: hidden; background: var(--c-bg); box-shadow: 0 0 0 10px #1a1a1a, 0 0 0 12px #2a2a2a, 0 40px 80px rgba(0,0,0,.35); }
+@media (max-width: 480px) {
+  body { background: var(--c-bg); }
+  .stage { padding: 0; background: var(--c-bg); }
+  .phone { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; box-shadow: none; }
+}
 
 /* Screen Layout */
 .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%); overflow: hidden; }
 
 /* Header */
 header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 52px 20px 10px; flex-shrink: 0; }
-.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+@media (max-width: 480px) { header { padding-top: max(20px, env(safe-area-inset-top)); } }
+
+.icon-btn { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: center; color: var(--c-slate); font-weight: 700; font-size: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.icon-btn:active { transform: scale(0.95); }
+
 .progress-bar { display: flex; gap: 6px; }
 .progress-bar span { width: 24px; height: 8px; border-radius: 10px; background: #CBD5E1; transition: all 0.3s; }
 .progress-bar span.active { background: var(--c-primary); width: 32px; }
 .progress-bar span.done { background: var(--c-blue); }
 
 /* Main Content */
-main { position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 16px 20px; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+main { position: relative; z-index: 5; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 16px 100px; min-height: 0; overflow-y: auto; scrollbar-width: none; }
 main::-webkit-scrollbar { display: none; }
+
+/* Fixed Footer for Button */
+.footer { position: absolute; bottom: 0; left: 0; width: 100%; z-index: 20; padding: 16px 20px; padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px)); background: linear-gradient(to top, var(--c-bg) 80%, rgba(248,250,252,0)); display: flex; flex-direction: column; gap: 10px; }
 
 /* Common UI */
 .instruction-box { text-align: center; margin-bottom: 12px; min-height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; gap: 6px; }
 .instruction-box h2 { font-size: clamp(16px, 5vw, 20px); font-weight: 800; color: var(--c-navy); line-height: 1.3; }
+
 .timer-text { font-size: 16px; font-weight: 800; color: var(--c-primary); background: rgba(14,148,135,0.1); padding: 4px 12px; border-radius: 20px; }
 .timer-text.warning { color: var(--c-error); background: rgba(239,68,68,0.1); animation: pulse 1s infinite; }
-.btn { width: 100%; max-width: 300px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: clamp(14px, 4vw, 16px); box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; margin-top: 15px; flex-shrink: 0; }
-.btn:active { transform: scale(0.96); }
+
+.btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 54px; padding: 16px; border-radius: 16px; background: var(--g-brand); color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 10px 24px rgba(14, 148, 135, 0.3); transition: transform 0.2s; }
+.btn:active { transform: scale(0.97); }
+
 .game-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; animation: fadeUp 0.4s ease; }
 
 /* 🟢 GAME 1: LOCKED BOX */
@@ -57,16 +97,25 @@ main::-webkit-scrollbar { display: none; }
 .puzzle-box { background: #fff; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 300px; text-align: center; }
 .puzzle-q { font-size: 22px; font-weight: 800; color: var(--c-navy); margin-bottom: 20px; }
 .puzzle-opts { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-.p-opt { width: 60px; height: 60px; background: #F1F5F9; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: var(--c-navy); cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+.p-opt { width: 60px; height: 60px; background: #F1F5F9; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: var(--c-navy); cursor: pointer; transition: all 0.2s; border: 2px solid transparent; touch-action: manipulation; }
 .p-opt:active { transform: scale(0.9); }
 .p-opt.correct { background: #DCFCE7; border-color: var(--c-success); color: var(--c-success); }
 .p-opt.wrong { background: #FEE2E2; border-color: var(--c-error); color: var(--c-error); animation: shake 0.3s; }
 
-/* 🟢 GAME 2: SLIDING PUZZLE */
-.slide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #CBD5E1; padding: 6px; border-radius: 16px; width: 280px; height: 280px; }
-.slide-tile { border-radius: 12px; background: var(--g-brand); color: #fff; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15); transition: transform 0.1s; }
-.slide-tile:active { transform: scale(0.95); }
-.slide-tile.blank { background: transparent; box-shadow: none; cursor: default; }
+/* 🟢 GAME 2: SLIDING PUZZLE (Original 3x3, 2 blanks) */
+.slide-wrapper { position: relative; width: 280px; height: 280px; margin-bottom: 10px; }
+.slide-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 6px; background: #CBD5E1; padding: 6px; border-radius: 16px; }
+.slide-tile { 
+  border-radius: 12px; background: var(--g-brand); color: #fff; font-size: 28px; font-weight: 800; 
+  display: flex; align-items: center; justify-content: center; cursor: grab; 
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.1); 
+  transition: transform 0.1s; touch-action: none; position: relative; z-index: 2;
+}
+.slide-tile:active { cursor: grabbing; z-index: 10; transform: scale(1.05); }
+.slide-tile.blank { background: transparent; box-shadow: none; cursor: default; pointer-events: none; }
+.slide-tile.hidden-tile { opacity: 0; pointer-events: none; }
+
+.move-counter { font-size: 14px; font-weight: 700; color: var(--c-slate); margin-top: 10px; }
 
 /* 🟢 GAME 3: REACH THE NUMBER */
 .reach-display { text-align: center; margin-bottom: 20px; }
@@ -74,12 +123,12 @@ main::-webkit-scrollbar { display: none; }
 .reach-target { font-size: 16px; color: var(--c-slate); font-weight: 600; margin-top: 10px; }
 .reach-target span { font-size: 24px; color: var(--c-blue); font-weight: 800; }
 .reach-ops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 300px; }
-.reach-btn { padding: 16px; border-radius: 16px; background: #fff; border: 2px solid var(--c-primary); color: var(--c-primary); font-size: 20px; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; }
+.reach-btn { padding: 16px; border-radius: 16px; background: #fff; border: 2px solid var(--c-primary); color: var(--c-primary); font-size: 20px; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; touch-action: manipulation; }
 .reach-btn:active { background: var(--c-primary); color: #fff; transform: scale(0.95); }
 
 /* 🟢 INTERSTITIAL (Final) */
 .interstitial { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 15px; width: 100%; animation: fadeUp 0.5s; padding: 0 10px; }
-.avatar-circle { width: clamp(160px, 50vw, 220px); height: clamp(160px, 50vw, 220px); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; }
+.avatar-circle { width: clamp(160px, 50vw, 220px); height: clamp(160px, 50vw, 220px); border-radius: 50%; overflow: hidden; box-shadow: 0 15px 40px rgba(15,23,42,0.15); border: 5px solid #fff; background: #E2E8F0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 60px; }
 .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 .interstitial h2 { font-size: clamp(20px, 6vw, 26px); font-weight: 800; color: var(--c-navy); }
 .interstitial p { font-size: clamp(14px, 4vw, 16px); color: var(--c-slate); line-height: 1.5; max-width: 280px; }
@@ -90,35 +139,41 @@ main::-webkit-scrollbar { display: none; }
 </style>
 </head>
 <body>
-<div class="stage"><div class="phone"><div class="screen" id="screen">
-  
-  <header>
-    <button class="icon-btn" id="exitBtn">✕</button>
-    <div class="progress-bar" id="progress">
-      <span class="active"></span><span></span><span></span>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+      
+      <header>
+        <button class="icon-btn" id="exitBtn" type="button" aria-label="Exit">✕</button>
+        <div class="progress-bar" id="progress">
+          <span class="active"></span><span></span><span></span>
+        </div>
+        <button class="icon-btn" id="langBtn" type="button" style="font-size:13px; color:var(--c-primary);">ع</button>
+      </header>
+
+      <main id="main"></main>
+
+      <div class="footer" id="footer"></div>
+
     </div>
-    <button class="icon-btn" id="langBtn" style="font-size:12px;">ع</button>
-  </header>
-
-  <main id="main"></main>
-
-</div></div></div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
-   ⚠️⚠️⚠️ مكان الصور بتاعتك (التسقيفة والتشجيع) ⚠️⚠️⚠️
+   ⚠️ مكان الصور بتاعتك
 ============================================================ */
 const AVATAR_IMAGES = {
   adult: {
     clap: ['الكبار تسقيفه 1.jpg', 'الكبار تسقيفه 2.jpg'], 
-    encourage: ['adult_encourage_1.jpg', 'adult_encourage_2.jpg'] 
+    encourage: ['الكبير جاب اقل من 50.jpg', 'الكبير جاب اقل من 50.jpg'] 
   },
   kid: {
     clap: ['اطفال تسقيفه 1.jpg', 'اطفال تسقيفه مقفوله.jpg'], 
-    encourage: ['kid_encourage_1.jpg', 'kid_encourage_2.jpg'] 
+    encourage: ['الصغير جاب اقل من 50.jpg', 'الصغير جاب اقل من 50.jpg'] 
   }
 };
-/* ============================================================ */
 
 const I18N = {
   en: {
@@ -141,7 +196,9 @@ const I18N = {
     transGreat: "Brilliant!",
     transGreatDesc: "You solved the puzzles excellently!",
     transEncourage: "Good Effort!",
-    transEncourageDesc: "Every puzzle makes you smarter. Keep practicing!"
+    transEncourageDesc: "Every puzzle makes you smarter. Keep practicing!",
+    movesMsg: "You did it in {moves} moves. It could have been done in {optimal} clicks!",
+    next: "Next"
   },
   ar: {
     startTitle: "حل المشكلات",
@@ -163,7 +220,9 @@ const I18N = {
     transGreat: "عبقري!",
     transGreatDesc: "حليت الألعاب بامتياز!",
     transEncourage: "محاولة جيدة!",
-    transEncourageDesc: "كل لعبة بتخليك أذكى. استمر في التدريب!"
+    transEncourageDesc: "كل لعبة بتخليك أذكى. استمر في التدريب!",
+    movesMsg: "حليتها في {moves} حركة. كان ممكن تتعمل في {optimal} كليك!",
+    next: "التالي"
   }
 };
 
@@ -195,6 +254,9 @@ function nextGame(score) {
   if (slideTimerInterval) clearInterval(slideTimerInterval);
   totalScore += (score || 0);
   currentGameIndex++;
+  
+  $('footer').innerHTML = ''; 
+  
   if (currentGameIndex < 3) {
     loadGame(currentGameIndex);
   } else {
@@ -283,7 +345,7 @@ const GAMES = [
     }
   },
 
-  // 2. SLIDING PUZZLE (Easier + Timer)
+  // 2. SLIDING PUZZLE (The exact 3x3 from original code)
   {
     render: () => `
       <div class="instruction-box">
@@ -291,35 +353,33 @@ const GAMES = [
         <div class="timer-text" id="slideTimer">60s</div>
       </div>
       <div class="game-container">
-        <div class="slide-grid" id="slideGrid"></div>
-        <button class="btn" id="checkBtn" style="display:none; margin-top:20px;">${I18N[lang].nextBtn}</button>
+        <div class="slide-wrapper">
+          <div class="slide-grid" id="slideGrid"></div>
+        </div>
+        <div class="move-counter">Moves: <span id="moveCount">0</span></div>
+        <div id="penaltyMsg" style="color:var(--c-error); font-weight:700; font-size:13px; text-align:center; margin-top:5px; min-height:20px;"></div>
       </div>
     `,
     init: () => {
-      const n = 3;
-      // 7 tiles, 2 blanks (0)
-      let T = [1, 2, 3, 4, 5, 6, 7, 0, 0];
+      const n = 3; 
+      let T = [1, 2, 3, 4, 5, 6, 7, 0, 0]; // 7 tiles, 2 blanks
+      let moves = 0;
+      const optimalMoves = 25; 
       
-      // Shuffle logic (20 random moves)
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 30; i++) {
         const blanks = T.map((v, idx) => v === 0 ? idx : -1).filter(idx => idx !== -1);
         const b = blanks[Math.floor(Math.random() * blanks.length)];
-        
         const x = b % n, y = Math.floor(b / n);
         const nb = [];
         if (x > 0) nb.push(b - 1);
         if (x < n - 1) nb.push(b + 1);
         if (y > 0) nb.push(b - n);
         if (y < n - 1) nb.push(b + n);
-        
         const m = nb[Math.floor(Math.random() * nb.length)];
-        
-        // Swap
         T[b] = T[m];
         T[m] = 0;
       }
 
-      // Timer Logic
       let timeLeft = 60;
       const timerEl = $('slideTimer');
       if (slideTimerInterval) clearInterval(slideTimerInterval);
@@ -327,65 +387,99 @@ const GAMES = [
       slideTimerInterval = setInterval(() => {
         timeLeft--;
         timerEl.textContent = timeLeft + 's';
-        
         if (timeLeft <= 10) timerEl.classList.add('warning');
         
         if (timeLeft <= 0) {
           clearInterval(slideTimerInterval);
           timerEl.textContent = "Time's up!";
-          timerEl.classList.add('warning');
-          
-          // Show Next button if time is up
-          $('checkBtn').style.display = 'inline-flex';
-          $('checkBtn').onclick = () => nextGame(0);
+          nextGame(0); 
         }
       }, 1000);
 
+      const grid = $('slideGrid');
+      let isDragging = false;
+      
       function draw() {
-        const grid = $('slideGrid');
         grid.innerHTML = T.map((v, i) => {
           if (v === 0) return `<div class="slide-tile blank"></div>`;
-          return `<div class="slide-tile" data-i="${i}">${v}</div>`;
+          return `<div class="slide-tile" data-i="${i}" data-val="${v}">${v}</div>`;
         }).join('');
 
         grid.querySelectorAll('.slide-tile:not(.blank)').forEach(t => {
-          t.onclick = () => {
-            const i = parseInt(t.dataset.i);
-            const x = i % n, y = Math.floor(i / n);
-            
-            // Check if adjacent to ANY blank
-            const blanks = T.map((val, idx) => val === 0 ? idx : -1).filter(idx => idx !== -1);
-            let isAdj = false;
-            let targetBlank = -1;
-            
-            for(let b of blanks) {
-              const bx = b % n, by = Math.floor(b / n);
-              if (Math.abs(x - bx) + Math.abs(y - by) === 1) {
-                isAdj = true;
-                targetBlank = b;
-                break;
-              }
-            }
+          attachDrag(t);
+        });
+      }
 
-            if (isAdj) {
-              T[targetBlank] = T[i];
-              T[i] = 0;
-              draw();
-              checkWin();
-            }
-          };
+      function attachDrag(el) {
+        let startX, startY, currentIdx;
+        
+        el.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          el.setPointerCapture(e.pointerId);
+          startX = e.clientX;
+          startY = e.clientY;
+          currentIdx = parseInt(el.dataset.i);
+          isDragging = true;
+          el.style.transition = 'none';
+          el.style.zIndex = '10';
+        });
+
+        el.addEventListener('pointermove', (e) => {
+          if (!isDragging) return;
+          e.preventDefault();
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+          el.style.transform = `translate(${dx}px, ${dy}px) scale(1.05)`;
+        });
+
+        el.addEventListener('pointerup', (e) => {
+          if (!isDragging) return;
+          e.preventDefault();
+          isDragging = false;
+          el.style.transition = 'all 0.2s ease';
+          el.style.transform = '';
+          el.style.zIndex = '2';
+
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+
+          let targetIdx = currentIdx;
+          const x = currentIdx % n, y = Math.floor(currentIdx / n);
+          const threshold = 20;
+
+          if (Math.abs(dx) > Math.abs(dy)) {
+            if (dx > threshold && x < n - 1) targetIdx = currentIdx + 1;
+            else if (dx < -threshold && x > 0) targetIdx = currentIdx - 1;
+          } else {
+            if (dy > threshold && y < n - 1) targetIdx = currentIdx + n;
+            else if (dy < -threshold && y > 0) targetIdx = currentIdx - n;
+          }
+
+          if (T[targetIdx] === 0) {
+            T[targetIdx] = T[currentIdx];
+            T[currentIdx] = 0;
+            moves++;
+            $('moveCount').textContent = moves;
+            draw();
+            checkWin();
+          } else {
+            draw();
+          }
         });
       }
 
       function checkWin() {
-        // Check if tiles 1-7 are in order at the beginning
         const isSolved = T.slice(0, 7).every((v, i) => v === i + 1);
-        
         if (isSolved) {
           clearInterval(slideTimerInterval);
           $('slideGrid').style.boxShadow = '0 0 30px #22C55E';
-          $('checkBtn').style.display = 'inline-flex';
-          $('checkBtn').onclick = () => nextGame(1);
+          
+          if (moves > optimalMoves) {
+            $('penaltyMsg').textContent = I18N[lang].movesMsg.replace('{moves}', moves).replace('{optimal}', optimalMoves);
+            setTimeout(() => nextGame(0.5), 2000);
+          } else {
+            setTimeout(() => nextGame(1), 500);
+          }
         }
       }
 
@@ -403,14 +497,12 @@ const GAMES = [
           <div class="reach-target">${I18N[lang].g3Target} <span id="reachTarget">0</span></div>
         </div>
         <div class="reach-ops" id="reachOps"></div>
-        <button class="btn" id="checkBtn" style="display:none; margin-top:20px;">${I18N[lang].nextBtn}</button>
       </div>
     `,
     init: () => {
       let start = 4;
       let target = 24;
       let current = start;
-      // Operations: +4, x2, -2
       const ops = [
         { sym: '+', val: 4 },
         { sym: '×', val: 2 },
@@ -422,7 +514,7 @@ const GAMES = [
 
       const opsContainer = $('reachOps');
       opsContainer.innerHTML = ops.map((o, i) => 
-        `<button class="reach-btn" data-i="${i}">${o.sym} ${o.val}</button>`
+        `<button class="reach-btn" type="button" data-i="${i}">${o.sym} ${o.val}</button>`
       ).join('');
 
       opsContainer.querySelectorAll('.reach-btn').forEach(btn => {
@@ -436,10 +528,8 @@ const GAMES = [
 
           if (current === target) {
             $('reachCurrent').style.color = '#22C55E';
-            $('checkBtn').style.display = 'inline-flex';
-            $('checkBtn').onclick = () => nextGame(1);
+            setTimeout(() => nextGame(1), 1000);
           } else if (current > target || current < 0) {
-            // Reset if out of bounds
             $('reachCurrent').style.color = '#EF4444';
             setTimeout(() => {
               current = start;
@@ -461,6 +551,7 @@ function loadGame(index) {
   updateProgress();
   const game = GAMES[index];
   $('main').innerHTML = game.render();
+  $('footer').innerHTML = ''; 
   game.init();
 }
 
@@ -468,21 +559,23 @@ function startGame() {
   updateLang();
   currentGameIndex = 0;
   totalScore = 0;
+  $('footer').innerHTML = ''; 
+  
   $('main').innerHTML = `
     <div class="interstitial">
       <div style="font-size:80px; animation: float 3s infinite;">🧩</div>
       <h2>${I18N[lang].startTitle}</h2>
       <p>${I18N[lang].startDesc}</p>
-      <button class="btn" id="startBtn">${I18N[lang].startBtn}</button>
     </div>
   `;
+  $('footer').innerHTML = `<button class="btn" id="startBtn" type="button">${I18N[lang].startBtn}</button>`;
   $('startBtn').onclick = () => loadGame(0);
 }
 
 function showResults() {
   updateProgress();
   
-  const accuracy = 85; // Placeholder for passing
+  const accuracy = Math.round((totalScore / 3) * 100);
   localStorage.setItem('omega_problem_result', JSON.stringify({ accuracy, timestamp: Date.now() }));
 
   const passed = accuracy >= 50;
@@ -492,11 +585,10 @@ function showResults() {
   $('main').innerHTML = `
     <div class="interstitial">
       <div class="avatar-circle" id="avatarBox">
-        <img id="avatarImg" src="" alt="Avatar">
+        <img id="avatarImg" src="" alt="Avatar" onerror="this.style.display='none'; this.parentElement.innerHTML='${passed ? '👏' : '💜'}';">
       </div>
       <h2 id="transTitle"></h2>
       <p id="transDesc"></p>
-      <button class="btn" id="nextBtn" style="opacity:0; pointer-events:none;">${I18N[lang].nextBtn}</button>
     </div>
   `;
 
@@ -506,20 +598,22 @@ function showResults() {
 
   if (passed) {
     $('transTitle').textContent = I18N[lang].transGreat;
-    $('transDesc').textContent = I18N[lang].transGreatDesc;
+    $('transDesc').textContent = `${I18N[lang].transGreatDesc} (${accuracy}%)`;
     
     const clapImgs = AVATAR_IMAGES[avatarType].clap;
     imgEl.src = clapImgs[0];
+    imgEl.style.display = 'block';
     interval = setInterval(() => {
       imgIndex = (imgIndex + 1) % 2;
       imgEl.src = clapImgs[imgIndex];
     }, 250);
   } else {
     $('transTitle').textContent = I18N[lang].transEncourage;
-    $('transDesc').textContent = I18N[lang].transEncourageDesc;
+    $('transDesc').textContent = `${I18N[lang].transEncourageDesc} (${accuracy}%)`;
     
     const encourageImgs = AVATAR_IMAGES[avatarType].encourage;
     imgEl.src = encourageImgs[0];
+    imgEl.style.display = 'block';
     interval = setInterval(() => {
       imgIndex = (imgIndex + 1) % 2;
       imgEl.src = encourageImgs[imgIndex];
@@ -530,22 +624,30 @@ function showResults() {
     if(interval) clearInterval(interval);
     imgEl.src = passed ? AVATAR_IMAGES[avatarType].clap[0] : AVATAR_IMAGES[avatarType].encourage[0];
     
-    const nextBtn = $('nextBtn');
-    nextBtn.style.transition = 'opacity 0.4s';
-    nextBtn.style.opacity = '1';
-    nextBtn.style.pointerEvents = 'auto';
+    $('footer').innerHTML = `<button class="btn" id="nextBtn" type="button">${I18N[lang].next}</button>`;
     
-    nextBtn.onclick = () => {
+    $('nextBtn').onclick = () => {
       window.location.href = 'assessment-visual.html';
     };
   }, 2500);
 }
 
 /* --- EVENTS --- */
-$('langBtn').onclick = () => { lang = lang === 'ar' ? 'en' : 'ar'; startGame(); };
-$('exitBtn').onclick = () => { if (confirm("Exit? Progress will be lost.")) window.location.href = 'assessment-intro.html'; };
+$('langBtn').onclick = () => { 
+  lang = lang === 'ar' ? 'en' : 'ar'; 
+  localStorage.setItem('omega_lang', lang);
+  startGame(); 
+};
 
+$('exitBtn').onclick = () => { 
+  if (confirm(I18N[lang].exitMsg || "Exit? Progress will be lost.")) {
+    window.location.href = 'assessment-intro.html'; 
+  }
+};
+
+// Boot
 startGame();
 </script>
+
 </body>
 </html>
