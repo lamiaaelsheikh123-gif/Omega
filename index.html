@@ -2,14 +2,26 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#F8FAFC" />
 <title>Omega — Splash</title>
 
-<!-- Fonts: Inter + IBM Plex Sans Arabic -->
+<!-- ✅ اللغة والاتجاه قبل أي رسم (يمنع الوميض ويصحّح قارئ الشاشة) -->
+<script>
+  (function () {
+    try {
+      var lang = localStorage.getItem('omega_lang') || 'en';
+      var html = document.documentElement;
+      html.lang = lang;
+      html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
+    } catch (e) {}
+  })();
+</script>
+
+<!-- ✅ خطوط موحّدة مع باقي التطبيق: Poppins + Cairo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================
@@ -50,8 +62,8 @@
   --sh-soft: 0 8px 30px rgba(15, 23, 42, 0.06);
 
   /* Fonts */
-  --f-en: 'Inter', system-ui, sans-serif;
-  --f-ar: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --f-en: 'Poppins', system-ui, sans-serif;
+  --f-ar: 'Cairo', system-ui, sans-serif;
 
   --phone-w: 375px;
   --phone-h: 812px;
@@ -63,12 +75,28 @@ html, body {
   height: 100%;
   font-family: var(--f-en);
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   background: #E2E8F0;
   overflow: hidden;
 }
 
 html[lang="ar"] body { font-family: var(--f-ar); }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--c-primary);
+  outline-offset: 3px;
+  border-radius: var(--r-pill);
+}
 
 /* ============================================
    PHONE FRAME
@@ -146,19 +174,25 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex;
   justify-content: flex-end;
   padding: 52px 22px 0;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .topbar { padding-top: 20px; padding-inline: 18px; }
 }
 
 .lang-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 12px;
+  padding: 10px 14px;
+  min-height: 44px;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(14, 148, 135, 0.15);
   border-radius: var(--r-pill);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--c-navy);
   letter-spacing: 0.3px;
@@ -173,7 +207,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .lang-toggle .lang-globe {
-  width: 14px; height: 14px;
+  width: 15px; height: 15px;
   stroke: var(--c-primary);
   stroke-width: 2.2;
   fill: none;
@@ -197,6 +231,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: 0 30px;
   gap: 24px;
   margin-top: -20px;
+  min-height: 0;
 }
 
 /* ============ LOGO ICON ============ */
@@ -210,6 +245,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   opacity: 0;
   transform: scale(0.6);
   animation: logoIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+  flex-shrink: 0;
 }
 
 .logo-wrap::after {
@@ -276,6 +312,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 html[lang="ar"] .wordmark {
@@ -293,7 +330,6 @@ html[lang="ar"] .wordmark {
   text-align: center;
   line-height: 1.6;
   letter-spacing: 0.3px;
-  max-width: 260px;
   opacity: 0;
   transform: translateY(10px);
   animation: fadeUp 0.7s ease 1.15s forwards;
@@ -301,7 +337,7 @@ html[lang="ar"] .wordmark {
 
 html[lang="ar"] .tagline {
   font-family: var(--f-ar);
-  font-size: 14px;
+  font-size: 14.5px;
   letter-spacing: 0;
 }
 
@@ -318,8 +354,19 @@ html[lang="ar"] .tagline {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  flex-shrink: 0;
   opacity: 0;
   animation: fadeUp 0.7s ease 1.5s forwards;
+}
+
+@media (max-width: 480px) {
+  .bottom { padding: 0 28px 36px; }
+}
+@media (max-height: 700px) {
+  .main { gap: 16px; margin-top: 0; }
+  .logo-wrap { width: 120px; height: 120px; }
+  .wordmark { font-size: 40px; }
+  .bottom { padding-bottom: 28px; }
 }
 
 .loading-bar {
@@ -352,19 +399,20 @@ html[lang="ar"] .tagline {
 }
 
 .loading-text {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--c-slate);
-  opacity: 0.7;
+  opacity: 0.75;
+  text-align: center;
 }
 
 html[lang="ar"] .loading-text {
   font-family: var(--f-ar);
   letter-spacing: 0;
   text-transform: none;
-  font-size: 12px;
+  font-size: 12.5px;
 }
 
 /* ============ PAGE TRANSITION ============ */
@@ -376,6 +424,10 @@ html[lang="ar"] .loading-text {
   to { opacity: 0; transform: scale(1.02); }
 }
 
+/* ============================================
+   REDUCED MOTION
+   (auto-redirect لسه بيحصل في نفس التوقيت زي ما طلبتِ)
+============================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -392,16 +444,16 @@ html[lang="ar"] .loading-text {
   <div class="phone">
     <div class="screen" id="screen">
 
-      <!-- Language Toggle -->
+      <!-- Top Bar -->
       <div class="topbar">
-        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
-          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to Arabic">
+          <svg class="lang-globe" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="2" y1="12" x2="22" y2="12"></line>
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
           </svg>
           <span class="lang-label" id="langCurrent">EN</span>
-          <span class="divider">|</span>
+          <span class="divider" aria-hidden="true">|</span>
           <span class="lang-inactive" id="langOther">ع</span>
         </button>
       </div>
@@ -409,29 +461,23 @@ html[lang="ar"] .loading-text {
       <!-- Main Content -->
       <div class="main">
 
-        <!-- ============ LOGO ICON — Omega with Sprout ============ -->
-        <div class="logo-wrap">
-          <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- ============ LOGO ICON — Omega with Sprout (decorative) ============ -->
+        <div class="logo-wrap" aria-hidden="true">
+          <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" focusable="false">
             <defs>
-              <!-- Omega shape gradient: Teal → Light Teal → Blue -->
               <linearGradient id="omegaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%"   stop-color="#0E9487"/>
                 <stop offset="55%"  stop-color="#2EC4B6"/>
                 <stop offset="100%" stop-color="#3B82F6"/>
               </linearGradient>
-
-              <!-- Sprout gradient: Dark teal → Teal -->
               <linearGradient id="sproutGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%"   stop-color="#2EC4B6"/>
                 <stop offset="100%" stop-color="#076B5F"/>
               </linearGradient>
             </defs>
 
-            <!-- ============================================
-                 THE OMEGA (Ω) SHAPE
-            ============================================ -->
+            <!-- The Omega (Ω) shape -->
             <g>
-              <!-- Main omega body -->
               <path d="M 60 142
                        C 44 122 36 98 44 74
                        C 54 44 76 28 100 28
@@ -443,25 +489,19 @@ html[lang="ar"] .loading-text {
                     stroke-linecap="round"
                     stroke-linejoin="round"/>
 
-              <!-- Left foot -->
-              <path d="M 60 142
-                       Q 52 150 42 152"
+              <path d="M 60 142 Q 52 150 42 152"
                     fill="none"
                     stroke="url(#omegaGrad)"
                     stroke-width="21"
                     stroke-linecap="round"/>
 
-              <!-- Right foot -->
-              <path d="M 140 142
-                       Q 148 150 158 152"
+              <path d="M 140 142 Q 148 150 158 152"
                     fill="none"
                     stroke="url(#omegaGrad)"
                     stroke-width="21"
                     stroke-linecap="round"/>
 
-              <!-- Subtle inner highlight -->
-              <path d="M 74 88
-                       C 68 74 76 56 92 46"
+              <path d="M 74 88 C 68 74 76 56 92 46"
                     fill="none"
                     stroke="#fff"
                     stroke-width="3"
@@ -469,54 +509,32 @@ html[lang="ar"] .loading-text {
                     opacity="0.25"/>
             </g>
 
-            <!-- ============================================
-                 THE SPROUT — Growth inside the mind
-            ============================================ -->
+            <!-- The Sprout -->
             <g class="sprout">
-              <!-- Stem -->
               <path d="M 100 78 L 100 118"
                     stroke="url(#sproutGrad)"
                     stroke-width="4.5"
                     stroke-linecap="round"/>
 
-              <!-- Left leaf -->
-              <path d="M 100 108
-                       Q 84 104 76 86
-                       Q 92 84 100 100
-                       Z"
+              <path d="M 100 108 Q 84 104 76 86 Q 92 84 100 100 Z"
                     fill="url(#sproutGrad)"/>
 
-              <!-- Right leaf -->
-              <path d="M 100 100
-                       Q 116 96 124 78
-                       Q 108 76 100 92
-                       Z"
+              <path d="M 100 100 Q 116 96 124 78 Q 108 76 100 92 Z"
                     fill="url(#sproutGrad)"/>
             </g>
 
-            <!-- Sparkle (top right) -->
+            <!-- Sparkle -->
             <g class="sparkle" style="transform-origin: 162px 42px;">
-              <path d="M 162 30
-                       L 164.5 39
-                       L 173 41.5
-                       L 164.5 44
-                       L 162 53
-                       L 159.5 44
-                       L 151 41.5
-                       L 159.5 39
-                       Z"
+              <path d="M 162 30 L 164.5 39 L 173 41.5 L 164.5 44 L 162 53 L 159.5 44 L 151 41.5 L 159.5 39 Z"
                     fill="#3B82F6"
                     opacity="0.85"/>
             </g>
 
-            <!-- Small dot accent -->
-            <circle cx="38" cy="70" r="3.5"
-                    fill="#2EC4B6"
-                    opacity="0.55"/>
+            <circle cx="38" cy="70" r="3.5" fill="#2EC4B6" opacity="0.55"/>
           </svg>
         </div>
 
-        <!-- ============ WORDMARK: Omega ============ -->
+        <!-- Wordmark + Tagline -->
         <div class="wordmark-wrap">
           <h1 class="wordmark">Omega</h1>
           <p class="tagline" id="taglineText">Train Your Mind. Support Your Memories.</p>
@@ -526,8 +544,8 @@ html[lang="ar"] .loading-text {
 
       <!-- Bottom -->
       <div class="bottom">
-        <div class="loading-bar"></div>
-        <div class="loading-text" id="loadingText">Loading your experience...</div>
+        <div class="loading-bar" aria-hidden="true"></div>
+        <div class="loading-text" id="loadingText" aria-live="polite">Loading your experience...</div>
       </div>
 
     </div>
@@ -541,11 +559,13 @@ html[lang="ar"] .loading-text {
 const I18N = {
   en: {
     tagline: 'Train Your Mind. Support Your Memories.',
-    loading: 'Loading your experience...'
+    loading: 'Loading your experience...',
+    switchLangAria: 'Switch to Arabic'
   },
   ar: {
     tagline: 'درّب عقلك. ادعم ذاكرتك.',
-    loading: 'جاري تجهيز التجربة...'
+    loading: 'جاري تجهيز التجربة...',
+    switchLangAria: 'التبديل إلى الإنجليزية'
   }
 };
 
@@ -571,6 +591,7 @@ function applyLanguage(lang) {
 
   taglineEl.textContent = I18N[lang].tagline;
   loadingEl.textContent = I18N[lang].loading;
+  langToggle.setAttribute('aria-label', I18N[lang].switchLangAria);
 
   langCurrEl.textContent  = lang === 'en' ? 'EN' : 'ع';
   langOtherEl.textContent = lang === 'en' ? 'ع'  : 'EN';
@@ -584,6 +605,9 @@ applyLanguage(currentLang);
 
 /* ============================================
    AUTO NAVIGATE
+   - Splash كل مرة يفتح التطبيق (زي ما هو)
+   - Loading bar شكلي (مظهر فقط)
+   - توقيت واحد في كل الحالات (3.8s) حتى لو reduced-motion مفعّل
 ============================================ */
 const screenEl = document.getElementById('screen');
 const NEXT_PAGE = 'onboarding.html';
